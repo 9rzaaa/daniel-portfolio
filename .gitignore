@@ -1,0 +1,14 @@
+# OS & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Node (if used later)
+node_modules/
+npm-debug.log*
+
+# Environment secrets
+.env
+.env.local
