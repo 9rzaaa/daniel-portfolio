@@ -61,29 +61,44 @@ document.addEventListener('DOMContentLoaded', () => {
   sections.forEach((section) => observer.observe(section));
 
   // ------------------------------------------------------------------------
-  // 3. Tactile 3D Tilt on Hanging Lanyard Badge
+  // 3. Tactile 3D Tilt & Sway on Hanging Lanyard Assembly
   // ------------------------------------------------------------------------
+  const lanyardAssembly = document.getElementById('lanyard-assembly');
   const idBadge = document.getElementById('hero-id-badge');
   const heroSection = document.getElementById('home');
 
-  if (idBadge && heroSection) {
+  if (idBadge && heroSection && lanyardAssembly) {
+    let isHovering = false;
+
+    heroSection.addEventListener('mouseenter', () => {
+      isHovering = true;
+      lanyardAssembly.classList.add('is-interactive');
+    });
+
     heroSection.addEventListener('mousemove', (e) => {
+      if (!isHovering) return;
+
       const rect = idBadge.getBoundingClientRect();
       const badgeCenterX = rect.left + rect.width / 2;
       const badgeCenterY = rect.top + rect.height / 2;
 
-      const deltaX = (e.clientX - badgeCenterX) / 25;
-      const deltaY = (e.clientY - badgeCenterY) / 35;
+      const deltaX = (e.clientX - badgeCenterX) / 22;
+      const deltaY = (e.clientY - badgeCenterY) / 28;
 
-      // Limit max tilt
-      const clampedX = Math.max(Math.min(deltaX, 10), -10);
-      const clampedY = Math.max(Math.min(deltaY, 8), -8);
+      // Limit max tilt angles
+      const clampedX = Math.max(Math.min(deltaX, 14), -14);
+      const clampedY = Math.max(Math.min(deltaY, 10), -10);
 
-      idBadge.style.transform = `rotateY(${clampedX}deg) rotateX(${-clampedY}deg) rotate(${clampedX * 0.4}deg)`;
+      // 3D rotation on card + slight angle on assembly
+      idBadge.style.transform = `rotateY(${clampedX}deg) rotateX(${-clampedY}deg) rotate(${clampedX * 0.25}deg)`;
+      lanyardAssembly.style.transform = `rotate(${clampedX * 0.12}deg)`;
     });
 
     heroSection.addEventListener('mouseleave', () => {
-      idBadge.style.transform = 'rotateY(0deg) rotateX(0deg) rotate(0deg)';
+      isHovering = false;
+      idBadge.style.transform = '';
+      lanyardAssembly.style.transform = '';
+      lanyardAssembly.classList.remove('is-interactive');
     });
   }
 
@@ -125,15 +140,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
 
         if (response.status === 200) {
-          formStatus.className = 'mt-4 text-sm text-[#FFFFFF] bg-[#2B2B2B] p-3 rounded-lg border border-[#B3B3B3] block';
+          formStatus.className = 'mt-4 text-sm text-[#FFFFFF] bg-[#2B2B2B] p-3.5 rounded-lg border border-[#B3B3B3] block';
           formStatus.textContent = 'Message sent successfully! Thank you for reaching out.';
           contactForm.reset();
         } else {
-          formStatus.className = 'mt-4 text-sm text-[#D4D4D4] bg-red-950/60 p-3 rounded-lg border border-red-800 block';
+          formStatus.className = 'mt-4 text-sm text-[#D4D4D4] bg-red-950/60 p-3.5 rounded-lg border border-red-800 block';
           formStatus.textContent = data.message || 'Something went wrong. Please try again.';
         }
       } catch (error) {
-        formStatus.className = 'mt-4 text-sm text-[#D4D4D4] bg-red-950/60 p-3 rounded-lg border border-red-800 block';
+        formStatus.className = 'mt-4 text-sm text-[#D4D4D4] bg-red-950/60 p-3.5 rounded-lg border border-red-800 block';
         formStatus.textContent = 'Unable to send message right now. Please email directly.';
       } finally {
         submitBtn.disabled = false;
