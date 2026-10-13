@@ -41,6 +41,25 @@
     }
   </script>
 
+  <!-- Detect reload or existing session to skip intro on reload -->
+  <script>
+    (function() {
+      try {
+        var isReload = false;
+        var nav = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation');
+        if (nav && nav.length > 0) {
+          isReload = nav[0].type === 'reload';
+        } else if (window.performance && performance.navigation) {
+          isReload = performance.navigation.type === 1;
+        }
+        var hasVisited = sessionStorage.getItem('visited_session') === 'true';
+        if (isReload || hasVisited) {
+          document.documentElement.classList.add('skip-intro');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Custom Stylesheet (Salt & Pepper Theme) -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -112,14 +131,11 @@
         <a href="#contact" class="pill-link px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">Contact</a>
       </nav>
 
-      <!-- Right CTAs: Resume & Hire Me -->
-      <div class="hidden sm:flex items-center gap-2.5 shrink-0">
-        <a href="assets/docs/resume.pdf" download class="px-4 py-1.5 rounded-full text-xs font-medium text-[#D4D4D4] border border-white/10 hover:border-white hover:text-white transition-all flex items-center gap-1.5 bg-white/5 hover:bg-white/10">
-          <i class="fa-solid fa-file-arrow-down text-[10px]"></i>
+      <!-- Right CTA: Resume -->
+      <div class="hidden sm:flex items-center shrink-0">
+        <a href="assets/docs/resume.pdf" download class="px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-white/10 hover:bg-white hover:text-black border border-white/20 hover:border-white transition-all duration-300 flex items-center gap-1.5 shadow-sm shadow-black/50 group">
+          <i class="fa-solid fa-file-arrow-down text-[10px] text-[#B3B3B3] group-hover:text-black transition-colors"></i>
           <span>Resume</span>
-        </a>
-        <a href="#contact" class="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-black hover:bg-[#D4D4D4] transition-all shadow-md shadow-white/10">
-          Get in Touch
         </a>
       </div>
 
@@ -138,12 +154,10 @@
     <a href="#projects" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Projects</a>
     <a href="#certifications" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Certifications</a>
     <a href="#contact" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Contact</a>
-    <div class="pt-3 border-t border-[#2B2B2B] flex flex-col gap-2">
-      <a href="assets/docs/resume.pdf" download class="w-full text-center py-2 text-xs font-semibold text-[#D4D4D4] border border-[#2B2B2B] rounded-lg">
-        Download Resume
-      </a>
-      <a href="#contact" class="w-full text-center py-2 text-xs font-bold bg-white text-black rounded-lg">
-        Get in Touch
+    <div class="pt-3 border-t border-white/10 flex flex-col gap-2">
+      <a href="assets/docs/resume.pdf" download class="w-full text-center py-2.5 text-xs font-bold text-white bg-white/10 hover:bg-white hover:text-black border border-white/20 rounded-lg transition-colors flex items-center justify-center gap-2">
+        <i class="fa-solid fa-file-arrow-down text-[11px]"></i>
+        <span>Download Resume</span>
       </a>
     </div>
   </div>
@@ -246,55 +260,63 @@
             </div>
 
             <!-- The Photorealistic ID Badge Card -->
-            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-5 bg-white border border-[#D4D4D4] relative select-none cursor-pointer">
+            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-4 sm:p-5 bg-white border border-[#D4D4D4] relative select-none cursor-pointer shadow-2xl">
               
               <!-- Clip Hole -->
-              <div class="w-12 h-2.5 bg-[#0A0A0A] rounded-full mx-auto mb-4 border border-[#2B2B2B]"></div>
+              <div class="w-12 h-2.5 bg-[#0A0A0A] rounded-full mx-auto mb-3.5 border border-[#2B2B2B]"></div>
 
-              <!-- Badge Header -->
-              <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-3 mb-4">
+              <!-- Badge Header / Pass Identifier -->
+              <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-2.5 mb-3 px-1">
                 <div>
-                  <span class="text-[10px] uppercase font-extrabold tracking-widest text-[#737373] block">ENGINEERING PASS</span>
-                  <span class="text-xs font-bold text-black tracking-tight">DEV-INTERN #2026</span>
+                  <span class="text-[9px] uppercase font-mono font-extrabold tracking-widest text-[#737373] block">DEV PASS • 2026</span>
+                  <span class="text-xs font-bold text-black tracking-tight font-display">SOFTWARE INTERN</span>
                 </div>
-                <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-black">
-                  <i class="fa-solid fa-terminal text-[8px]"></i>
+                <div class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-[9px] font-mono font-bold">
+                  D
                 </div>
               </div>
 
-              <!-- Portrait Frame -->
-              <div class="relative w-full h-56 rounded-xl bg-[#161616] overflow-hidden border border-[#E5E5E5] flex items-center justify-center group mb-4">
-                <!-- Fallback Monochrome Silhouette / Portrait -->
-                <div class="w-full h-full bg-gradient-to-b from-[#2B2B2B] to-[#0A0A0A] flex flex-col items-center justify-center p-4 text-center">
-                  <div class="w-24 h-24 rounded-full border-2 border-[#D4D4D4] flex items-center justify-center mb-2 bg-[#1A1A1A]">
-                    <i class="fa-solid fa-user text-4xl text-[#B3B3B3]"></i>
+              <!-- Main Portrait Photo Frame -->
+              <div class="relative w-full h-64 sm:h-72 rounded-xl bg-[#141414] overflow-hidden border border-[#E5E5E5] group mb-3.5 shadow-inner">
+                <!-- User Profile Image (Put your photo in assets/images/hero/profile.jpg or profile.png) -->
+                <img 
+                  id="badge-photo" 
+                  src="assets/images/hero/profile.jpg" 
+                  alt="Daniel - Profile" 
+                  class="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500 block"
+                  onerror="if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/hero/profile.png'; } else { this.style.display='none'; document.getElementById('badge-photo-fallback').style.display='flex'; }"
+                >
+
+                <!-- Fallback Placeholder (shows automatically until profile.jpg / profile.png is added) -->
+                <div id="badge-photo-fallback" class="w-full h-full bg-gradient-to-b from-[#222222] to-[#0A0A0A] flex flex-col items-center justify-center p-4 text-center" style="display: none;">
+                  <div class="w-20 h-20 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center mb-3 bg-white/5">
+                    <i class="fa-solid fa-camera text-2xl text-[#B3B3B3]"></i>
                   </div>
-                  <span class="text-[11px] font-bold text-white tracking-wider uppercase">Daniel</span>
-                  <span class="text-[9px] text-[#B3B3B3] tracking-wide">Web Developer Candidate</span>
+                  <span class="text-xs font-bold text-white tracking-wide">Add Your Photo</span>
+                  <span class="text-[10px] font-mono text-[#737373] mt-1">assets/images/hero/profile.jpg</span>
                 </div>
-                <!-- Holographic chip badge in corner -->
-                <div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[9px] font-mono font-bold text-white border border-[#333333]">
-                  PHP / LARAVEL
+
+                <!-- Glassy Corner Tech Tag -->
+                <div class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md text-[9px] font-mono font-bold text-white border border-white/15 shadow-sm">
+                  PHP • LARAVEL
                 </div>
               </div>
 
               <!-- Badge Details -->
-              <div class="space-y-1 mb-4 text-left">
-                <h3 class="font-display font-bold text-xl text-black tracking-tight leading-none">
-                  DANIEL
-                </h3>
-                <p class="text-xs font-semibold text-[#525252]">
-                  Web & Software Developer Intern
-                </p>
-                <p class="text-[10px] font-mono text-[#737373]">
-                  DEPT: SOFTWARE DEV • STATUS: READY
-                </p>
-              </div>
-
-              <!-- Footer with Barcode -->
-              <div class="pt-3 border-t border-[#E5E5E5] flex items-center justify-between">
-                <div class="h-6 w-32 barcode-lines opacity-80"></div>
-                <span class="text-[9px] font-mono font-bold text-[#737373]">VERIFIED 2026</span>
+              <div class="px-1 flex items-end justify-between border-t border-[#E5E5E5] pt-3">
+                <div class="space-y-0.5 text-left">
+                  <h3 class="font-display font-black text-xl text-black tracking-tight leading-none">
+                    DANIEL
+                  </h3>
+                  <p class="text-[11px] font-semibold text-[#525252]">
+                    Web &amp; Software Developer
+                  </p>
+                </div>
+                <!-- Mini Barcode -->
+                <div class="flex flex-col items-end">
+                  <div class="h-5 w-24 barcode-lines opacity-85"></div>
+                  <span class="text-[8px] font-mono font-bold text-[#737373] mt-0.5 tracking-wider">#2026-DEV</span>
+                </div>
               </div>
 
             </div>

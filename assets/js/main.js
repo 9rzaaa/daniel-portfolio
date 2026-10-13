@@ -8,15 +8,32 @@ document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
 
   // ------------------------------------------------------------------------
-  // 0. Intro Welcome Screen & Smooth Curtain Lift
+  // 0. Intro Welcome Screen & Smooth Curtain Lift (First Visit Only)
   // ------------------------------------------------------------------------
   const introScreen = document.getElementById('intro-screen');
-  if (introScreen) {
+  const isSkipIntro = document.documentElement.classList.contains('skip-intro');
+
+  if (isSkipIntro) {
+    if (introScreen) introScreen.style.display = 'none';
+    document.body.classList.remove('intro-active');
+    document.body.classList.add('intro-revealed');
+
+    // Smoothly trigger lanyard swing from top on reload as header glides in
+    setTimeout(() => {
+      const lanyard = document.getElementById('lanyard-assembly');
+      const idBadge = document.getElementById('hero-id-badge');
+      if (lanyard) lanyard.classList.add('do-swing');
+      if (idBadge) idBadge.classList.add('do-swing');
+    }, 180);
+
+    sessionStorage.setItem('visited_session', 'true');
+  } else if (introScreen) {
     let hasDismissed = false;
 
     const dismissIntro = () => {
       if (hasDismissed) return;
       hasDismissed = true;
+      sessionStorage.setItem('visited_session', 'true');
       window.scrollTo(0, 0);
       document.body.classList.remove('intro-active');
       document.body.classList.add('intro-revealed');
