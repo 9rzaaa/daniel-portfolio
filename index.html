@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio of Daniel - Aspiring Full-Stack & Web Developer Intern specializing in PHP, Laravel, CodeIgniter, and modern frontend technologies.">
+  <meta name="description" content="Portfolio of Daniel - Aspiring Full-Stack & Web Developer Intern specializing in PHP, Laravel, CodeIgniter, and modern web development.">
   <meta name="author" content="Daniel">
   <title>Daniel | Web Developer Portfolio</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,13 +24,16 @@
         extend: {
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', '"Syne"', 'sans-serif'],
           },
           colors: {
-            brand: {
-              50: '#f0f9ff',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
+            pepper: {
+              bg: '#0A0A0A',
+              card: '#161616',
+              charcoal: '#2B2B2B',
+              gray: '#B3B3B3',
+              light: '#D4D4D4',
+              white: '#FFFFFF',
             }
           }
         }
@@ -38,134 +41,213 @@
     }
   </script>
 
-  <!-- Custom Stylesheet -->
+  <!-- Custom Stylesheet (Salt & Pepper Theme) -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
 
   <!-- ======================================================================
-       HEADER / NAVIGATION
+       FLOATING PILL NAVIGATION BAR
        ====================================================================== -->
-  <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        
-        <!-- Logo -->
-        <a href="#home" class="flex items-center gap-2 group">
-          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
-            D
-          </span>
-          <span class="font-bold text-xl tracking-tight text-white group-hover:text-sky-400 transition-colors">
-            Daniel<span class="text-sky-400">.dev</span>
-          </span>
+  <header class="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+    <div class="floating-pill-nav rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 sm:gap-8 pointer-events-auto max-w-4xl w-full sm:w-auto">
+      
+      <!-- Logo / Monogram -->
+      <a href="#home" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 rounded-full bg-[#FFFFFF] text-black font-extrabold text-sm flex items-center justify-center transition-transform group-hover:scale-105">
+          D
+        </span>
+        <span class="font-display font-bold text-sm tracking-tight text-white group-hover:text-[#D4D4D4] transition-colors">
+          daniel<span class="text-[#B3B3B3]">.dev</span>
+        </span>
+      </a>
+
+      <!-- Desktop Links: Pill Nav -->
+      <nav class="hidden md:flex items-center gap-1 desktop-pill-nav">
+        <a href="#home" class="pill-link active px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Home</a>
+        <a href="#about" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">About</a>
+        <a href="#projects" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Projects</a>
+        <a href="#certifications" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Certifications</a>
+        <a href="#contact" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Contact</a>
+      </nav>
+
+      <!-- Right CTAs: Resume & Hire Me -->
+      <div class="hidden sm:flex items-center gap-2">
+        <a href="assets/docs/resume.pdf" download class="px-3.5 py-1.5 rounded-full text-xs font-medium text-[#D4D4D4] border border-[#2B2B2B] hover:border-white hover:text-white transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-file-arrow-down text-[10px]"></i>
+          <span>Resume</span>
         </a>
-
-        <!-- Desktop Navigation Links (5 Sections) -->
-        <nav class="hidden md:flex items-center gap-8">
-          <a href="#home" class="nav-link text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Home</a>
-          <a href="#about" class="nav-link text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">About</a>
-          <a href="#projects" class="nav-link text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Projects</a>
-          <a href="#certifications" class="nav-link text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Certifications</a>
-          <a href="#contact" class="nav-link text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Contact</a>
-        </nav>
-
-        <!-- CTA & Resume Button -->
-        <div class="hidden md:flex items-center gap-4">
-          <a href="assets/docs/resume.pdf" download class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-200 border border-slate-700 rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors">
-            <i class="fa-solid fa-file-arrow-down"></i>
-            <span>Resume</span>
-          </a>
-          <a href="#contact" class="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-400 shadow-md shadow-sky-500/25 transition-all hover:shadow-sky-500/40">
-            <span>Hire Me</span>
-          </a>
-        </div>
-
-        <!-- Mobile Hamburger Button -->
-        <button id="mobile-menu-btn" type="button" aria-label="Toggle Menu" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
-          <i class="fa-solid fa-bars text-xl"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden glass-nav border-t border-slate-800 px-6 py-6 space-y-4">
-      <a href="#home" class="nav-link block text-base font-medium text-slate-300 hover:text-sky-400">Home</a>
-      <a href="#about" class="nav-link block text-base font-medium text-slate-300 hover:text-sky-400">About</a>
-      <a href="#projects" class="nav-link block text-base font-medium text-slate-300 hover:text-sky-400">Projects</a>
-      <a href="#certifications" class="nav-link block text-base font-medium text-slate-300 hover:text-sky-400">Certifications</a>
-      <a href="#contact" class="nav-link block text-base font-medium text-slate-300 hover:text-sky-400">Contact</a>
-      <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-        <a href="assets/docs/resume.pdf" download class="w-full text-center px-4 py-2.5 text-sm font-semibold text-slate-200 border border-slate-700 rounded-lg">
-          Download Resume
-        </a>
-        <a href="#contact" class="w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-sky-500 rounded-lg">
-          Hire Me
+        <a href="#contact" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black hover:bg-[#D4D4D4] transition-all">
+          Get in Touch
         </a>
       </div>
+
+      <!-- Mobile Menu Trigger -->
+      <button id="mobile-menu-btn" type="button" aria-label="Toggle Navigation" class="md:hidden p-1.5 rounded-full text-[#D4D4D4] hover:text-white hover:bg-[#2B2B2B] transition-colors">
+        <i class="fa-solid fa-bars text-sm"></i>
+      </button>
+
     </div>
   </header>
 
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="hidden fixed top-20 left-4 right-4 z-40 floating-pill-nav rounded-2xl p-5 md:hidden space-y-3">
+    <a href="#home" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Home</a>
+    <a href="#about" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">About</a>
+    <a href="#projects" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Projects</a>
+    <a href="#certifications" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Certifications</a>
+    <a href="#contact" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Contact</a>
+    <div class="pt-3 border-t border-[#2B2B2B] flex flex-col gap-2">
+      <a href="assets/docs/resume.pdf" download class="w-full text-center py-2 text-xs font-semibold text-[#D4D4D4] border border-[#2B2B2B] rounded-lg">
+        Download Resume
+      </a>
+      <a href="#contact" class="w-full text-center py-2 text-xs font-bold bg-white text-black rounded-lg">
+        Get in Touch
+      </a>
+    </div>
+  </div>
+
   <!-- ======================================================================
-       1. HOME / HERO SECTION
+       1. HOME / HERO SECTION (Inspo: Blueprint Grid + Hanging Lanyard ID)
        ====================================================================== -->
-  <section id="home" class="min-h-screen pt-32 pb-20 flex items-center relative overflow-hidden">
-    <!-- Subtle Background Glow -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+  <section id="home" class="min-h-screen pt-36 pb-20 tech-grid relative flex items-center overflow-hidden border-b border-[#2B2B2B]">
+    
+    <!-- Vignette Mask to blend grid softly -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/80 pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         
-        <!-- Hero Content -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold tracking-wide">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Available for Internship 2026
+        <!-- Left Hero Content -->
+        <div class="lg:col-span-7 space-y-7">
+          
+          <!-- Availability Pill -->
+          <div class="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-[#161616] border border-[#2B2B2B] text-xs font-medium tracking-wide">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_8px_#ffffff]"></span>
+            <span class="text-[#B3B3B3] uppercase tracking-wider text-[11px] font-semibold">Available for Internship 2026</span>
           </div>
 
-          <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-300 to-indigo-500">Daniel</span>.
-            <br>Web Developer & Backend Enthusiast.
-          </h1>
+          <!-- Big Title & Subtitle -->
+          <div class="space-y-3">
+            <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter leading-[1.05]">
+              Web<br>Developer
+            </h1>
+            <p class="font-display text-xl sm:text-2xl text-[#B3B3B3] font-medium tracking-tight">
+              Junior Programmer • Backend & Full-Stack
+            </p>
+          </div>
 
-          <p class="text-lg text-slate-400 max-w-2xl leading-relaxed">
-            I craft clean, reliable web applications with <span class="text-slate-200 font-semibold">Laravel</span>, <span class="text-slate-200 font-semibold">CodeIgniter</span>, and modern web tools. Ready to contribute, build, and learn as an intern.
+          <!-- Bio Pitch -->
+          <p class="text-base text-[#B3B3B3] max-w-xl leading-relaxed">
+            Specializing in building robust web applications with <span class="text-white font-semibold">PHP</span>, <span class="text-white font-semibold">Laravel</span>, and <span class="text-white font-semibold">CodeIgniter</span>. Focused on clean architecture, database integrity, and practical software solutions.
           </p>
 
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <a href="#projects" class="px-6 py-3 rounded-lg bg-sky-500 hover:bg-sky-400 text-white font-semibold text-sm transition-all shadow-lg shadow-sky-500/25 flex items-center gap-2">
-              <span>View My Work</span>
-              <i class="fa-solid fa-arrow-right text-xs"></i>
+          <!-- Tech Stack Micro-Tags -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">PHP</span>
+            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Laravel</span>
+            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">CodeIgniter</span>
+            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">MySQL</span>
+            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Tailwind CSS</span>
+          </div>
+
+          <!-- Action Buttons & Socials -->
+          <div class="flex flex-wrap items-center gap-4 pt-3">
+            <a href="#projects" class="px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-[#D4D4D4] transition-all flex items-center gap-2 shadow-lg shadow-white/10">
+              <span>Explore Projects</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
-            <a href="#contact" class="px-6 py-3 rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white font-semibold text-sm transition-all">
+            <a href="#contact" class="px-6 py-3 rounded-lg bg-[#161616] border border-[#2B2B2B] text-[#D4D4D4] hover:text-white hover:border-[#B3B3B3] font-bold text-xs uppercase tracking-wider transition-all">
               Contact Me
             </a>
-          </div>
-
-          <!-- Socials / Quick Links -->
-          <div class="pt-6 flex items-center gap-5 text-slate-400">
-            <span class="text-xs uppercase font-bold tracking-wider text-slate-500">Connect:</span>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors text-lg" aria-label="GitHub">
-              <i class="fa-brands fa-github"></i>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors text-lg" aria-label="LinkedIn">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
-            <a href="mailto:your.email@example.com" class="hover:text-sky-400 transition-colors text-lg" aria-label="Email">
-              <i class="fa-solid fa-envelope"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Hero Avatar / Graphic Placeholder (Awaiting Inspo Layout) -->
-        <div class="lg:col-span-5 flex justify-center">
-          <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl glass-card p-4 glow-accent flex items-center justify-center text-center">
-            <div class="w-full h-full rounded-xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-6 text-slate-400">
-              <i class="fa-solid fa-code text-5xl text-sky-400 mb-4"></i>
-              <p class="text-sm font-semibold text-slate-300">Ready for Inspo!</p>
-              <p class="text-xs text-slate-500 mt-1">We will customize this section with your preferred hero visual.</p>
+            <div class="flex items-center gap-4 pl-2 text-[#B3B3B3]">
+              <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="GitHub">
+                <i class="fa-brands fa-github"></i>
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="LinkedIn">
+                <i class="fa-brands fa-linkedin"></i>
+              </a>
+              <a href="mailto:your.email@example.com" class="hover:text-white transition-colors text-lg" aria-label="Email">
+                <i class="fa-solid fa-envelope"></i>
+              </a>
             </div>
           </div>
+
+        </div>
+
+        <!-- Right Side: Hanging Lanyard ID Badge (Tactile 3D Tilt Component) -->
+        <div class="lg:col-span-5 flex justify-center relative lanyard-container">
+          
+          <div class="flex flex-col items-center">
+            
+            <!-- Hanging Lanyard Strap (Extends to Top Edge) -->
+            <div class="lanyard-strap flex items-center justify-center relative -mt-36 sm:-mt-44 mb-0">
+              <span class="text-[9px] uppercase font-bold tracking-widest text-[#B3B3B3] rotate-90 select-none opacity-40">
+                INTERN
+              </span>
+            </div>
+
+            <!-- Metallic Clip Connector -->
+            <div class="lanyard-clip flex items-center justify-center z-10 -mt-1 mb-1">
+              <div class="w-3 h-1 bg-[#141414] rounded-full"></div>
+            </div>
+
+            <!-- The Photorealistic ID Badge Card -->
+            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-5 bg-white border border-[#D4D4D4] relative select-none cursor-pointer">
+              
+              <!-- Clip Hole -->
+              <div class="w-12 h-2.5 bg-[#0A0A0A] rounded-full mx-auto mb-4 border border-[#2B2B2B]"></div>
+
+              <!-- Badge Header -->
+              <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-3 mb-4">
+                <div>
+                  <span class="text-[10px] uppercase font-extrabold tracking-widest text-[#737373] block">ENGINEERING PASS</span>
+                  <span class="text-xs font-bold text-black tracking-tight">DEV-INTERN #2026</span>
+                </div>
+                <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-black">
+                  <i class="fa-solid fa-terminal text-[8px]"></i>
+                </div>
+              </div>
+
+              <!-- Portrait Frame -->
+              <div class="relative w-full h-56 rounded-xl bg-[#161616] overflow-hidden border border-[#E5E5E5] flex items-center justify-center group mb-4">
+                <!-- Fallback Monochrome Silhouette / Portrait -->
+                <div class="w-full h-full bg-gradient-to-b from-[#2B2B2B] to-[#0A0A0A] flex flex-col items-center justify-center p-4 text-center">
+                  <div class="w-24 h-24 rounded-full border-2 border-[#D4D4D4] flex items-center justify-center mb-2 bg-[#1A1A1A]">
+                    <i class="fa-solid fa-user text-4xl text-[#B3B3B3]"></i>
+                  </div>
+                  <span class="text-[11px] font-bold text-white tracking-wider uppercase">Daniel</span>
+                  <span class="text-[9px] text-[#B3B3B3] tracking-wide">Web Developer Candidate</span>
+                </div>
+                <!-- Holographic chip badge in corner -->
+                <div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[9px] font-mono font-bold text-white border border-[#333333]">
+                  PHP / LARAVEL
+                </div>
+              </div>
+
+              <!-- Badge Details -->
+              <div class="space-y-1 mb-4 text-left">
+                <h3 class="font-display font-bold text-xl text-black tracking-tight leading-none">
+                  DANIEL
+                </h3>
+                <p class="text-xs font-semibold text-[#525252]">
+                  Web & Software Developer Intern
+                </p>
+                <p class="text-[10px] font-mono text-[#737373]">
+                  DEPT: SOFTWARE DEV • STATUS: READY
+                </p>
+              </div>
+
+              <!-- Footer with Barcode -->
+              <div class="pt-3 border-t border-[#E5E5E5] flex items-center justify-between">
+                <div class="h-6 w-32 barcode-lines opacity-80"></div>
+                <span class="text-[9px] font-mono font-bold text-[#737373]">VERIFIED 2026</span>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -175,183 +257,205 @@
   <!-- ======================================================================
        2. ABOUT SECTION
        ====================================================================== -->
-  <section id="about" class="py-24 bg-slate-900/50 border-t border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="about" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
       <div class="max-w-2xl">
-        <h2 class="text-xs uppercase tracking-widest text-sky-400 font-bold">About Me</h2>
-        <p class="text-3xl font-extrabold text-white mt-2">Passionate about building practical solutions</p>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">01 / Profile</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          About & Technical Foundations
+        </h2>
       </div>
 
-      <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <!-- Story -->
-        <div class="lg:col-span-7 space-y-5 text-slate-400 text-base leading-relaxed">
+      <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Story Bio -->
+        <div class="lg:col-span-7 space-y-5 text-[#B3B3B3] text-base leading-relaxed">
           <p>
-            Hello! I am a passionate web developer currently preparing for my internship. I have hands-on experience building web applications using PHP frameworks like <span class="text-slate-200 font-semibold">Laravel</span> and <span class="text-slate-200 font-semibold">CodeIgniter</span>, paired with responsive frontend design using <span class="text-slate-200 font-semibold">HTML5, CSS, and Tailwind CSS</span>.
+            I am a web developer preparing for my official internship this year. My technical focus is centered around backend development with <span class="text-white font-semibold">PHP, Laravel, and CodeIgniter</span>, paired with clean and responsive frontend design using <span class="text-white font-semibold">HTML5, CSS3, and Tailwind CSS</span>.
           </p>
           <p>
-            I enjoy transforming problem statements into functioning, user-friendly digital products. My goal for this internship is to collaborate with experienced engineering teams, apply best practices in software architecture, and contribute meaningful code from day one.
+            I value code clarity, relational database normalization with MySQL, and building user experiences that feel intuitive and responsive. During my internship, I am eager to contribute to production codebases, learn team collaboration workflows like Git feature branching, and build reliable software.
           </p>
+
           <div class="pt-4 grid grid-cols-2 gap-4">
-            <div class="p-4 rounded-xl glass-card">
-              <span class="block text-2xl font-bold text-sky-400">2026</span>
-              <span class="text-xs text-slate-400">Internship Ready</span>
+            <div class="p-5 rounded-xl pepper-card">
+              <span class="font-display block text-3xl font-extrabold text-white">2026</span>
+              <span class="text-xs text-[#B3B3B3] mt-1 block">Internship Candidate</span>
             </div>
-            <div class="p-4 rounded-xl glass-card">
-              <span class="block text-2xl font-bold text-indigo-400">PHP & Laravel</span>
-              <span class="text-xs text-slate-400">Primary Backend Stack</span>
+            <div class="p-5 rounded-xl pepper-card">
+              <span class="font-display block text-3xl font-extrabold text-white">PHP</span>
+              <span class="text-xs text-[#B3B3B3] mt-1 block">Laravel & CodeIgniter</span>
             </div>
           </div>
         </div>
 
-        <!-- Tech Stack Badges -->
+        <!-- Tech Stack Categorized -->
         <div class="lg:col-span-5 space-y-6">
-          <h3 class="text-lg font-bold text-white">Technologies & Tools</h3>
-          
-          <div class="space-y-4">
+          <div class="p-6 rounded-2xl pepper-card space-y-6">
+            <h3 class="font-display text-lg font-bold text-white tracking-tight">Technologies & Tools</h3>
+
+            <!-- Backend -->
             <div>
-              <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Backend & Databases</span>
+              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Backend & Databases</span>
               <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-php text-indigo-400"></i> PHP</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-laravel text-rose-400"></i> Laravel</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-fire text-amber-400"></i> CodeIgniter</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-database text-sky-400"></i> MySQL</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-php text-sm"></i> PHP</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-laravel text-sm"></i> Laravel</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-fire text-sm"></i> CodeIgniter</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-database text-sm"></i> MySQL</span>
               </div>
             </div>
 
+            <!-- Frontend -->
             <div>
-              <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Frontend</span>
+              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Frontend Architecture</span>
               <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-html5 text-orange-400"></i> HTML5</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-css3-alt text-sky-400"></i> CSS3</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-wind text-teal-400"></i> Tailwind CSS</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-js text-yellow-400"></i> JavaScript</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-html5 text-sm"></i> HTML5</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-css3-alt text-sm"></i> CSS3</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-wind text-sm"></i> Tailwind CSS</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-js text-sm"></i> JavaScript</span>
               </div>
             </div>
 
+            <!-- Workflow -->
             <div>
-              <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Tools & Workflow</span>
+              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Dev Workflow</span>
               <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-brands fa-git-alt text-orange-500"></i> Git & GitHub</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-terminal text-emerald-400"></i> VS Code</span>
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"><i class="fa-solid fa-paper-plane text-sky-400"></i> Postman</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-git-alt text-sm"></i> Git & GitHub</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-terminal text-sm"></i> VS Code</span>
+                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-paper-plane text-sm"></i> Postman</span>
               </div>
             </div>
+
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </section>
 
   <!-- ======================================================================
        3. PROJECTS SECTION
        ====================================================================== -->
-  <section id="projects" class="py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="projects" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 class="text-xs uppercase tracking-widest text-sky-400 font-bold">Featured Work</h2>
-          <p class="text-3xl font-extrabold text-white mt-2">Projects & Case Studies</p>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">02 / Portfolio</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Featured Projects
+          </h2>
         </div>
-        <p class="text-slate-400 text-sm max-w-md">
-          A selection of web applications showcasing database design, backend logic, and responsive UI.
+        <p class="text-[#B3B3B3] text-sm max-w-md">
+          A showcase of applications demonstrating database management, backend logic, and responsive user interfaces.
         </p>
       </div>
 
       <!-- Project Cards Grid -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Project Card 1 (Sample Laravel Project) -->
-        <div class="rounded-2xl glass-card overflow-hidden group flex flex-col transition-all duration-300 hover:-translate-y-1">
-          <div class="h-48 bg-slate-800/80 border-b border-slate-700/50 flex items-center justify-center relative overflow-hidden">
-            <i class="fa-brands fa-laravel text-6xl text-rose-500/40 group-hover:scale-110 transition-transform"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/80 text-[10px] font-bold text-sky-400 border border-slate-700">Laravel</span>
+        <!-- Project 1: Laravel System -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
+            <i class="fa-brands fa-laravel text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
+            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
+              Laravel
+            </span>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
-              <h3 class="text-xl font-bold text-white group-hover:text-sky-400 transition-colors">Web Application #1</h3>
-              <p class="text-sm text-slate-400 mt-2 line-clamp-3">
-                Full-featured web management system built with Laravel, MySQL, and Blade templating. Features authentication, role-based access, and CRUD operations.
+              <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
+                Laravel Web Application #1
+              </h3>
+              <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
+                Full-featured management platform engineered with Laravel and MySQL. Features role-based authentication, relational schema design, and clean CRUD flows.
               </p>
             </div>
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Laravel</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">MySQL</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Tailwind</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Laravel</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind</span>
               </div>
-              <div class="flex items-center gap-4 text-sm font-semibold pt-2 border-t border-slate-800">
-                <a href="#" class="text-sky-400 hover:text-sky-300 inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
                 </a>
-                <a href="#" class="text-slate-400 hover:text-white inline-flex items-center gap-1.5">
-                  <i class="fa-brands fa-github text-xs"></i> Source Code
+                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-brands fa-github text-xs"></i> GitHub
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Project Card 2 (Sample CodeIgniter Project) -->
-        <div class="rounded-2xl glass-card overflow-hidden group flex flex-col transition-all duration-300 hover:-translate-y-1">
-          <div class="h-48 bg-slate-800/80 border-b border-slate-700/50 flex items-center justify-center relative overflow-hidden">
-            <i class="fa-solid fa-fire text-6xl text-amber-500/40 group-hover:scale-110 transition-transform"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/80 text-[10px] font-bold text-amber-400 border border-slate-700">CodeIgniter</span>
+        <!-- Project 2: CodeIgniter Portal -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
+            <i class="fa-solid fa-fire text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
+            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
+              CodeIgniter
+            </span>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
-              <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">Web Portal #2</h3>
-              <p class="text-sm text-slate-400 mt-2 line-clamp-3">
-                Lightweight portal system constructed using CodeIgniter and PHP, focusing on rapid data entry, clean MVC separation, and relational database queries.
+              <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
+                CodeIgniter Web Portal #2
+              </h3>
+              <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
+                Lightweight database portal built with CodeIgniter and PHP, emphasizing fast MVC query execution, session security, and clean forms.
               </p>
             </div>
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">CodeIgniter</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">PHP</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Bootstrap / CSS</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">CodeIgniter</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PHP</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
               </div>
-              <div class="flex items-center gap-4 text-sm font-semibold pt-2 border-t border-slate-800">
-                <a href="#" class="text-sky-400 hover:text-sky-300 inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
                 </a>
-                <a href="#" class="text-slate-400 hover:text-white inline-flex items-center gap-1.5">
-                  <i class="fa-brands fa-github text-xs"></i> Source Code
+                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-brands fa-github text-xs"></i> GitHub
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Project Card 3 (Frontend / Web Tool) -->
-        <div class="rounded-2xl glass-card overflow-hidden group flex flex-col transition-all duration-300 hover:-translate-y-1">
-          <div class="h-48 bg-slate-800/80 border-b border-slate-700/50 flex items-center justify-center relative overflow-hidden">
-            <i class="fa-solid fa-globe text-6xl text-sky-500/40 group-hover:scale-110 transition-transform"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/80 text-[10px] font-bold text-teal-400 border border-slate-700">Frontend</span>
+        <!-- Project 3: Responsive Frontend / Case Study -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
+            <i class="fa-solid fa-layer-group text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
+            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
+              Frontend
+            </span>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
-              <h3 class="text-xl font-bold text-white group-hover:text-sky-400 transition-colors">Responsive Web Project #3</h3>
-              <p class="text-sm text-slate-400 mt-2 line-clamp-3">
-                Responsive frontend interface developed with modern HTML5, CSS3, and JavaScript, featuring interactive UI controls and smooth navigation.
+              <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
+                Interactive Web Interface #3
+              </h3>
+              <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
+                Modern responsive web interface built with HTML5, modern CSS, and JavaScript. Optimized for fast rendering, touch accessibility, and mobile fluid layouts.
               </p>
             </div>
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">HTML5</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Tailwind</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">JavaScript</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">HTML5</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">JavaScript</span>
               </div>
-              <div class="flex items-center gap-4 text-sm font-semibold pt-2 border-t border-slate-800">
-                <a href="#" class="text-sky-400 hover:text-sky-300 inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
                 </a>
-                <a href="#" class="text-slate-400 hover:text-white inline-flex items-center gap-1.5">
-                  <i class="fa-brands fa-github text-xs"></i> Source Code
+                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-brands fa-github text-xs"></i> GitHub
                 </a>
               </div>
             </div>
@@ -365,62 +469,64 @@
   <!-- ======================================================================
        4. CERTIFICATIONS SECTION
        ====================================================================== -->
-  <section id="certifications" class="py-24 bg-slate-900/50 border-t border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="certifications" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
       <div class="max-w-2xl">
-        <h2 class="text-xs uppercase tracking-widest text-sky-400 font-bold">Certifications & Training</h2>
-        <p class="text-3xl font-extrabold text-white mt-2">Continuous Learning & Credentials</p>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">03 / Credentials</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Certifications & Learning
+        </h2>
       </div>
 
       <!-- Certifications Grid -->
       <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Cert Card 1 -->
-        <div class="p-6 rounded-2xl glass-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 text-xl shrink-0">
+        <!-- Cert 1 -->
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-certificate"></i>
           </div>
           <div>
-            <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Issuing Org / University</span>
-            <h3 class="text-base font-bold text-white mt-1">PHP & Web Development Course</h3>
-            <p class="text-xs text-slate-400 mt-1">Issued: 2025 • Credential ID: #123456</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-sky-400">
-              <span>Verify Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Institution / Course</span>
+            <h3 class="font-display text-base font-bold text-white mt-1">PHP & Full-Stack Development</h3>
+            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Verified Credential</p>
+            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
+              <span>View Credential</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Cert Card 2 -->
-        <div class="p-6 rounded-2xl glass-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl shrink-0">
+        <!-- Cert 2 -->
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-award"></i>
           </div>
           <div>
-            <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Online Learning Platform</span>
-            <h3 class="text-base font-bold text-white mt-1">Database Design with MySQL</h3>
-            <p class="text-xs text-slate-400 mt-1">Issued: 2025 • Credential ID: #789012</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-indigo-400">
-              <span>Verify Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Online Learning Platform</span>
+            <h3 class="font-display text-base font-bold text-white mt-1">Relational Database & MySQL</h3>
+            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Certificate of Completion</p>
+            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
+              <span>View Credential</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Cert Card 3 -->
-        <div class="p-6 rounded-2xl glass-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-xl shrink-0">
+        <!-- Cert 3 -->
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
-            <span class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Academic / Workshop</span>
-            <h3 class="text-base font-bold text-white mt-1">Modern Frontend Fundamentals</h3>
-            <p class="text-xs text-slate-400 mt-1">Issued: 2026 • Certificate of Completion</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-teal-400">
-              <span>Verify Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Academic Workshop</span>
+            <h3 class="font-display text-base font-bold text-white mt-1">Web Standards & UI Fundamentals</h3>
+            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2026 • Certificate of Achievement</p>
+            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
+              <span>View Credential</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
             </a>
           </div>
         </div>
@@ -432,70 +538,72 @@
   <!-- ======================================================================
        5. CONTACT SECTION
        ====================================================================== -->
-  <section id="contact" class="py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="contact" class="py-28 tech-grid relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        <!-- Contact Info -->
+        <!-- Contact Information -->
         <div class="lg:col-span-5 space-y-6">
-          <h2 class="text-xs uppercase tracking-widest text-sky-400 font-bold">Get In Touch</h2>
-          <p class="text-3xl font-extrabold text-white">Let's discuss my internship opportunities!</p>
-          <p class="text-slate-400 text-base leading-relaxed">
-            I am currently looking for an internship opportunity where I can contribute my skills in PHP, Laravel, and web development. Feel free to reach out directly.
+          <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">04 / Connect</span>
+          <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+            Let's Talk Internship.
+          </h2>
+          <p class="text-[#B3B3B3] text-base leading-relaxed">
+            I am currently interviewing for 2026 internship roles. If you have an opening or would like to discuss my technical projects, drop me a message.
           </p>
 
           <div class="space-y-4 pt-4">
-            <div class="flex items-center gap-4 text-slate-300">
-              <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-sky-400 shrink-0">
+            <div class="flex items-center gap-4 text-[#D4D4D4]">
+              <div class="w-10 h-10 rounded-lg bg-[#161616] border border-[#2B2B2B] flex items-center justify-center text-white shrink-0">
                 <i class="fa-solid fa-envelope"></i>
               </div>
               <div>
-                <span class="text-xs text-slate-500 uppercase font-semibold block">Email</span>
-                <a href="mailto:your.email@example.com" class="text-sm font-medium hover:text-sky-400 transition-colors">your.email@example.com</a>
+                <span class="text-[10px] text-[#B3B3B3] uppercase font-bold block">Email</span>
+                <a href="mailto:your.email@example.com" class="text-sm font-semibold hover:text-white transition-colors">your.email@example.com</a>
               </div>
             </div>
 
-            <div class="flex items-center gap-4 text-slate-300">
-              <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-indigo-400 shrink-0">
+            <div class="flex items-center gap-4 text-[#D4D4D4]">
+              <div class="w-10 h-10 rounded-lg bg-[#161616] border border-[#2B2B2B] flex items-center justify-center text-white shrink-0">
                 <i class="fa-solid fa-location-dot"></i>
               </div>
               <div>
-                <span class="text-xs text-slate-500 uppercase font-semibold block">Location</span>
-                <span class="text-sm font-medium">Philippines • Open to Onsite / Hybrid / Remote</span>
+                <span class="text-[10px] text-[#B3B3B3] uppercase font-bold block">Location</span>
+                <span class="text-sm font-semibold">Philippines • Open to Onsite / Hybrid / Remote</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Contact Form (Web3Forms Ready) -->
+        <!-- Contact Form (Web3Forms Integration) -->
         <div class="lg:col-span-7">
-          <form id="contact-form" class="p-8 rounded-2xl glass-card space-y-5">
-            <!-- Web3Forms Access Key: Replace with your actual free key from https://web3forms.com -->
+          <form id="contact-form" class="p-8 rounded-2xl pepper-card space-y-5">
+            <!-- Replace with free key from https://web3forms.com -->
             <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Your Name</label>
-                <input type="text" id="name" name="name" required placeholder="Jane Doe" class="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-sky-500">
+                <label for="name" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Name</label>
+                <input type="text" id="name" name="name" required placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
               </div>
               <div>
-                <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Your Email</label>
-                <input type="email" id="email" name="email" required placeholder="jane@company.com" class="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-sky-500">
+                <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Email</label>
+                <input type="email" id="email" name="email" required placeholder="alex@company.com" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
               </div>
             </div>
 
             <div>
-              <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Subject</label>
-              <input type="text" id="subject" name="subject" required placeholder="Internship Opportunity / Inquiry" class="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-sky-500">
+              <label for="subject" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Subject</label>
+              <input type="text" id="subject" name="subject" required placeholder="Web Development Internship Opportunity" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
             </div>
 
             <div>
-              <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Message</label>
-              <textarea id="message" name="message" rows="4" required placeholder="Hi Daniel, we are reviewing your portfolio for our web development internship..." class="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-sky-500 resize-none"></textarea>
+              <label for="message" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Message</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Hi Daniel, we are reviewing your profile for our internship program..." class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors resize-none"></textarea>
             </div>
 
-            <button type="submit" class="w-full py-3.5 px-6 rounded-lg bg-sky-500 hover:bg-sky-400 text-white font-semibold text-sm transition-all shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2">
+            <button type="submit" class="w-full py-3.5 px-6 rounded-lg bg-white text-black hover:bg-[#D4D4D4] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5">
               <i class="fa-solid fa-paper-plane text-xs"></i>
               <span>Send Message</span>
             </button>
@@ -511,16 +619,16 @@
   <!-- ======================================================================
        FOOTER
        ====================================================================== -->
-  <footer class="py-10 border-t border-slate-900 bg-slate-950 text-slate-500 text-xs">
+  <footer class="py-10 border-t border-[#2B2B2B] bg-[#0A0A0A] text-[#B3B3B3] text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© <span id="current-year"></span> Daniel. Built with HTML5 & Tailwind CSS.</p>
+      <p>© <span id="current-year"></span> Daniel. Engineered with HTML5 & Tailwind CSS.</p>
       <div class="flex items-center gap-6">
-        <a href="#home" class="hover:text-slate-300 transition-colors">Back to top</a>
+        <a href="#home" class="hover:text-white transition-colors">Back to top ↑</a>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Main JavaScript -->
   <script src="assets/js/main.js"></script>
 </body>
 </html>

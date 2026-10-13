@@ -1,57 +1,149 @@
 /* ==========================================================================
-   Daniel Portfolio - Custom Styles & Utility Overrides
+   Daniel Portfolio - Salt & Pepper Theme Stylesheet
+   Palette:
+   - #0A0A0A (Deep Black)
+   - #2B2B2B (Charcoal Accent / Borders / Cards)
+   - #B3B3B3 (Medium Gray / Body Text)
+   - #D4D4D4 (Light Gray / Subheadings)
+   - #FFFFFF (Pure White / High-contrast Headings)
    ========================================================================== */
 
-/* Smooth Scrolling */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800&display=swap');
+
+/* Smooth Scrolling & Section Offset */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem; /* Ensures sticky nav doesn't cover section headers */
+  scroll-padding-top: 6.5rem;
+  background-color: #0a0a0a;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Monochrome */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  background: #2B2B2B;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
+  background: #B3B3B3;
 }
 
-/* Glassmorphism Navigation */
-.glass-nav {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+/* Technical Blueprint / Grid Pattern */
+.tech-grid {
+  background-size: 38px 38px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
-/* Glass Card */
-.glass-card {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Floating Pill Navigation */
+.floating-pill-nav {
+  background: rgba(18, 18, 18, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #2B2B2B;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
-.glass-card:hover {
-  border-color: rgba(56, 189, 248, 0.4);
+/* Nav Link Hover & Active */
+.pill-link {
+  transition: all 0.2s ease;
+  color: #B3B3B3;
 }
 
-/* Glow effects */
-.glow-accent {
-  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.3);
+.pill-link:hover {
+  color: #FFFFFF;
 }
 
-/* Active Nav Link Marker */
-.nav-link.active {
-  color: #38bdf8;
+.pill-link.active {
+  background-color: #2B2B2B;
+  color: #FFFFFF;
   font-weight: 600;
+}
+
+/* Card Styles */
+.pepper-card {
+  background: rgba(22, 22, 22, 0.75);
+  border: 1px solid #2B2B2B;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pepper-card:hover {
+  border-color: #D4D4D4;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   Hanging Lanyard ID Badge Component
+   -------------------------------------------------------------------------- */
+.lanyard-container {
+  perspective: 1000px;
+}
+
+.lanyard-strap {
+  width: 22px;
+  height: 90px;
+  background: repeating-linear-gradient(
+    180deg,
+    #141414,
+    #141414 8px,
+    #2B2B2B 8px,
+    #2B2B2B 16px
+  );
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.lanyard-clip {
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, #71717a 0%, #27272a 100%);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  border: 1px solid #52525b;
+}
+
+.id-badge {
+  background: #ffffff;
+  color: #0a0a0a;
+  border-radius: 18px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transform-origin: top center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.id-badge:hover {
+  transform: rotate(2deg) translateY(4px);
+  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle Barcode Texture */
+.barcode-lines {
+  background: repeating-linear-gradient(
+    90deg,
+    #000 0,
+    #000 2px,
+    transparent 2px,
+    transparent 4px,
+    #000 4px,
+    #000 7px,
+    transparent 7px,
+    transparent 9px
+  );
+}
+
+/* Big Display Typography Class */
+.font-display {
+  font-family: 'Space Grotesk', 'Syne', sans-serif;
+  letter-spacing: -0.04em;
 }
