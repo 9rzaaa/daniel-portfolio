@@ -13,7 +13,7 @@
 /* Smooth Scrolling & Section Offset */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 7rem;
+  scroll-padding-top: 8rem;
   background-color: #0a0a0a;
 }
 
@@ -41,6 +41,217 @@ html {
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* --------------------------------------------------------------------------
+   Intro Preloader & Welcome Screen (Smooth Left-Right & Curtain Lift)
+   -------------------------------------------------------------------------- */
+#intro-screen {
+  background-color: #000000;
+  z-index: 9999;
+  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+  will-change: transform;
+}
+
+#intro-screen.curtain-up {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Lock scrolling while intro is active to prevent page offset on reload/wheel */
+body.intro-active {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+/* Synchronized Parallax Reveal on Home Page and Floating Header */
+body.intro-active #home {
+  transform: translateY(70px);
+  opacity: 0;
+  filter: blur(10px);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease, filter 1.2s ease;
+}
+
+body.intro-revealed #home {
+  animation: homePageReveal 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+@keyframes homePageReveal {
+  0% {
+    transform: translateY(75px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+body.intro-active header {
+  transform: translateY(-80px) scale(0.92);
+  opacity: 0;
+  filter: blur(10px);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+}
+
+body.intro-revealed header {
+  animation: headerPillEntrance 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes headerPillEntrance {
+  0% {
+    transform: translateY(-80px) scale(0.92);
+    opacity: 0;
+    filter: blur(12px);
+  }
+  65% {
+    transform: translateY(4px) scale(1.01);
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Chrome Shimmer Sweep (Left to Right then Vice-Versa) - Slower & Smoother */
+.intro-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #525252 0%,
+    #a3a3a3 25%,
+    #ffffff 50%,
+    #a3a3a3 75%,
+    #525252 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: introTextSweep 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes introTextSweep {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* One-by-one Sequential Icon Entrance */
+@keyframes iconPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) translateY(16px);
+    filter: blur(8px);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.22) translateY(-2px);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.intro-icon-1 {
+  animation: iconPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+.intro-icon-2 {
+  animation: iconPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+}
+
+.intro-icon-3 {
+  animation: iconPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.0s both;
+}
+
+/* Words Expand Outward from the Middle (Center) to the Sides */
+@keyframes expandFromMiddle {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 50% 0 50%);
+    transform: scale(0.85);
+    letter-spacing: -0.05em;
+    filter: blur(10px);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0% 0 0%);
+    transform: scale(1);
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+}
+
+.intro-expand-line-1 {
+  display: inline-block;
+  transform-origin: center;
+  animation: expandFromMiddle 1.35s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both;
+}
+
+.intro-expand-line-2 {
+  display: inline-block;
+  transform-origin: center;
+  animation: expandFromMiddle 1.35s cubic-bezier(0.16, 1, 0.3, 1) 1.6s both;
+}
+
+.intro-icon-pill {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4D4D4;
+  font-size: 13px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.intro-icon-pill:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.intro-progress-bar {
+  width: 150px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.intro-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: #FFFFFF;
+  animation: introProgressFill 3.6s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+}
+
+@keyframes introProgressFill {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
 /* --------------------------------------------------------------------------
@@ -105,11 +316,13 @@ html {
 @keyframes slideUpFade {
   0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(24px);
+    filter: blur(8px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
@@ -123,30 +336,172 @@ html {
 
 .anim-title-word {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.3s ease, color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.35s ease, color 0.35s ease;
   cursor: default;
 }
 
 .anim-title-word:hover {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-4px) scale(1.02);
   color: #ffffff;
-  text-shadow: 0 0 25px rgba(255, 255, 255, 0.45);
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.55);
 }
 
-.anim-subtitle {
-  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+/* Subtitle Kinetic Word-by-Word Reveal */
+@keyframes subItemRise {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.95);
+    filter: blur(6px);
+  }
+  70% {
+    transform: translateY(-2px) scale(1.01);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
-.anim-desc {
-  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+.anim-sub-item {
+  display: inline-block;
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease, text-shadow 0.25s ease;
 }
 
-.anim-chips {
-  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+.anim-sub-item:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.45);
 }
 
-.anim-actions {
-  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
+/* Ambient Metallic Shimmer on Junior Programmer */
+.subtitle-shimmer {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #a3a3a3 30%,
+    #ffffff 50%,
+    #737373 70%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: subtitleShineSweep 5.5s ease-in-out 1.2s infinite alternate;
+}
+
+@keyframes subtitleShineSweep {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Pulsing Diamond / Bullet Indicator */
+.anim-pulse-dot {
+  display: inline-block;
+  animation: gentlePulseDot 2.8s ease-in-out infinite;
+}
+
+@keyframes gentlePulseDot {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50% { opacity: 0.95; transform: scale(1.25); color: #ffffff; }
+}
+
+/* Editorial Bio Left Line Accent */
+.editorial-bio {
+  position: relative;
+  padding-left: 1.15rem;
+  border-left: 2px solid rgba(255, 255, 255, 0.12);
+  transition: border-color 0.35s ease, transform 0.3s ease;
+}
+
+.editorial-bio:hover {
+  border-left-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(3px);
+}
+
+/* Sequential Chip Pop-In */
+@keyframes chipPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.85);
+    filter: blur(6px);
+  }
+  65% {
+    transform: translateY(-3px) scale(1.05);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.anim-chip {
+  opacity: 0;
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.anim-chip:hover {
+  transform: translateY(-3px) scale(1.06);
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px -4px rgba(255, 255, 255, 0.25);
+}
+
+/* Primary Button Light Sweep on Hover */
+.hero-primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.hero-primary-btn:hover::before {
+  left: 150%;
+}
+
+/* Staggered Orchestration Triggered When Intro is Revealed */
+body.intro-revealed .anim-badge {
+  animation: slideUpFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+body.intro-revealed .anim-title {
+  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+body.intro-revealed .anim-sub-1 { animation: subItemRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both; }
+body.intro-revealed .anim-sub-2 { animation: subItemRise 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.72s both; }
+body.intro-revealed .anim-sub-3 { animation: subItemRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
+body.intro-revealed .anim-sub-4 { animation: subItemRise 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.88s both; }
+body.intro-revealed .anim-sub-5 { animation: subItemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.94s both; }
+
+body.intro-revealed .anim-desc {
+  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both;
+}
+
+body.intro-revealed .anim-chip-1 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.98s both; }
+body.intro-revealed .anim-chip-2 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.05s both; }
+body.intro-revealed .anim-chip-3 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.12s both; }
+body.intro-revealed .anim-chip-4 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.19s both; }
+body.intro-revealed .anim-chip-5 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.26s both; }
+
+body.intro-revealed .anim-actions {
+  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+}
+
+/* Fallback visibility if intro is skipped / not active */
+body:not(.intro-active):not(.intro-revealed) .anim-sub-item,
+body:not(.intro-active):not(.intro-revealed) .anim-chip {
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -168,6 +523,53 @@ html {
   }
 }
 
+/* Lanyard Swung In from the Very Top */
+@keyframes lanyardSwungFromTop {
+  0% {
+    transform: translateY(-480px) rotate(-25deg);
+    opacity: 0;
+  }
+  38% {
+    transform: translateY(24px) rotate(18deg);
+    opacity: 1;
+  }
+  56% {
+    transform: translateY(-12px) rotate(-10deg);
+  }
+  72% {
+    transform: translateY(6px) rotate(5deg);
+  }
+  86% {
+    transform: translateY(-2px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Secondary Physics on the ID Badge Card */
+@keyframes badgeSecondarySwing {
+  0% {
+    transform: rotate(-18deg) scale(0.94);
+  }
+  40% {
+    transform: rotate(15deg) scale(1.02);
+  }
+  60% {
+    transform: rotate(-8deg);
+  }
+  76% {
+    transform: rotate(4deg);
+  }
+  90% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 @keyframes badgeShineSweep {
   0% {
     left: -120%;
@@ -179,12 +581,27 @@ html {
 
 .lanyard-hanging-assembly {
   transform-origin: top center;
-  animation: lanyardGentleSway 5.5s ease-in-out infinite;
+  opacity: 0;
+  transform: translateY(-500px) rotate(-25deg);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Explicitly triggered right as the curtain clears the top of the home page */
+.lanyard-hanging-assembly.do-swing {
+  opacity: 1;
+  animation: lanyardSwungFromTop 2.0s cubic-bezier(0.2, 0.85, 0.25, 1) forwards,
+             lanyardGentleSway 5.5s ease-in-out 2.05s infinite;
+}
+
+#hero-id-badge.do-swing {
+  animation: badgeSecondarySwing 2.0s cubic-bezier(0.2, 0.85, 0.25, 1) forwards;
 }
 
 .lanyard-hanging-assembly.is-interactive {
-  animation: none; /* Mouse tracker takes over */
+  animation: none !important; /* Mouse tracker takes over */
+  opacity: 1 !important;      /* Prevent opacity flash when animation is killed */
+  transform: none !important; /* Reset to natural hanging position */
 }
 
 .lanyard-strap {
