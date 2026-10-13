@@ -1,8 +1,64 @@
-// ==========================================================================
-// Daniel Portfolio - Main JavaScript (Salt & Pepper Edition)
-// ==========================================================================
+// Guarantee page starts cleanly at top (0, 0) on load or reload
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
 
 document.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
+
+  // ------------------------------------------------------------------------
+  // 0. Intro Welcome Screen & Smooth Curtain Lift
+  // ------------------------------------------------------------------------
+  const introScreen = document.getElementById('intro-screen');
+  if (introScreen) {
+    let hasDismissed = false;
+
+    const dismissIntro = () => {
+      if (hasDismissed) return;
+      hasDismissed = true;
+      window.scrollTo(0, 0);
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-revealed');
+      introScreen.classList.add('curtain-up');
+
+      // Trigger the lanyard drop PRECISELY as the curtain clears the ceiling of the home page!
+      setTimeout(() => {
+        const lanyard = document.getElementById('lanyard-assembly');
+        const idBadge = document.getElementById('hero-id-badge');
+        if (lanyard) lanyard.classList.add('do-swing');
+        if (idBadge) idBadge.classList.add('do-swing');
+      }, 450);
+
+      setTimeout(() => {
+        introScreen.style.display = 'none';
+      }, 1250);
+    };
+
+    // Auto-dismiss smoothly after 4.2s (or skip anytime on click / scroll)
+    const introTimer = setTimeout(dismissIntro, 4200);
+
+    introScreen.addEventListener('click', () => {
+      clearTimeout(introTimer);
+      dismissIntro();
+    });
+
+    // Also trigger curtain lift on user scroll/wheel
+    window.addEventListener('wheel', () => {
+      if (!hasDismissed) {
+        clearTimeout(introTimer);
+        dismissIntro();
+      }
+    }, { once: true, passive: true });
+
+    window.addEventListener('touchmove', () => {
+      if (!hasDismissed) {
+        clearTimeout(introTimer);
+        dismissIntro();
+      }
+    }, { once: true, passive: true });
+  }
+
   // ------------------------------------------------------------------------
   // 1. Mobile Menu Toggle for Floating Pill
   // ------------------------------------------------------------------------
@@ -71,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isHovering = false;
 
     heroSection.addEventListener('mouseenter', () => {
+      // Only take over once the lanyard has fully swung in
+      if (!lanyardAssembly.classList.contains('do-swing')) return;
       isHovering = true;
       lanyardAssembly.classList.add('is-interactive');
     });
@@ -96,9 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     heroSection.addEventListener('mouseleave', () => {
       isHovering = false;
+      // Clear inline transforms so the do-swing sway animation takes back over smoothly
       idBadge.style.transform = '';
       lanyardAssembly.style.transform = '';
-      lanyardAssembly.classList.remove('is-interactive');
+      // Small delay lets the CSS transition ease out before resuming keyframe sway
+      setTimeout(() => {
+        lanyardAssembly.classList.remove('is-interactive');
+      }, 260);
     });
   }
 

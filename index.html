@@ -44,7 +44,48 @@
   <!-- Custom Stylesheet (Salt & Pepper Theme) -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+<body class="intro-active bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- ======================================================================
+       INTRO WELCOME SCREEN (Left-to-Right Animated Words & Curtain Lift)
+       ====================================================================== -->
+  <div id="intro-screen" class="fixed inset-0 flex flex-col items-center justify-center p-6 text-center select-none cursor-pointer">
+    
+    <!-- Top 3 Icon Pills (Appear One by One) -->
+    <div class="flex items-center gap-2.5 mb-8">
+      <div class="intro-icon-pill intro-icon-1">
+        <i class="fa-solid fa-code text-xs"></i>
+      </div>
+      <div class="intro-icon-pill intro-icon-2">
+        <i class="fa-solid fa-user text-xs"></i>
+      </div>
+      <div class="intro-icon-pill intro-icon-3">
+        <i class="fa-solid fa-gear text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Animated Words Expanding Outward from Middle to Sides -->
+    <div class="space-y-1 mb-8 text-center flex flex-col items-center">
+      <div class="overflow-hidden py-1 flex justify-center w-full">
+        <h2 class="intro-expand-line-1 intro-shimmer-text font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+          Welcome to my
+        </h2>
+      </div>
+      <div class="overflow-hidden py-1 flex justify-center w-full">
+        <h1 class="intro-expand-line-2 intro-shimmer-text font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter">
+          Portfolio Website
+        </h1>
+      </div>
+    </div>
+
+    <!-- Minimalist Progress Bar -->
+    <div class="intro-progress-bar"></div>
+
+    <!-- Subtitle / Skip Hint -->
+    <span class="mt-6 text-[10px] uppercase font-mono tracking-widest text-[#737373] hover:text-white transition-colors">
+      Click anywhere to explore
+    </span>
+  </div>
 
   <!-- ======================================================================
        FLOATING PILL NAVIGATION BAR (Expanded Width & Frosted Glassmorphism)
@@ -110,7 +151,7 @@
   <!-- ======================================================================
        1. HOME / HERO SECTION (Inspo: Blueprint Grid + Hanging Lanyard ID)
        ====================================================================== -->
-  <section id="home" class="min-h-screen pt-36 pb-20 tech-grid relative flex items-center overflow-hidden border-b border-[#2B2B2B]">
+  <section id="home" class="min-h-screen pt-36 pb-12 sm:pb-16 tech-grid relative flex items-center overflow-hidden border-b border-[#2B2B2B]">
     
     <!-- Vignette Mask to blend grid softly -->
     <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/80 pointer-events-none"></div>
@@ -119,7 +160,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         
         <!-- Left Hero Content -->
-        <div class="lg:col-span-7 space-y-7">
+        <div class="lg:col-span-7 space-y-5 lg:space-y-6">
           
           <!-- Availability Pill -->
           <div class="anim-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium tracking-wide backdrop-blur-md">
@@ -129,34 +170,45 @@
 
           <!-- Big Title & Subtitle with Word Transitions -->
           <div class="space-y-3">
-            <h1 class="anim-title font-display text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter leading-[1.05]">
+            <h1 class="anim-title font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[1.05]">
               <span class="anim-title-word">Web</span><br>
               <span class="anim-title-word">Developer</span>
             </h1>
-            <p class="anim-subtitle font-display text-xl sm:text-2xl text-[#B3B3B3] font-medium tracking-tight">
-              Junior Programmer • <span class="text-white hover:text-[#D4D4D4] transition-colors">Backend</span> & <span class="text-white hover:text-[#D4D4D4] transition-colors">Full-Stack</span>
+            <div class="anim-subtitle">
+              <p class="font-display text-xl sm:text-2xl text-[#B3B3B3] font-medium tracking-tight flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <span class="anim-sub-item anim-sub-1 subtitle-shimmer font-semibold text-white">Junior Programmer</span>
+                <span class="anim-sub-item anim-sub-2 text-white/40 anim-pulse-dot select-none">•</span>
+                <span class="anim-sub-item anim-sub-3 text-[#D4D4D4] hover:text-white transition-colors cursor-default">Backend</span>
+                <span class="anim-sub-item anim-sub-4 text-white/40 select-none">&amp;</span>
+                <span class="anim-sub-item anim-sub-5 font-semibold text-white tracking-tight cursor-default relative group">
+                  <span class="relative z-10">Full-Stack</span>
+                  <span class="absolute -bottom-0.5 left-0 w-full h-[2px] bg-gradient-to-r from-white to-transparent opacity-70 group-hover:opacity-100 transition-opacity"></span>
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bio Pitch with Editorial Left Line -->
+          <div class="anim-desc editorial-bio">
+            <p class="text-base text-[#B3B3B3] max-w-xl leading-relaxed">
+              Specializing in building robust web applications with <span class="text-white font-semibold hover:underline transition-colors">PHP</span>, <span class="text-white font-semibold hover:underline transition-colors">Laravel</span>, and <span class="text-white font-semibold hover:underline transition-colors">CodeIgniter</span>. Focused on clean architecture, database integrity, and practical software solutions.
             </p>
           </div>
 
-          <!-- Bio Pitch -->
-          <p class="anim-desc text-base text-[#B3B3B3] max-w-xl leading-relaxed">
-            Specializing in building robust web applications with <span class="text-white font-semibold hover:underline transition-colors">PHP</span>, <span class="text-white font-semibold hover:underline transition-colors">Laravel</span>, and <span class="text-white font-semibold hover:underline transition-colors">CodeIgniter</span>. Focused on clean architecture, database integrity, and practical software solutions.
-          </p>
-
-          <!-- Tech Stack Micro-Tags with Hover Transitions -->
+          <!-- Tech Stack Micro-Tags with Staggered Entrance -->
           <div class="anim-chips flex flex-wrap items-center gap-2 pt-1">
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4] hover:border-white hover:text-white transition-all">PHP</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4] hover:border-white hover:text-white transition-all">Laravel</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4] hover:border-white hover:text-white transition-all">CodeIgniter</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4] hover:border-white hover:text-white transition-all">MySQL</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4] hover:border-white hover:text-white transition-all">Tailwind CSS</span>
+            <span class="tech-chip anim-chip anim-chip-1 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">PHP</span>
+            <span class="tech-chip anim-chip anim-chip-2 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Laravel</span>
+            <span class="tech-chip anim-chip anim-chip-3 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">CodeIgniter</span>
+            <span class="tech-chip anim-chip anim-chip-4 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">MySQL</span>
+            <span class="tech-chip anim-chip anim-chip-5 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Tailwind CSS</span>
           </div>
 
           <!-- Action Buttons & Socials -->
-          <div class="anim-actions flex flex-wrap items-center gap-4 pt-3">
-            <a href="#projects" class="px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-[#D4D4D4] transition-all flex items-center gap-2 shadow-lg shadow-white/10 hover:shadow-white/20">
-              <span>Explore Projects</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          <div class="anim-actions flex flex-wrap items-center gap-4 pt-1">
+            <a href="#projects" class="hero-primary-btn px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-[#D4D4D4] transition-all flex items-center gap-2 shadow-lg shadow-white/10 hover:shadow-white/20 relative overflow-hidden group">
+              <span class="relative z-10">Explore Projects</span>
+              <i class="fa-solid fa-arrow-right text-[10px] relative z-10 group-hover:translate-x-0.5 transition-transform"></i>
             </a>
             <a href="#contact" class="px-6 py-3 rounded-lg bg-[#161616] border border-[#2B2B2B] text-[#D4D4D4] hover:text-white hover:border-white font-bold text-xs uppercase tracking-wider transition-all">
               Contact Me
@@ -182,7 +234,7 @@
           <div id="lanyard-assembly" class="lanyard-hanging-assembly flex flex-col items-center">
             
             <!-- Hanging Lanyard Strap (Extends to Top Edge) -->
-            <div class="lanyard-strap flex items-center justify-center relative -mt-36 sm:-mt-44 mb-0">
+            <div class="lanyard-strap flex items-center justify-center relative -mt-32 sm:-mt-36 mb-0">
               <span class="text-[9px] uppercase font-bold tracking-widest text-[#B3B3B3] rotate-90 select-none opacity-50">
                 DANIEL • INTERN 2026
               </span>
