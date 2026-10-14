@@ -8,6 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
 
   // ------------------------------------------------------------------------
+  // Helper: Trigger re-entrance animation on any section
+  // ------------------------------------------------------------------------
+  function triggerSectionAnimation(section) {
+    if (!section) return;
+    section.classList.remove('is-visible');
+    void section.offsetHeight; // force reflow
+    section.classList.add('is-visible');
+
+    if (section.id === 'home') {
+      const lanyard = document.getElementById('lanyard-assembly');
+      const idBadge = document.getElementById('hero-id-badge');
+      if (lanyard && idBadge) {
+        lanyard.classList.remove('do-swing');
+        idBadge.classList.remove('do-swing');
+        void lanyard.offsetHeight;
+        lanyard.classList.add('do-swing');
+        idBadge.classList.add('do-swing');
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
   // 0. Intro Welcome Screen & Smooth Curtain Lift (First Visit Only)
   // ------------------------------------------------------------------------
   const introScreen = document.getElementById('intro-screen');
@@ -18,7 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('intro-active');
     document.body.classList.add('intro-revealed');
 
-    // Smoothly trigger lanyard swing from top on reload as header glides in
+    // Smoothly trigger hero animation on reload
+    const homeSection = document.getElementById('home');
+    if (homeSection) triggerSectionAnimation(homeSection);
+
     setTimeout(() => {
       const lanyard = document.getElementById('lanyard-assembly');
       const idBadge = document.getElementById('hero-id-badge');
@@ -39,13 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('intro-revealed');
       introScreen.classList.add('curtain-up');
 
-      // Trigger the lanyard drop PRECISELY as the curtain clears the ceiling of the home page!
+      // Trigger the home entrance animation PRECISELY as the curtain lifts!
+      const homeSection = document.getElementById('home');
+      if (homeSection) {
+        triggerSectionAnimation(homeSection);
+      }
+
+      // Trigger the lanyard drop as the curtain clears the ceiling of the home page!
       setTimeout(() => {
         const lanyard = document.getElementById('lanyard-assembly');
         const idBadge = document.getElementById('hero-id-badge');
         if (lanyard) lanyard.classList.add('do-swing');
         if (idBadge) idBadge.classList.add('do-swing');
-      }, 450);
+      }, 240);
 
       setTimeout(() => {
         introScreen.style.display = 'none';
@@ -105,18 +136,64 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 2. Active Section Highlighting on Floating Pill Nav
+  // 2. Active Section Highlighting & Smooth Navigation Transitions
   // ------------------------------------------------------------------------
   const sections = document.querySelectorAll('section[id]');
   const desktopPillLinks = document.querySelectorAll('.desktop-pill-nav a');
+  const allNavAnchors = document.querySelectorAll('a[href^="#"]');
 
-  const observerOptions = {
+  // Exact anchor scroll positioning to perfectly frame sections under the floating pill
+  allNavAnchors.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#' || !href.startsWith('#')) return;
+
+      const targetSection = document.querySelector(href);
+      if (targetSection) {
+        e.preventDefault();
+
+        // Close mobile dropdown if open
+        if (mobileMenu) mobileMenu.classList.add('hidden');
+
+        // Exact clearance beneath floating header pill (20px top + ~48px pill height + padding)
+        const headerOffset = window.innerWidth < 640 ? 76 : 82;
+        const targetPosition = href === '#home' 
+          ? 0 
+          : window.pageYOffset + targetSection.getBoundingClientRect().top - headerOffset;
+
+        // Re-trigger entrance animation immediately on click
+        triggerSectionAnimation(targetSection);
+
+        window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+        });
+
+        // Update URL hash cleanly without page jump
+        if (history.pushState) {
+          history.pushState(null, null, href);
+        }
+
+        // Active state sync on pill nav
+        desktopPillLinks.forEach((pill) => {
+          if (pill.getAttribute('href') === href) {
+            pill.classList.add('active');
+          } else {
+            pill.classList.remove('active');
+          }
+        });
+      }
+    });
+  });
+
+  // Active section indicator in floating pill
+  const pillObserverOptions = {
     root: null,
-    rootMargin: '-25% 0px -65% 0px',
+    rootMargin: '-20% 0px -60% 0px',
     threshold: 0,
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  const pillObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
@@ -129,9 +206,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
-  }, observerOptions);
+  }, pillObserverOptions);
 
-  sections.forEach((section) => observer.observe(section));
+  sections.forEach((section) => pillObserver.observe(section));
+
+  // ------------------------------------------------------------------------
+  // 2.5 Bi-directional Section Scroll Reveal Observer (Scroll Down & Scroll Up)
+  // ------------------------------------------------------------------------
+  const sectionRevealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const section = entry.target;
+      if (entry.isIntersecting) {
+        // If intro welcome screen is still active, DO NOT trigger home animations yet!
+        if (section.id === 'home' && document.body.classList.contains('intro-active')) {
+          return;
+        }
+
+        // Entering viewport from top or bottom -> trigger entrance animations
+        section.classList.add('is-visible');
+        if (section.id === 'home') {
+          const lanyard = document.getElementById('lanyard-assembly');
+          const idBadge = document.getElementById('hero-id-badge');
+          if (lanyard) lanyard.classList.add('do-swing');
+          if (idBadge) idBadge.classList.add('do-swing');
+        }
+      } else {
+        // If intro welcome screen is still active, don't interfere with home
+        if (section.id === 'home' && document.body.classList.contains('intro-active')) {
+          return;
+        }
+
+        // Exited viewport (scrolled past or scrolled above) -> reset so it re-animates next time!
+        section.classList.remove('is-visible');
+        if (section.id === 'home') {
+          const lanyard = document.getElementById('lanyard-assembly');
+          const idBadge = document.getElementById('hero-id-badge');
+          if (lanyard) lanyard.classList.remove('do-swing');
+          if (idBadge) idBadge.classList.remove('do-swing');
+        }
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.08,
+    rootMargin: '0px 0px -30px 0px',
+  });
+
+  sections.forEach((section) => sectionRevealObserver.observe(section));
+
+  // Page reload / direct load trigger for initial visible section (only if intro not active)
+  const initialHash = window.location.hash;
+  if (initialHash && document.querySelector(initialHash)) {
+    triggerSectionAnimation(document.querySelector(initialHash));
+  } else if (!document.body.classList.contains('intro-active')) {
+    const homeSection = document.getElementById('home');
+    if (homeSection) triggerSectionAnimation(homeSection);
+  }
 
   // ------------------------------------------------------------------------
   // 3. Tactile 3D Tilt & Sway on Hanging Lanyard Assembly

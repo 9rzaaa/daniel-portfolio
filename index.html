@@ -231,10 +231,10 @@
               <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="GitHub">
                 <i class="fa-brands fa-github"></i>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/daniel-ling-529136443" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="LinkedIn">
                 <i class="fa-brands fa-linkedin"></i>
               </a>
-              <a href="mailto:your.email@example.com" class="hover:text-white transition-colors text-lg" aria-label="Email">
+              <a href="mailto:lingdaniel999@gmail.com" class="hover:text-white transition-colors text-lg" aria-label="Email">
                 <i class="fa-solid fa-envelope"></i>
               </a>
             </div>
@@ -248,7 +248,7 @@
           <div id="lanyard-assembly" class="lanyard-hanging-assembly flex flex-col items-center">
             
             <!-- Hanging Lanyard Strap (Extends to Top Edge) -->
-            <div class="lanyard-strap flex items-center justify-center relative -mt-32 sm:-mt-36 mb-0">
+            <div class="lanyard-strap flex items-center justify-center relative -mt-36 sm:-mt-44 mb-0">
               <span class="text-[9px] uppercase font-bold tracking-widest text-[#B3B3B3] rotate-90 select-none opacity-50">
                 DANIEL • INTERN 2026
               </span>
@@ -330,97 +330,198 @@
   </section>
 
   <!-- ======================================================================
-       2. ABOUT SECTION
+       2. ABOUT SECTION (Circle Photo on Left, CV Details on Right)
        ====================================================================== -->
-  <section id="about" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="about" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="max-w-2xl">
+      <div class="max-w-2xl mb-8 sm:mb-10 about-reveal-item about-delay-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">01 / Profile</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          About & Technical Foundations
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          About &amp; Background
         </h2>
       </div>
 
-      <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <!-- Main Layout: Circle Photo Holder on Left, Rich CV Content on Right -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
         
-        <!-- Story Bio -->
-        <div class="lg:col-span-7 space-y-5 text-[#B3B3B3] text-base leading-relaxed">
-          <p>
-            I am a web developer preparing for my official internship this year. My technical focus is centered around backend development with <span class="text-white font-semibold">PHP, Laravel, and CodeIgniter</span>, paired with clean and responsive frontend design using <span class="text-white font-semibold">HTML5, CSS3, and Tailwind CSS</span>.
-          </p>
-          <p>
-            I value code clarity, relational database normalization with MySQL, and building user experiences that feel intuitive and responsive. During my internship, I am eager to contribute to production codebases, learn team collaboration workflows like Git feature branching, and build reliable software.
-          </p>
+        <!-- Left Side: Circular Photo Holder & Quick Badges -->
+        <div class="lg:col-span-4 flex flex-col items-center text-center">
+          
+          <!-- Outer Halo Ring -->
+          <div class="about-reveal-circle about-delay-2 relative p-2 rounded-full bg-gradient-to-b from-white/20 via-white/5 to-transparent border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
+            
+            <!-- Circular Photo Container -->
+            <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden bg-[#161616] border-2 border-white/20 relative shadow-inner">
+              <!-- Profile Image (Place image in assets/images/about/profile.jpg or assets/images/hero/profile.jpg) -->
+              <img 
+                id="about-photo"
+                src="assets/images/about/profile.jpg" 
+                alt="Daniel P. Ling" 
+                class="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
+                onerror="if (!this.dataset.triedHero) { this.dataset.triedHero = '1'; this.src = 'assets/images/hero/profile.jpg'; } else if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/about/profile.png'; } else { this.style.display='none'; document.getElementById('about-photo-fallback').style.display='flex'; }"
+              >
 
-          <div class="pt-4 grid grid-cols-2 gap-4">
-            <div class="p-5 rounded-xl pepper-card">
-              <span class="font-display block text-3xl font-extrabold text-white">2026</span>
-              <span class="text-xs text-[#B3B3B3] mt-1 block">Internship Candidate</span>
+              <!-- Fallback Placeholder (shows until photo is dropped) -->
+              <div id="about-photo-fallback" class="w-full h-full bg-gradient-to-b from-[#2B2B2B] to-[#0A0A0A] flex flex-col items-center justify-center p-4" style="display: none;">
+                <div class="w-20 h-20 rounded-full border border-dashed border-white/30 flex items-center justify-center mb-2 bg-white/5">
+                  <i class="fa-solid fa-user text-3xl text-[#B3B3B3]"></i>
+                </div>
+                <span class="text-xs font-bold text-white tracking-wide">Daniel P. Ling</span>
+                <span class="text-[9px] font-mono text-[#737373] mt-0.5">assets/images/about/profile.jpg</span>
+              </div>
+
+              <!-- Subtle Glass Reflection Sheen -->
+              <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
             </div>
-            <div class="p-5 rounded-xl pepper-card">
-              <span class="font-display block text-3xl font-extrabold text-white">PHP</span>
-              <span class="text-xs text-[#B3B3B3] mt-1 block">Laravel & CodeIgniter</span>
+
+            <!-- Active Status Floating Badge -->
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-[#121212]/95 border border-white/20 backdrop-blur-md shadow-lg flex items-center gap-2 whitespace-nowrap">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
+              <span class="text-[10px] font-mono font-bold tracking-wider text-white uppercase">4th Year • FEU Tech</span>
             </div>
           </div>
+
+          <!-- Academic & Org Micro-Pills -->
+          <div class="about-reveal-item about-delay-3 mt-8 space-y-2.5 w-full max-w-xs">
+            <div class="p-3 rounded-xl pepper-card text-left flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white text-xs shrink-0">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-mono text-[#B3B3B3] uppercase block">Honors</span>
+                <span class="text-xs font-bold text-white">Top Performing Student</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl pepper-card text-left flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white text-xs shrink-0">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-mono text-[#B3B3B3] uppercase block">Organization</span>
+                <span class="text-xs font-bold text-white">Junior Philippine Computer Society</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Tech Stack Categorized -->
-        <div class="lg:col-span-5 space-y-6">
-          <div class="p-6 rounded-2xl pepper-card space-y-6">
-            <h3 class="font-display text-lg font-bold text-white tracking-tight">Technologies & Tools</h3>
-
-            <!-- Backend -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Backend & Databases</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-php text-sm"></i> PHP</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-laravel text-sm"></i> Laravel</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-fire text-sm"></i> CodeIgniter</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-database text-sm"></i> MySQL</span>
-              </div>
-            </div>
-
-            <!-- Frontend -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Frontend Architecture</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-html5 text-sm"></i> HTML5</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-css3-alt text-sm"></i> CSS3</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-wind text-sm"></i> Tailwind CSS</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-js text-sm"></i> JavaScript</span>
-              </div>
-            </div>
-
-            <!-- Workflow -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Dev Workflow</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-git-alt text-sm"></i> Git & GitHub</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-terminal text-sm"></i> VS Code</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-paper-plane text-sm"></i> Postman</span>
-              </div>
-            </div>
-
+        <!-- Right Side: Comprehensive CV Story, Experience & Skills Matrix -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Narrative Story & Bio -->
+          <div class="about-reveal-item about-delay-2 space-y-4 text-[#B3B3B3] text-base leading-relaxed">
+            <h3 class="font-display text-2xl font-bold text-white tracking-tight">
+              Building Full-Stack Solutions with Academic &amp; Practical Rigor
+            </h3>
+            <p>
+              I am a detail-oriented <span class="text-white font-semibold">4th-year Information Technology student</span> at <span class="text-white font-semibold">FEU Institute of Technology</span> specializing in <span class="text-white font-semibold">Web and Mobile Application Development</span>. Recognized as a <span class="text-white font-semibold">Top Performing Student (2023–2024)</span>, I combine disciplined software engineering with hands-on full-stack development.
+            </p>
+            <p>
+              My experience centers on architecting scalable <span class="text-white font-semibold">Laravel PHP REST APIs</span>, developing cross-platform mobile apps with <span class="text-white font-semibold">React Native &amp; Expo</span>, and building rule-based NLP systems. Currently, I serve as the <span class="text-white font-semibold">Backend &amp; Lead Mobile Developer</span> for <span class="text-white font-semibold">DormEase</span>—a comprehensive dormitory management system with NLP-based reporting deployed on AWS.
+            </p>
           </div>
+
+          <!-- Academic & Capstone Highlight Stats Cards -->
+          <div class="about-reveal-item about-delay-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Degree Program</span>
+              <span class="font-display text-xl font-bold text-white block">BSIT</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Web &amp; Mobile Spec.</span>
+            </div>
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Capstone Role</span>
+              <span class="font-display text-xl font-bold text-white block">Lead Dev</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Backend &amp; Mobile (AWS)</span>
+            </div>
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Certifications</span>
+              <span class="font-display text-xl font-bold text-white block">3 Credentials</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Cisco, Python, PMI</span>
+            </div>
+          </div>
+
+          <!-- Technical Capabilities & Tooling Matrix -->
+          <div class="about-reveal-item about-delay-4 p-6 rounded-2xl pepper-card space-y-5">
+            <div class="flex items-center justify-between border-b border-[#2B2B2B] pb-3">
+              <h4 class="font-display text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-[#B3B3B3] text-sm"></i>
+                <span>Technical Stack &amp; Core Competencies</span>
+              </h4>
+              <span class="text-[10px] font-mono text-[#737373] uppercase">Curated from CV</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
+              
+              <!-- Backend & Cloud -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Backend, API &amp; Cloud</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">PHP</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Laravel REST APIs</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">MySQL</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Python</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">AWS Deployment</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Rule-based NLP</span>
+                </div>
+              </div>
+
+              <!-- Mobile & Frontend -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Mobile &amp; Frontend</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">React Native</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Expo</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Tailwind CSS</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">HTML5 &amp; CSS3</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">JavaScript</span>
+                </div>
+              </div>
+
+              <!-- Networking & Management -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Networking &amp; Project Management</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Cisco Networking (CCST)</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">PMI Project Management</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Computer Troubleshooting</span>
+                </div>
+              </div>
+
+              <!-- Professional & Soft Skills -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Workflow &amp; Soft Skills</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Git &amp; GitHub</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Problem-Solving</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Teamwork &amp; Communication</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">English &amp; Filipino Proficiency</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
+
     </div>
   </section>
 
   <!-- ======================================================================
        3. PROJECTS SECTION
        ====================================================================== -->
-  <section id="projects" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="projects" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10 reveal-item reveal-delay-1">
         <div>
           <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">02 / Portfolio</span>
-          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
             Featured Projects
           </h2>
         </div>
@@ -430,10 +531,10 @@
       </div>
 
       <!-- Project Cards Grid -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Project 1: Laravel System -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-2">
           <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
             <i class="fa-brands fa-laravel text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
             <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
@@ -468,7 +569,7 @@
         </div>
 
         <!-- Project 2: CodeIgniter Portal -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-3">
           <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
             <i class="fa-solid fa-fire text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
             <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
@@ -503,7 +604,7 @@
         </div>
 
         <!-- Project 3: Responsive Frontend / Case Study -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-4">
           <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
             <i class="fa-solid fa-layer-group text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
             <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
@@ -544,28 +645,28 @@
   <!-- ======================================================================
        4. CERTIFICATIONS SECTION
        ====================================================================== -->
-  <section id="certifications" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="certifications" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="max-w-2xl">
+      <div class="max-w-2xl mb-8 sm:mb-10 reveal-item reveal-delay-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">03 / Credentials</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Certifications & Learning
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Certifications &amp; Learning
         </h2>
       </div>
 
       <!-- Certifications Grid -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Cert 1 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-2">
           <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-certificate"></i>
           </div>
           <div>
             <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Institution / Course</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">PHP & Full-Stack Development</h3>
+            <h3 class="font-display text-base font-bold text-white mt-1">PHP &amp; Full-Stack Development</h3>
             <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Verified Credential</p>
             <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
               <span>View Credential</span>
@@ -575,13 +676,13 @@
         </div>
 
         <!-- Cert 2 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-3">
           <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-award"></i>
           </div>
           <div>
             <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Online Learning Platform</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Relational Database & MySQL</h3>
+            <h3 class="font-display text-base font-bold text-white mt-1">Relational Database &amp; MySQL</h3>
             <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Certificate of Completion</p>
             <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
               <span>View Credential</span>
@@ -591,13 +692,13 @@
         </div>
 
         <!-- Cert 3 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
+        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-4">
           <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
             <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Academic Workshop</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Web Standards & UI Fundamentals</h3>
+            <h3 class="font-display text-base font-bold text-white mt-1">Web Standards &amp; UI Fundamentals</h3>
             <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2026 • Certificate of Achievement</p>
             <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
               <span>View Credential</span>
@@ -613,13 +714,13 @@
   <!-- ======================================================================
        5. CONTACT SECTION
        ====================================================================== -->
-  <section id="contact" class="py-28 tech-grid relative">
+  <section id="contact" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
         <!-- Contact Information -->
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-5 space-y-6 reveal-item reveal-delay-1">
           <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">04 / Connect</span>
           <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
             Let's Talk Internship.
@@ -628,14 +729,14 @@
             I am currently interviewing for 2026 internship roles. If you have an opening or would like to discuss my technical projects, drop me a message.
           </p>
 
-          <div class="space-y-4 pt-4">
+          <div class="space-y-4 pt-4 reveal-item reveal-delay-2">
             <div class="flex items-center gap-4 text-[#D4D4D4]">
               <div class="w-10 h-10 rounded-lg bg-[#161616] border border-[#2B2B2B] flex items-center justify-center text-white shrink-0">
                 <i class="fa-solid fa-envelope"></i>
               </div>
               <div>
                 <span class="text-[10px] text-[#B3B3B3] uppercase font-bold block">Email</span>
-                <a href="mailto:your.email@example.com" class="text-sm font-semibold hover:text-white transition-colors">your.email@example.com</a>
+                <a href="mailto:lingdaniel999@gmail.com" class="text-sm font-semibold hover:text-white transition-colors">lingdaniel999@gmail.com</a>
               </div>
             </div>
 
@@ -652,7 +753,7 @@
         </div>
 
         <!-- Contact Form (Web3Forms Integration) -->
-        <div class="lg:col-span-7">
+        <div class="lg:col-span-7 reveal-item reveal-delay-3">
           <form id="contact-form" class="p-8 rounded-2xl pepper-card space-y-5">
             <!-- Replace with free key from https://web3forms.com -->
             <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">

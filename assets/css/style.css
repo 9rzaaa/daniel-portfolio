@@ -13,7 +13,7 @@
 /* Smooth Scrolling & Section Offset */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 8rem;
+  scroll-padding-top: 5.5rem;
   background-color: #0a0a0a;
 }
 
@@ -85,14 +85,14 @@ body.intro-active #home {
 }
 
 body.intro-revealed #home {
-  animation: homePageReveal 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  animation: homePageReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
 @keyframes homePageReveal {
   0% {
-    transform: translateY(75px);
+    transform: translateY(85px);
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(12px);
   }
   100% {
     transform: translateY(0);
@@ -373,8 +373,8 @@ body.intro-revealed header {
 @keyframes slideUpFade {
   0% {
     opacity: 0;
-    transform: translateY(24px);
-    filter: blur(8px);
+    transform: translateY(38px);
+    filter: blur(10px);
   }
   100% {
     opacity: 1;
@@ -383,12 +383,15 @@ body.intro-revealed header {
   }
 }
 
-.anim-badge {
-  animation: slideUpFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-
-.anim-title {
-  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+/* Lock hero elements while welcome intro screen is active */
+body.intro-active #home .anim-badge,
+body.intro-active #home .anim-title,
+body.intro-active #home .anim-sub-item,
+body.intro-active #home .anim-desc,
+body.intro-active #home .anim-chip,
+body.intro-active #home .anim-actions {
+  opacity: 0 !important;
+  animation: none !important;
 }
 
 .anim-title-word {
@@ -407,11 +410,11 @@ body.intro-revealed header {
 @keyframes subItemRise {
   0% {
     opacity: 0;
-    transform: translateY(18px) scale(0.95);
-    filter: blur(6px);
+    transform: translateY(22px) scale(0.92);
+    filter: blur(8px);
   }
-  70% {
-    transform: translateY(-2px) scale(1.01);
+  65% {
+    transform: translateY(-3px) scale(1.02);
     filter: blur(0);
   }
   100% {
@@ -482,11 +485,11 @@ body.intro-revealed header {
 @keyframes chipPopIn {
   0% {
     opacity: 0;
-    transform: translateY(18px) scale(0.85);
-    filter: blur(6px);
+    transform: translateY(20px) scale(0.8);
+    filter: blur(8px);
   }
-  65% {
-    transform: translateY(-3px) scale(1.05);
+  68% {
+    transform: translateY(-3px) scale(1.06);
     filter: blur(0);
   }
   100% {
@@ -526,33 +529,47 @@ body.intro-revealed header {
   left: 150%;
 }
 
-/* Staggered Orchestration Triggered When Intro is Revealed */
-body.intro-revealed .anim-badge {
-  animation: slideUpFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+/* Staggered Orchestration Triggered When Intro is Revealed or on Home Re-entry */
+body.intro-revealed:not(.intro-active) .anim-badge,
+body:not(.intro-active) #home.is-visible .anim-badge {
+  animation: slideUpFade 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
 }
 
-body.intro-revealed .anim-title {
-  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+body.intro-revealed:not(.intro-active) .anim-title,
+body:not(.intro-active) #home.is-visible .anim-title {
+  animation: slideUpFade 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
 }
 
-body.intro-revealed .anim-sub-1 { animation: subItemRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both; }
-body.intro-revealed .anim-sub-2 { animation: subItemRise 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.72s both; }
-body.intro-revealed .anim-sub-3 { animation: subItemRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
-body.intro-revealed .anim-sub-4 { animation: subItemRise 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.88s both; }
-body.intro-revealed .anim-sub-5 { animation: subItemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.94s both; }
+body.intro-revealed:not(.intro-active) .anim-sub-1,
+body:not(.intro-active) #home.is-visible .anim-sub-1 { animation: subItemRise 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.58s both; }
+body.intro-revealed:not(.intro-active) .anim-sub-2,
+body:not(.intro-active) #home.is-visible .anim-sub-2 { animation: subItemRise 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.72s both; }
+body.intro-revealed:not(.intro-active) .anim-sub-3,
+body:not(.intro-active) #home.is-visible .anim-sub-3 { animation: subItemRise 1.10s cubic-bezier(0.16, 1, 0.3, 1) 0.84s both; }
+body.intro-revealed:not(.intro-active) .anim-sub-4,
+body:not(.intro-active) #home.is-visible .anim-sub-4 { animation: subItemRise 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.96s both; }
+body.intro-revealed:not(.intro-active) .anim-sub-5,
+body:not(.intro-active) #home.is-visible .anim-sub-5 { animation: subItemRise 1.25s cubic-bezier(0.16, 1, 0.3, 1) 1.08s both; }
 
-body.intro-revealed .anim-desc {
-  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both;
+body.intro-revealed:not(.intro-active) .anim-desc,
+body:not(.intro-active) #home.is-visible .anim-desc {
+  animation: slideUpFade 1.25s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both;
 }
 
-body.intro-revealed .anim-chip-1 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.98s both; }
-body.intro-revealed .anim-chip-2 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.05s both; }
-body.intro-revealed .anim-chip-3 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.12s both; }
-body.intro-revealed .anim-chip-4 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.19s both; }
-body.intro-revealed .anim-chip-5 { animation: chipPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.26s both; }
+body.intro-revealed:not(.intro-active) .anim-chip-1,
+body:not(.intro-active) #home.is-visible .anim-chip-1 { animation: chipPopIn 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 1.20s both; }
+body.intro-revealed:not(.intro-active) .anim-chip-2,
+body:not(.intro-active) #home.is-visible .anim-chip-2 { animation: chipPopIn 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 1.30s both; }
+body.intro-revealed:not(.intro-active) .anim-chip-3,
+body:not(.intro-active) #home.is-visible .anim-chip-3 { animation: chipPopIn 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 1.40s both; }
+body.intro-revealed:not(.intro-active) .anim-chip-4,
+body:not(.intro-active) #home.is-visible .anim-chip-4 { animation: chipPopIn 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 1.50s both; }
+body.intro-revealed:not(.intro-active) .anim-chip-5,
+body:not(.intro-active) #home.is-visible .anim-chip-5 { animation: chipPopIn 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 1.60s both; }
 
-body.intro-revealed .anim-actions {
-  animation: slideUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+body.intro-revealed:not(.intro-active) .anim-actions,
+body:not(.intro-active) #home.is-visible .anim-actions {
+  animation: slideUpFade 1.25s cubic-bezier(0.16, 1, 0.3, 1) 1.45s both;
 }
 
 /* Fallback visibility if intro is skipped / not active */
@@ -580,24 +597,34 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
   }
 }
 
-/* Lanyard Swung In from the Very Top */
-@keyframes lanyardSwungFromTop {
+/* Lanyard Dropped from Top then Swinging */
+@keyframes lanyardDropAndSwing {
   0% {
-    transform: translateY(-480px) rotate(-25deg);
-    opacity: 0;
-  }
-  38% {
-    transform: translateY(24px) rotate(18deg);
+    transform: translateY(-850px) rotate(-16deg);
     opacity: 1;
   }
-  56% {
-    transform: translateY(-12px) rotate(-10deg);
+  18% {
+    transform: translateY(-300px) rotate(-12deg);
+    opacity: 1;
   }
-  72% {
-    transform: translateY(6px) rotate(5deg);
+  35% {
+    transform: translateY(38px) rotate(20deg);
+    opacity: 1;
+  }
+  48% {
+    transform: translateY(-16px) rotate(-14deg);
+  }
+  62% {
+    transform: translateY(9px) rotate(9deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(-5deg);
   }
   86% {
-    transform: translateY(-2px) rotate(-2deg);
+    transform: translateY(2px) rotate(2.5deg);
+  }
+  94% {
+    transform: translateY(0) rotate(-1deg);
   }
   100% {
     transform: translateY(0) rotate(0deg);
@@ -606,21 +633,24 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 }
 
 /* Secondary Physics on the ID Badge Card */
-@keyframes badgeSecondarySwing {
+@keyframes badgeDropAndSwing {
   0% {
-    transform: rotate(-18deg) scale(0.94);
+    transform: rotate(-24deg) scale(0.94);
   }
-  40% {
-    transform: rotate(15deg) scale(1.02);
+  35% {
+    transform: rotate(24deg) scale(1.03);
   }
-  60% {
-    transform: rotate(-8deg);
+  48% {
+    transform: rotate(-15deg) scale(0.99);
   }
-  76% {
-    transform: rotate(4deg);
+  62% {
+    transform: rotate(9deg) scale(1.01);
   }
-  90% {
-    transform: rotate(-1deg);
+  75% {
+    transform: rotate(-5deg);
+  }
+  86% {
+    transform: rotate(2deg);
   }
   100% {
     transform: rotate(0deg) scale(1);
@@ -639,7 +669,7 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 .lanyard-hanging-assembly {
   transform-origin: top center;
   opacity: 0;
-  transform: translateY(-500px) rotate(-25deg);
+  transform: translateY(-850px) rotate(-16deg);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
@@ -647,12 +677,12 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 /* Explicitly triggered right as the curtain clears the top of the home page */
 .lanyard-hanging-assembly.do-swing {
   opacity: 1;
-  animation: lanyardSwungFromTop 2.0s cubic-bezier(0.2, 0.85, 0.25, 1) forwards,
-             lanyardGentleSway 5.5s ease-in-out 2.05s infinite;
+  animation: lanyardDropAndSwing 2.6s cubic-bezier(0.22, 0.85, 0.28, 1) forwards,
+             lanyardGentleSway 6.0s ease-in-out 2.65s infinite;
 }
 
 #hero-id-badge.do-swing {
-  animation: badgeSecondarySwing 2.0s cubic-bezier(0.2, 0.85, 0.25, 1) forwards;
+  animation: badgeDropAndSwing 2.6s cubic-bezier(0.22, 0.85, 0.28, 1) forwards;
 }
 
 .lanyard-hanging-assembly.is-interactive {
@@ -663,7 +693,7 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 
 .lanyard-strap {
   width: 24px;
-  height: 95px;
+  height: 180px;
   background: repeating-linear-gradient(
     180deg,
     #121212,
@@ -747,3 +777,66 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
   font-family: 'Space Grotesk', 'Syne', sans-serif;
   letter-spacing: -0.04em;
 }
+
+/* --------------------------------------------------------------------------
+   Universal Section Scroll Margins & Staggered Bi-directional Reveal Animations
+   -------------------------------------------------------------------------- */
+section {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Base states for staggered entrance (hidden until section is in view) */
+.reveal-item,
+.about-reveal-item {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s ease;
+  will-change: opacity, transform, filter;
+}
+
+.reveal-circle,
+.about-reveal-circle {
+  opacity: 0;
+  transform: scale(0.9) translateY(24px);
+  filter: blur(8px);
+  transition: 
+    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.95s ease;
+  will-change: opacity, transform, filter;
+}
+
+/* Triggered State when visible (fires on scroll down, scroll up, reload, or nav click) */
+section.is-visible .reveal-item,
+section.is-visible .about-reveal-item,
+section.is-visible .reveal-circle,
+section.is-visible .about-reveal-circle {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Stagger Delays for rhythmic, cinematic flow */
+.reveal-delay-1, .about-delay-1 { transition-delay: 0.04s; }
+.reveal-delay-2, .about-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3, .about-delay-3 { transition-delay: 0.28s; }
+.reveal-delay-4, .about-delay-4 { transition-delay: 0.42s; }
+.reveal-delay-5, .about-delay-5 { transition-delay: 0.56s; }
+
+/* Interactive polish on cards across all sections */
+.pepper-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+section.is-visible .pepper-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.7);
+}
+
+
+
