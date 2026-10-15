@@ -53,7 +53,8 @@
           isReload = performance.navigation.type === 1;
         }
         var hasVisited = sessionStorage.getItem('visited_session') === 'true';
-        if (isReload || hasVisited) {
+        var hasHash = window.location.hash && window.location.hash !== '#home';
+        if (isReload || hasVisited || hasHash) {
           document.documentElement.classList.add('skip-intro');
         }
       } catch (e) {}
@@ -64,6 +65,12 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="intro-active bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+  <script>
+    if (document.documentElement.classList.contains('skip-intro')) {
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-revealed');
+    }
+  </script>
 
   <!-- ======================================================================
        INTRO WELCOME SCREEN (Left-to-Right Animated Words & Curtain Lift)
@@ -514,7 +521,7 @@
   <!-- ======================================================================
        3. PROJECTS SECTION
        ====================================================================== -->
-  <section id="projects" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
+  <section id="projects" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-[43px]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
@@ -533,36 +540,72 @@
       <!-- Project Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Project 1: Laravel System -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-2">
-          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
-            <i class="fa-brands fa-laravel text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
-              Laravel
+        <!-- Project 1: DormEase (Laravel & React Native Capstone) -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-2 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
+          <!-- Thumbnail / Visual Preview -->
+          <a href="projects/dormease.html" class="block h-52 bg-[#111111] border-b border-[#2B2B2B] relative overflow-hidden group/thumb">
+            <img src="assets/images/projects/dormease/web-db.png" alt="DormEase Web Admin Dashboard" class="w-full h-full object-cover object-top opacity-85 group-hover/thumb:opacity-100 group-hover/thumb:scale-105 transition-all duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/30"></div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A]/90 backdrop-blur-md text-[10px] font-bold text-white border border-[#2B2B2B] flex items-center gap-1">
+                <i class="fa-brands fa-laravel text-[#FF2D20] text-xs"></i> Laravel &amp; React Native
+              </span>
+            </div>
+
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-[10px] font-bold text-emerald-400 border border-emerald-500/30">
+              Capstone 2026
             </span>
-          </div>
+
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-[#D4D4D4] font-medium">
+              <span class="truncate max-w-[200px] text-xs text-white font-semibold">
+                <i class="fa-solid fa-building text-[#B3B3B3] mr-1"></i> Sanctissimo Rosario Bldg.
+              </span>
+              <span class="text-[10px] font-mono text-[#B3B3B3] group-hover/thumb:text-white transition-colors flex items-center gap-1">
+                Case Study <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </span>
+            </div>
+          </a>
+
+          <!-- Content Body -->
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider">Sanctissimo Rosario Ladies Dorm</span>
+                <span class="text-[10px] font-mono text-[#B3B3B3]">Web + Mobile</span>
+              </div>
               <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
-                Laravel Web Application #1
+                <a href="projects/dormease.html" class="hover:underline">
+                  DormEase: Smart Dormitory System
+                </a>
               </h3>
               <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
-                Full-featured management platform engineered with Laravel and MySQL. Features role-based authentication, relational schema design, and clean CRUD flows.
+                Digital community management platform connecting administrators, front desk staff, and residents. Features floor-proportional water billing with PayMongo QR Ph, speech-to-text NLP maintenance triage, and panic reporting.
               </p>
             </div>
+
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Laravel</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Laravel 10</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">React Native</span>
                 <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PayMongo QR Ph</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Rule-based NLP</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">AWS</span>
               </div>
-              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
-                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
+              <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="projects/dormease.html" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                  <span>Case Study &amp; UI</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
-                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-brands fa-github text-xs"></i> GitHub
-                </a>
+                <div class="flex items-center gap-3">
+                  <a href="https://www.srbdormease.com" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live
+                  </a>
+                  <a href="https://github.com/9rzaaa/DormEase" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -797,7 +840,7 @@
        ====================================================================== -->
   <footer class="py-10 border-t border-[#2B2B2B] bg-[#0A0A0A] text-[#B3B3B3] text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© <span id="current-year"></span> Daniel. Engineered with HTML5 & Tailwind CSS.</p>
+      <p>&copy; <span id="current-year">2026</span> Daniel Ling. All Rights Reserved.</p>
       <div class="flex items-center gap-6">
         <a href="#home" class="hover:text-white transition-colors">Back to top ↑</a>
       </div>
