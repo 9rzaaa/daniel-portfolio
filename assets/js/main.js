@@ -1,11 +1,56 @@
-// Guarantee page starts cleanly at top (0, 0) on load or reload
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
+// Check if user is navigating with a direct section hash (e.g. from case study)
+const initialHashOnStart = window.location.hash;
+const hasDirectSectionHash = initialHashOnStart && initialHashOnStart !== '#home' && document.querySelector(initialHashOnStart);
+
+if (!hasDirectSectionHash) {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
 }
-window.scrollTo(0, 0);
 
 document.addEventListener('DOMContentLoaded', () => {
-  window.scrollTo(0, 0);
+  const sections = document.querySelectorAll('section[id]');
+  const desktopPillLinks = document.querySelectorAll('.desktop-pill-nav a');
+  const allNavAnchors = document.querySelectorAll('a[href^="#"]');
+
+  const currentHash = window.location.hash;
+  const targetOnLoad = (currentHash && currentHash !== '#home') ? document.querySelector(currentHash) : null;
+
+  if (targetOnLoad) {
+    // If arriving with a section hash (e.g. #projects from DormEase page), skip intro and scroll to exact gap
+    document.body.classList.remove('intro-active');
+    document.body.classList.add('intro-revealed');
+    const introEl = document.getElementById('intro-screen');
+    if (introEl) introEl.style.display = 'none';
+
+    const alignToSection = () => {
+      const innerHeader = targetOnLoad.querySelector('.max-w-7xl') || targetOnLoad;
+      const targetGap = window.innerWidth < 640 ? 78 : 83;
+      const targetY = window.pageYOffset + innerHeader.getBoundingClientRect().top - targetGap;
+
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'instant'
+      });
+      triggerSectionAnimation(targetOnLoad);
+    };
+
+    alignToSection();
+    setTimeout(alignToSection, 50);
+    setTimeout(alignToSection, 180);
+
+    // Sync pill active state
+    desktopPillLinks.forEach((pill) => {
+      if (pill.getAttribute('href') === currentHash) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+  } else {
+    window.scrollTo(0, 0);
+  }
 
   // ------------------------------------------------------------------------
   // Helper: Trigger re-entrance animation on any section
@@ -15,6 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
     section.classList.remove('is-visible');
     void section.offsetHeight; // force reflow
     section.classList.add('is-visible');
+
+    // Force re-trigger of all individual reveal items within this section
+    const revealItems = section.querySelectorAll('.reveal-item, .about-reveal-item, .reveal-circle, .about-reveal-circle');
+    revealItems.forEach((el) => {
+      el.classList.remove('is-revealed');
+    });
+    void section.offsetHeight; // force reflow for children
+    revealItems.forEach((el) => {
+      el.classList.add('is-revealed');
+    });
 
     if (section.id === 'home') {
       const lanyard = document.getElementById('lanyard-assembly');
@@ -40,16 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('intro-active');
     document.body.classList.add('intro-revealed');
 
-    // Smoothly trigger hero animation on reload
-    const homeSection = document.getElementById('home');
-    if (homeSection) triggerSectionAnimation(homeSection);
+    // Smoothly trigger hero animation on reload (only if not arriving with a specific section hash)
+    if (!targetOnLoad) {
+      const homeSection = document.getElementById('home');
+      if (homeSection) triggerSectionAnimation(homeSection);
 
-    setTimeout(() => {
-      const lanyard = document.getElementById('lanyard-assembly');
-      const idBadge = document.getElementById('hero-id-badge');
-      if (lanyard) lanyard.classList.add('do-swing');
-      if (idBadge) idBadge.classList.add('do-swing');
-    }, 180);
+      setTimeout(() => {
+        const lanyard = document.getElementById('lanyard-assembly');
+        const idBadge = document.getElementById('hero-id-badge');
+        if (lanyard) lanyard.classList.add('do-swing');
+        if (idBadge) idBadge.classList.add('do-swing');
+      }, 180);
+    }
 
     sessionStorage.setItem('visited_session', 'true');
   } else if (introScreen) {
@@ -138,10 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 2. Active Section Highlighting & Smooth Navigation Transitions
   // ------------------------------------------------------------------------
-  const sections = document.querySelectorAll('section[id]');
-  const desktopPillLinks = document.querySelectorAll('.desktop-pill-nav a');
-  const allNavAnchors = document.querySelectorAll('a[href^="#"]');
-
   // Exact anchor scroll positioning to perfectly frame sections under the floating pill
   allNavAnchors.forEach((link) => {
     link.addEventListener('click', (e) => {
@@ -155,11 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close mobile dropdown if open
         if (mobileMenu) mobileMenu.classList.add('hidden');
 
-        // Exact clearance beneath floating header pill (20px top + ~48px pill height + padding)
-        const headerOffset = window.innerWidth < 640 ? 76 : 82;
-        const targetPosition = href === '#home' 
-          ? 0 
-          : window.pageYOffset + targetSection.getBoundingClientRect().top - headerOffset;
+        // Exact clearance beneath floating header pill matching screenshot gap
+        let targetPosition = 0;
+        if (href !== '#home') {
+          const innerHeader = targetSection.querySelector('.max-w-7xl') || targetSection;
+          const targetGap = window.innerWidth < 640 ? 78 : 83;
+          targetPosition = window.pageYOffset + innerHeader.getBoundingClientRect().top - targetGap;
+        }
 
         // Re-trigger entrance animation immediately on click
         triggerSectionAnimation(targetSection);
@@ -189,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Active section indicator in floating pill
   const pillObserverOptions = {
     root: null,
-    rootMargin: '-20% 0px -60% 0px',
+    rootMargin: '-82px 0px -50% 0px',
     threshold: 0,
   };
 
@@ -211,8 +266,39 @@ document.addEventListener('DOMContentLoaded', () => {
   sections.forEach((section) => pillObserver.observe(section));
 
   // ------------------------------------------------------------------------
-  // 2.5 Bi-directional Section Scroll Reveal Observer (Scroll Down & Scroll Up)
+  // 2.5 Bi-Directional Scroll Reveal Observer for Elements & Sections
   // ------------------------------------------------------------------------
+  const revealElements = document.querySelectorAll('.reveal-item, .about-reveal-item, .reveal-circle, .about-reveal-circle');
+
+  const itemRevealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+      } else {
+        // Reset when element completely leaves viewport so it re-animates smoothly on re-entry
+        entry.target.classList.remove('is-revealed');
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px',
+  });
+
+  revealElements.forEach((el) => itemRevealObserver.observe(el));
+
+  // Immediate check for elements already in the initial viewport
+  const triggerInitialReveals = () => {
+    revealElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 30 && rect.bottom > 30) {
+        el.classList.add('is-revealed');
+      }
+    });
+  };
+  triggerInitialReveals();
+  setTimeout(triggerInitialReveals, 120);
+
+  // Section observer for #home lanyard swing and section visibility
   const sectionRevealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const section = entry.target;
@@ -248,8 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, {
     root: null,
-    threshold: 0.08,
-    rootMargin: '0px 0px -30px 0px',
+    threshold: 0.05,
+    rootMargin: '0px 0px -40px 0px',
   });
 
   sections.forEach((section) => sectionRevealObserver.observe(section));
@@ -365,4 +451,54 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ------------------------------------------------------------------------
+  // 6. Navigation Safety: BFCache & Browser History Transitions
+  // ------------------------------------------------------------------------
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted || sessionStorage.getItem('visited_session') === 'true') {
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-revealed');
+      const introEl = document.getElementById('intro-screen');
+      if (introEl) introEl.style.display = 'none';
+
+      const curHash = window.location.hash;
+      if (curHash && curHash !== '#home') {
+        const target = document.querySelector(curHash);
+        if (target) {
+          triggerSectionAnimation(target);
+        }
+      } else {
+        const homeSection = document.getElementById('home');
+        if (homeSection) triggerSectionAnimation(homeSection);
+      }
+    }
+  });
+
+  window.addEventListener('hashchange', () => {
+    const curHash = window.location.hash;
+    if (curHash && curHash !== '#home') {
+      const target = document.querySelector(curHash);
+      if (target) {
+        triggerSectionAnimation(target);
+        desktopPillLinks.forEach((pill) => {
+          if (pill.getAttribute('href') === curHash) {
+            pill.classList.add('active');
+          } else {
+            pill.classList.remove('active');
+          }
+        });
+      }
+    } else {
+      const homeSection = document.getElementById('home');
+      if (homeSection) triggerSectionAnimation(homeSection);
+      desktopPillLinks.forEach((pill) => {
+        if (pill.getAttribute('href') === '#home') {
+          pill.classList.add('active');
+        } else {
+          pill.classList.remove('active');
+        }
+      });
+    }
+  });
 });

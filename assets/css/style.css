@@ -70,6 +70,30 @@ html.skip-intro body.intro-active {
   height: auto !important;
 }
 
+html.skip-intro body.intro-active #home {
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+html.skip-intro body.intro-active #home .anim-badge,
+html.skip-intro body.intro-active #home .anim-title,
+html.skip-intro body.intro-active #home .anim-sub-item,
+html.skip-intro body.intro-active #home .anim-desc,
+html.skip-intro body.intro-active #home .anim-chip,
+html.skip-intro body.intro-active #home .anim-actions {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+html.skip-intro body.intro-active header {
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
 /* Lock scrolling while intro is active to prevent page offset on reload/wheel */
 body.intro-active {
   overflow: hidden !important;
@@ -785,6 +809,10 @@ section {
   scroll-margin-top: 5.5rem;
 }
 
+#projects {
+  scroll-margin-top: 43px;
+}
+
 /* Base states for staggered entrance (hidden until section is in view) */
 .reveal-item,
 .about-reveal-item {
@@ -811,6 +839,10 @@ section {
 }
 
 /* Triggered State when visible (fires on scroll down, scroll up, reload, or nav click) */
+.reveal-item.is-revealed,
+.about-reveal-item.is-revealed,
+.reveal-circle.is-revealed,
+.about-reveal-circle.is-revealed,
 section.is-visible .reveal-item,
 section.is-visible .about-reveal-item,
 section.is-visible .reveal-circle,
@@ -832,10 +864,16 @@ section.is-visible .about-reveal-circle {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-section.is-visible .pepper-card:hover {
+.pepper-card:hover {
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-4px);
   box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.7);
+}
+
+.about-reveal-circle:hover {
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 0 25px 60px rgba(255, 255, 255, 0.12);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
 
 
