@@ -1,12 +1,37 @@
-// Check if user is navigating with a direct section hash (e.g. from case study)
-const initialHashOnStart = window.location.hash;
-const hasDirectSectionHash = initialHashOnStart && initialHashOnStart !== '#home' && document.querySelector(initialHashOnStart);
+// Check if user is reloading the page
+let isPageReload = false;
+try {
+  const perf = window.performance;
+  if (perf) {
+    const navEntries = perf.getEntriesByType && perf.getEntriesByType('navigation');
+    if (navEntries && navEntries.length > 0) {
+      isPageReload = navEntries[0].type === 'reload';
+    } else if (perf.navigation) {
+      isPageReload = perf.navigation.type === 1;
+    }
+  }
+} catch (e) {}
 
-if (!hasDirectSectionHash) {
+// If page reload, always strip any section hash and start at the top of index.html
+if (isPageReload) {
+  if (window.location.hash && history.replaceState) {
+    history.replaceState(null, null, window.location.pathname);
+  }
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
   window.scrollTo(0, 0);
+} else {
+  // Check if user is navigating with a direct section hash (e.g. from case study)
+  const initialHashOnStart = window.location.hash;
+  const hasDirectSectionHash = initialHashOnStart && initialHashOnStart !== '#home' && document.querySelector(initialHashOnStart);
+
+  if (!hasDirectSectionHash) {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const allNavAnchors = document.querySelectorAll('a[href^="#"]');
 
   const currentHash = window.location.hash;
-  const targetOnLoad = (currentHash && currentHash !== '#home') ? document.querySelector(currentHash) : null;
+  // If page reload, do NOT navigate to section hash — reload at the top of index.html!
+  const targetOnLoad = (!isPageReload && currentHash && currentHash !== '#home') ? document.querySelector(currentHash) : null;
 
   if (targetOnLoad) {
     // If arriving with a section hash (e.g. #projects from DormEase page), skip intro and scroll to exact gap
@@ -48,6 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
         pill.classList.remove('active');
       }
     });
+
+    // Clean up URL hash so any subsequent reload reloads cleanly at the top of index.html!
+    setTimeout(() => {
+      if (window.location.hash && history.replaceState) {
+        history.replaceState(null, null, window.location.pathname);
+      }
+    }, 350);
   } else {
     window.scrollTo(0, 0);
   }
@@ -499,6 +532,13 @@ document.addEventListener('DOMContentLoaded', () => {
           pill.classList.remove('active');
         }
       });
+    }
+  });
+
+  // Strip hash before unload so browser reload naturally targets the top of index.html
+  window.addEventListener('beforeunload', () => {
+    if (window.location.hash && history.replaceState) {
+      history.replaceState(null, null, window.location.pathname);
     }
   });
 });
