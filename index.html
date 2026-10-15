@@ -46,16 +46,25 @@
     (function() {
       try {
         var isReload = false;
-        var nav = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation');
-        if (nav && nav.length > 0) {
-          isReload = nav[0].type === 'reload';
-        } else if (window.performance && performance.navigation) {
-          isReload = performance.navigation.type === 1;
+        var perf = window.performance;
+        if (perf) {
+          var nav = perf.getEntriesByType && perf.getEntriesByType('navigation');
+          if (nav && nav.length > 0) {
+            isReload = nav[0].type === 'reload';
+          } else if (perf.navigation) {
+            isReload = perf.navigation.type === 1;
+          }
         }
         var hasVisited = sessionStorage.getItem('visited_session') === 'true';
         var hasHash = window.location.hash && window.location.hash !== '#home';
         if (isReload || hasVisited || hasHash) {
           document.documentElement.classList.add('skip-intro');
+        }
+        // If reloading, immediately remove section hash so browser starts cleanly at the top of index.html
+        if (isReload && window.location.hash) {
+          if (window.history && history.replaceState) {
+            history.replaceState(null, null, window.location.pathname);
+          }
         }
       } catch (e) {}
     })();
