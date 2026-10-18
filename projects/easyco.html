@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EASY&CO Case Study - Luxury Condo Accommodation & Online Booking Platform engineered with CodeIgniter 4, PHP 8.3, MySQL, Tailwind CSS, Docker, and Railway. 2nd-Year Application Development Course Project by Daniel Ling.">
+  <meta name="author" content="Daniel Ling">
+  <title>EASY&amp;CO — Luxury Condo Accommodation &amp; Booking Platform | Daniel Ling</title>
+
+  <!-- Google Fonts: Barlow, Playfair Display, Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            brand: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            pepper: {
+              bg: '#0A0A0A',
+              card: '#161616',
+              charcoal: '#2B2B2B',
+              gray: '#B3B3B3',
+              light: '#D4D4D4',
+              white: '#FFFFFF',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    /* EASY&CO Botanical Garden Palette */
+    :root {
+      --easy-forest: #2F5233;
+      --easy-green: #4B7447;
+      --easy-sage: #73AF6F;
+      --easy-mint: #95D5B2;
+      --easy-tan: #D4A373;
+      --easy-cream: #F4F1DE;
+      --easy-sand: #EAE4CA;
+      --gradient-easy: linear-gradient(135deg, #4B7447 0%, #73AF6F 100%);
+      --gradient-sage-squircle: linear-gradient(135deg, #4B7447 0%, #2F5233 100%);
+    }
+
+    /* Brand Header Typography */
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.03em;
+    }
+    .brand-title .brand-accent {
+      color: var(--easy-sage);
+    }
+
+    /* ------------------------------------------------------------------------
+       1. Skeleton Shimmer & Loading State
+       ------------------------------------------------------------------------ */
+    .skeleton-shimmer {
+      position: relative;
+      overflow: hidden;
+      background: #141416 !important;
+    }
+    .skeleton-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.04) 20%,
+        rgba(115, 175, 111, 0.09) 50%,
+        rgba(255, 255, 255, 0.04) 80%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: skeletonWave 1.8s infinite ease-in-out;
+      z-index: 10;
+      pointer-events: none;
+    }
+    @keyframes skeletonWave {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ------------------------------------------------------------------------
+       2. Scroll-Triggered Reveal Transitions (Bi-directional)
+       ------------------------------------------------------------------------ */
+    .case-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(8px);
+      transition: 
+        opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.85s ease;
+      will-change: opacity, transform, filter;
+    }
+    .case-reveal.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .case-pop {
+      opacity: 0;
+      transform: scale(0.92) translateY(24px);
+      filter: blur(8px);
+      transition: 
+        opacity 0.85s cubic-bezier(0.34, 1.56, 0.64, 1),
+        transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1),
+        filter 0.85s ease;
+      will-change: opacity, transform, filter;
+    }
+    .case-pop.is-revealed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+
+    /* Stagger Delays */
+    .case-delay-1 { transition-delay: 0.06s; }
+    .case-delay-2 { transition-delay: 0.16s; }
+    .case-delay-3 { transition-delay: 0.26s; }
+    .case-delay-4 { transition-delay: 0.38s; }
+    .case-delay-5 { transition-delay: 0.50s; }
+    .case-delay-6 { transition-delay: 0.62s; }
+
+    /* ------------------------------------------------------------------------
+       3. Dual Laptop UI Mockups with Ambient Hover Transitions
+       ------------------------------------------------------------------------ */
+    .laptop-frame {
+      background: #1c1c1e;
+      border: 3px solid #2e2e32;
+      border-radius: 18px 18px 4px 4px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9);
+      position: relative;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .laptop-frame:hover {
+      transform: translateY(-6px);
+      border-color: rgba(115, 175, 111, 0.5);
+      box-shadow: 0 40px 75px -15px rgba(0, 0, 0, 0.95), 0 0 25px rgba(115, 175, 111, 0.16);
+    }
+    .laptop-camera {
+      width: 6px;
+      height: 6px;
+      background: #09090a;
+      border-radius: 50%;
+      border: 1px solid #333336;
+      margin: 6px auto;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .laptop-frame:hover .laptop-camera {
+      background: #00FF66;
+      box-shadow: 0 0 6px #00FF66;
+    }
+    .laptop-base {
+      height: 12px;
+      background: linear-gradient(to bottom, #2b2b2f, #18181a);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      margin-top: -1px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: background 0.3s ease;
+    }
+    .laptop-base::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 4px;
+      background: #111113;
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* ------------------------------------------------------------------------
+       4. Interactive Card & Button Hover Effects
+       ------------------------------------------------------------------------ */
+    .case-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .case-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 16px 35px -10px rgba(0, 0, 0, 0.85);
+    }
+
+    .case-card-accent:hover {
+      border-color: rgba(115, 175, 111, 0.5);
+      box-shadow: 0 16px 35px -10px rgba(115, 175, 111, 0.22);
+    }
+
+    .brand-logo-squircle {
+      background: var(--gradient-sage-squircle);
+      border: 2px solid rgba(115, 175, 111, 0.5);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+    }
+    .brand-logo-squircle:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 12px 30px rgba(115, 175, 111, 0.4);
+    }
+
+    .btn-easy-gradient {
+      background: var(--gradient-easy);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    }
+    .btn-easy-gradient:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(115, 175, 111, 0.35);
+      filter: brightness(1.06);
+    }
+
+    .tech-pill {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .tech-pill:hover {
+      transform: translateY(-4px);
+      border-color: rgba(115, 175, 111, 0.45);
+      background-color: #161616;
+    }
+    .tech-pill:hover i {
+      transform: scale(1.18);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .team-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .team-card:hover .team-role {
+      color: #FFFFFF !important;
+    }
+  </style>
+</head>
+<body class="bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- ======================================================================
+       TOP BAR: SIMPLE BACK TO PROJECTS BUTTON
+       ====================================================================== -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 flex items-center justify-between case-reveal case-delay-1">
+    <a href="../index.html#projects" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#161616] border border-[#2B2B2B] text-xs sm:text-sm font-semibold text-white hover:text-black hover:bg-white transition-all duration-300 shadow-sm group">
+      <i class="fa-solid fa-arrow-left text-xs transition-transform duration-300 group-hover:-translate-x-1.5"></i>
+      <span>Back to Projects</span>
+    </a>
+
+    <span class="text-xs font-mono text-[#737373] uppercase tracking-wider hidden sm:inline">
+      2nd-Year Course Project · Application Development
+    </span>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16">
+
+    <!-- PROJECT HEADER (REVEALS ON LOAD & SCROLL) -->
+    <div class="space-y-5 max-w-3xl">
+      
+      <!-- Category Badges -->
+      <div class="flex flex-wrap items-center gap-2 case-reveal case-delay-1">
+        <span class="px-3 py-1 rounded-full bg-[#161616] border border-[#2B2B2B] text-[11px] font-mono font-bold text-white uppercase tracking-wider">
+          AD-EASY&amp;CO · 2nd-Year Coursework
+        </span>
+        <span class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-[#73AF6F] font-semibold flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#73AF6F] animate-pulse"></span> Booking Storefront + Admin Console
+        </span>
+      </div>
+
+      <!-- EASY&CO Brand Title with Official Logo -->
+      <div class="flex items-center gap-4 sm:gap-5 pt-1 case-reveal case-delay-2">
+        <!-- Botanical Green Rounded Squircle with Official EASY&CO Logo -->
+        <div class="brand-logo-squircle w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 flex items-center justify-center shrink-0 shadow-lg cursor-pointer">
+          <img src="../assets/images/projects/easyco/logo.png" alt="EASY&CO Logo" class="w-full h-full object-contain drop-shadow-sm">
+        </div>
+
+        <!-- Brand Text: Playfair Display "EASY&CO" -->
+        <div>
+          <h1 class="brand-title text-4xl sm:text-6xl lg:text-7xl font-bold leading-none tracking-tight uppercase">
+            <span class="text-white">EASY</span><span class="brand-accent">&amp;</span><span class="text-white">CO</span>
+          </h1>
+          <span class="text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#73AF6F] font-bold block mt-1.5">
+            Stay Easy. Live Cozy. · Luxury Condo Booking
+          </span>
+        </div>
+      </div>
+
+      <!-- Live Site & GitHub Action Links -->
+      <div class="flex flex-wrap items-center gap-3 pt-2 case-reveal case-delay-3">
+        <a href="https://ci4-beautifly-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="btn-easy-gradient inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white shadow-lg">
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          <span>Visit ci4-beautifly-production.up.railway.app</span>
+        </a>
+        <a href="https://github.com/9rzaaa/CI4-BEAUTIFLY" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#161616] border border-[#2B2B2B] hover:border-white text-xs sm:text-sm font-semibold text-white transition-all duration-300 hover:bg-white/5">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub Repository</span>
+        </a>
+      </div>
+
+      <!-- Summary Description (Highlighting 2nd-Year Course Guideline Scope) -->
+      <p class="text-base sm:text-lg text-[#B3B3B3] leading-relaxed pt-1 case-reveal case-delay-4">
+        Developed during my <strong class="text-white">2nd year at FEU Institute of Technology</strong> as a foundational course project built around our professor's structured Application Development (<code class="text-white text-sm">AD-</code>) guidelines. <strong class="text-white">EASY&amp;CO</strong> demonstrates a modular CodeIgniter 4 condo reservation workflow — featuring UI view fragmentation, an interactive Flatpickr booking calendar, simulated digital payments (GCash, Maya, QR Ph), and a role-protected Admin Console.
+      </p>
+
+      <!-- Key Metadata Chips -->
+      <div class="flex flex-wrap gap-3 pt-1 text-xs text-[#B3B3B3] case-reveal case-delay-5">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B]">
+          <i class="fa-solid fa-graduation-cap text-white"></i>
+          <span>FEU Tech · <strong class="text-white">2nd-Year Course Project</strong></span>
+        </div>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B]">
+          <i class="fa-solid fa-sitemap text-[#73AF6F]"></i>
+          <span>Professor-Guided <strong class="text-white">MVC &amp; View Fragmentation</strong></span>
+        </div>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B]">
+          <i class="fa-solid fa-calendar-check text-[#D4A373]"></i>
+          <span>Condo Reservation &amp; <strong class="text-white">Admin CRUD</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TOP DUAL-LAPTOP UI MOCKUPS (CUSTOMER STOREFRONT & ADMIN DASHBOARD)
+         ====================================================================== -->
+    <section class="space-y-4 case-pop case-delay-2">
+      <div class="flex items-center justify-between text-xs text-[#737373]">
+        <span class="uppercase tracking-widest font-mono font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-laptop text-[#B3B3B3]"></i> User Interfaces (Guest Booking Storefront &amp; Admin Dashboard)
+        </span>
+        <span class="hidden sm:inline font-mono">Click either interface to inspect in full resolution</span>
+      </div>
+
+      <!-- Dual Laptop Mockup Stage -->
+      <div class="p-6 sm:p-10 rounded-3xl bg-[#111111] border border-[#2B2B2B] relative overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+        
+        <!-- LAPTOP 1: CUSTOMER STOREFRONT -->
+        <div class="w-full case-reveal case-delay-3">
+          <span class="text-[11px] font-mono text-[#888888] uppercase block mb-2.5 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-building text-[#73AF6F]"></i> Guest Booking Storefront (Laptop View)
+          </span>
+
+          <div class="laptop-frame overflow-hidden">
+            <!-- Screen Top Bezel with Camera Dot -->
+            <div class="h-5 bg-[#18181a] flex items-center justify-center">
+              <div class="laptop-camera"></div>
+            </div>
+
+            <!-- Laptop Screen (Skeleton Shimmer on Load) -->
+            <div class="skeleton-shimmer bg-black cursor-zoom-in group relative overflow-hidden" onclick="openModal('../assets/images/projects/easyco/storefront.png', 'EASY&CO Guest Booking Storefront')">
+              <img src="../assets/images/projects/easyco/storefront.png" 
+                   alt="EASY&CO Guest Booking Storefront" 
+                   class="w-full h-auto block opacity-0 transition-all duration-500 group-hover:scale-[1.01]"
+                   onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to Enlarge Storefront
+              </div>
+            </div>
+          </div>
+          <!-- Laptop Base Stand -->
+          <div class="laptop-base w-[104%] -ml-[2%]"></div>
+        </div>
+
+        <!-- LAPTOP 2: ADMIN DASHBOARD -->
+        <div class="w-full case-reveal case-delay-4">
+          <span class="text-[11px] font-mono text-[#888888] uppercase block mb-2.5 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-pie text-[#D4A373]"></i> Admin Management Console (Laptop View)
+          </span>
+
+          <div class="laptop-frame overflow-hidden">
+            <!-- Screen Top Bezel with Camera Dot -->
+            <div class="h-5 bg-[#18181a] flex items-center justify-center">
+              <div class="laptop-camera"></div>
+            </div>
+
+            <!-- Laptop Screen (Skeleton Shimmer on Load) -->
+            <div class="skeleton-shimmer bg-black cursor-zoom-in group relative overflow-hidden" onclick="openModal('../assets/images/projects/easyco/admin-db.png', 'EASY&CO Admin Dashboard Overview')">
+              <img src="../assets/images/projects/easyco/admin-db.png" 
+                   alt="EASY&CO Admin Dashboard" 
+                   class="w-full h-auto block opacity-0 transition-all duration-500 group-hover:scale-[1.01]"
+                   onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to Enlarge Admin Dashboard
+              </div>
+            </div>
+          </div>
+          <!-- Laptop Base Stand -->
+          <div class="laptop-base w-[104%] -ml-[2%]"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ACADEMIC SCOPE & PURPOSE (CONCISE WITH HOVER ELEVATION)
+         ====================================================================== -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Academic Context & Guidelines -->
+      <div class="case-card p-6 sm:p-7 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-3 case-reveal case-delay-1">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Academic Context &amp; Scope</span>
+        <h3 class="font-display text-xl font-bold text-white">2nd-Year Course Guidelines &amp; Standards</h3>
+        <p class="text-xs sm:text-sm text-[#B3B3B3] leading-relaxed">
+          Rather than a commercial production release, EASY&amp;CO was engineered to fulfill specific 2nd-year Application Development (<code class="text-white">AD-</code>) rubric requirements set by our professor — emphasizing strict Git branching conventions, reusable UI view fragmentation, database migrations &amp; seeders, and built-in Moodboard (<code class="text-white">/mb</code>) and Roadmap (<code class="text-white">/rm</code>) design pages.
+        </p>
+      </div>
+
+      <!-- Functional Implementation -->
+      <div class="case-card p-6 sm:p-7 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-3 case-reveal case-delay-2">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Functional Architecture</span>
+        <h3 class="font-display text-xl font-bold text-white">End-to-End Condo Booking Workflow</h3>
+        <p class="text-xs sm:text-sm text-[#B3B3B3] leading-relaxed">
+          Covers the complete reservation lifecycle for a botanical studio unit in Quezon City: date availability checking, guest capacity validation, nightly &amp; cleaning fee calculation, simulated e-wallet checkout (GCash, Maya, QR Ph), and role-guarded administrative CRUD for users and unit bookings.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CORE FEATURES BY MODULE (EASY TO SKIM WITH HOVER GLOW)
+         ====================================================================== -->
+    <section class="space-y-6">
+      <div class="space-y-1 case-reveal case-delay-1">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Coursework Deliverables</span>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Core Modules &amp; Guidelines Implemented</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- 1. Guest Booking & Payment Flow -->
+        <div class="case-card case-card-accent p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-2">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-calendar-days text-[#73AF6F]"></i>
+            <h3>Condo Booking Engine</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#73AF6F] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Interactive Date Conflict Check:</strong> Flatpickr calendar fetches active bookings via AJAX (<code class="text-white">/booking/get-booked-dates</code>) to prevent double-booking.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#73AF6F] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Dynamic Price Calculation:</strong> Server-side pricing computes nights, base nightly rate, and cleaning fees while enforcing guest limits.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#73AF6F] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Digital Payment Simulation:</strong> Supports GCash, Maya, and QR Ph checkout flows with generated transaction IDs (<code class="text-white">TXN-...</code>).</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#73AF6F] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>My Bookings Portal:</strong> Guests can review upcoming, pending, completed, and cancelled reservations and cancel eligible stays.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. Admin Management Console -->
+        <div class="case-card p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-3">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-user-shield text-[#B3B3B3]"></i>
+            <h3>Admin Console &amp; CRUD</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Dashboard KPI Cards:</strong> Summarizes All Earnings, Active Confirmed Bookings, Total Registered Users, and Monthly Booking Growth.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Unit Booking Management:</strong> Search and filter reservations by status or date range, inspect details, and update booking statuses.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>User Management CRUD:</strong> Dedicated admin module (<code class="text-white">/test/user</code>) to create, edit, and soft-delete user accounts via modal forms.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Role-Based Session Guard:</strong> Separates <code class="text-white">admin</code> and <code class="text-white">client</code> sessions with automatic login redirect preservation.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3. Course Architecture & Design System -->
+        <div class="case-card p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-4">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-swatchbook text-[#D4A373]"></i>
+            <h3>Academic Design &amp; Standards</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#D4A373] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Modular View Fragmentation:</strong> Decomposes pages into reusable CI4 view components (<code class="text-white">components/head</code>, <code class="text-white">header</code>, <code class="text-white">cards</code>, <code class="text-white">cta</code>, <code class="text-white">modals</code>).</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#D4A373] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Interactive Moodboard (<code class="text-white">/mb</code>):</strong> Showcases the botanical color palette, typography hierarchy, button states, and logo variations.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#D4A373] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Project Roadmap (<code class="text-white">/rm</code>):</strong> Documents milestone deliverables from database schema design to frontend fragmentation.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#D4A373] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Migrations &amp; Seeders:</strong> Reproducible schema setup for <code class="text-white">users</code>, <code class="text-white">properties</code>, <code class="text-white">bookings</code>, and <code class="text-white">payments</code> tables.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TECH STACK (STAGGERED POP-IN & HOVER ICON EXPANSION)
+         ====================================================================== -->
+    <section class="p-6 sm:p-8 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-5 case-reveal case-delay-2">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h3 class="font-display text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-[#B3B3B3]"></i>
+          <span>Technology Stack Used</span>
+        </h3>
+        <span class="text-xs font-mono text-[#737373]">MVC Full-Stack Architecture</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        
+        <!-- CodeIgniter 4 -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-1 cursor-default">
+          <i class="fa-solid fa-fire-flame-curved text-xl text-[#EE4323] inline-block"></i>
+          <span class="text-xs font-bold text-white block">CodeIgniter 4</span>
+          <span class="text-[10px] text-[#737373] block">MVC PHP Framework</span>
+        </div>
+
+        <!-- PHP 8.3 -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-2 cursor-default">
+          <i class="fa-brands fa-php text-xl text-[#777BB4] inline-block"></i>
+          <span class="text-xs font-bold text-white block">PHP 8.3</span>
+          <span class="text-[10px] text-[#737373] block">Backend &amp; Sessions</span>
+        </div>
+
+        <!-- MySQL / SQLite -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-3 cursor-default">
+          <i class="fa-solid fa-database text-xl text-[#4479A1] inline-block"></i>
+          <span class="text-xs font-bold text-white block">MySQL / SQLite</span>
+          <span class="text-[10px] text-[#737373] block">Migrations &amp; Seeds</span>
+        </div>
+
+        <!-- Tailwind CSS -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-4 cursor-default">
+          <i class="fa-solid fa-wind text-xl text-[#38BDF8] inline-block"></i>
+          <span class="text-xs font-bold text-white block">Tailwind CSS</span>
+          <span class="text-[10px] text-[#737373] block">Fragmented Views</span>
+        </div>
+
+        <!-- Docker -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-5 cursor-default">
+          <i class="fa-brands fa-docker text-xl text-[#2496ED] inline-block"></i>
+          <span class="text-xs font-bold text-white block">Docker</span>
+          <span class="text-[10px] text-[#737373] block">Containerized Stack</span>
+        </div>
+
+        <!-- Railway -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-6 cursor-default">
+          <i class="fa-solid fa-train-subway text-xl text-[#73AF6F] inline-block"></i>
+          <span class="text-xs font-bold text-white block">Railway</span>
+          <span class="text-[10px] text-[#737373] block">Cloud Deployment</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         THE TEAM (SIMPLE, SMALL ROLES, NO DESCRIPTIONS)
+         ====================================================================== -->
+    <section class="p-6 sm:p-8 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-5 case-reveal case-delay-2">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="space-y-0.5">
+          <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Development Team</span>
+          <h3 class="font-display text-xl font-bold text-white">The Team Behind EASY&amp;CO</h3>
+        </div>
+        <span class="text-xs font-mono text-[#737373]">FEU Institute of Technology</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+        
+        <!-- Member 1: Daniel Ling -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-1">
+          <span class="font-display font-bold text-sm text-white block">Daniel Ling</span>
+          <span class="team-role text-[11px] block font-medium transition-colors" style="color: var(--easy-sage);">Backend &amp; Full-Stack Developer</span>
+        </div>
+
+        <!-- Member 2: Hilary Ashley Pagadora -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-2">
+          <span class="font-display font-bold text-sm text-white block">Hilary Ashley Pagadora</span>
+          <span class="team-role text-[11px] text-[#B3B3B3] block transition-colors">Frontend Developer</span>
+        </div>
+
+        <!-- Member 3: Amilia Danielle Tanajura -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-3">
+          <span class="font-display font-bold text-sm text-white block">Amilia Danielle Tanajura</span>
+          <span class="team-role text-[11px] text-[#B3B3B3] block transition-colors">UI/UX &amp; Frontend Designer</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         BOTTOM ACTION LINKS (CLEANED UP & HOVER POLISHED)
+         ====================================================================== -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#2B2B2B] case-reveal case-delay-1">
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="https://ci4-beautifly-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="btn-easy-gradient px-4 py-2 rounded-full font-bold text-xs text-white shadow-md inline-flex items-center gap-1.5">
+          <i class="fa-solid fa-globe text-xs"></i> ci4-beautifly-production.up.railway.app
+        </a>
+        <a href="https://github.com/9rzaaa/CI4-BEAUTIFLY" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-full bg-[#161616] text-white border border-[#2B2B2B] hover:border-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all duration-300 hover:bg-white/5">
+          <i class="fa-brands fa-github text-xs"></i> GitHub
+        </a>
+      </div>
+
+      <a href="../index.html#contact" class="px-4 py-2 rounded-full bg-[#161616] text-[#B3B3B3] hover:text-white border border-[#2B2B2B] hover:border-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all duration-300 hover:bg-white/5">
+        <i class="fa-solid fa-envelope text-xs"></i> Contact Daniel
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="py-8 text-center text-xs text-[#737373] border-t border-[#2B2B2B] mt-12 case-reveal case-delay-1">
+    &copy; 2026 Daniel Ling. All Rights Reserved.
+  </footer>
+
+  <!-- ======================================================================
+       MINIMAL LIGHTBOX MODAL (WITH SCALE & BLUR TRANSITIONS)
+       ====================================================================== -->
+  <div id="image-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" onclick="closeModal()">
+    <div class="w-full max-w-5xl flex items-center justify-between py-2 px-2 text-white" onclick="event.stopPropagation()">
+      <span id="modal-caption" class="text-xs sm:text-sm font-semibold text-[#D4D4D4]">Interface Preview</span>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-[#2B2B2B] text-white hover:bg-white hover:text-black transition-colors duration-200 flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+    <div class="flex-1 w-full max-w-5xl flex items-center justify-center p-2" onclick="event.stopPropagation()">
+      <img id="modal-img" src="" alt="Enlarged UI" class="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300 scale-95">
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       BI-DIRECTIONAL SCROLL OBSERVER & ANIMATION ENGINE (RELOAD, SCROLL DOWN & UP)
+       ====================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ----------------------------------------------------------------------
+      // 1. Bi-Directional Scroll Reveal Observer
+      // ----------------------------------------------------------------------
+      const revealElements = document.querySelectorAll('.case-reveal, .case-pop');
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          } else {
+            entry.target.classList.remove('is-revealed');
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+
+      // Immediate reveal for elements already inside the initial viewport on load/reload
+      const triggerInitialView = () => {
+        revealElements.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-revealed');
+          }
+        });
+      };
+
+      triggerInitialView();
+      setTimeout(triggerInitialView, 120);
+    });
+
+    // ------------------------------------------------------------------------
+    // 2. Lightbox Modal Logic with Scale Transition
+    // ------------------------------------------------------------------------
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+
+    function openModal(src, caption) {
+      modalImg.src = src;
+      modalCaption.textContent = caption || 'Interface Preview';
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      setTimeout(() => {
+        modalImg.classList.remove('scale-95');
+        modalImg.classList.add('scale-100');
+      }, 20);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modalImg.classList.remove('scale-100');
+      modalImg.classList.add('scale-95');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 250);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+
+</body>
+</html>
