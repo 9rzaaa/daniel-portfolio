@@ -767,67 +767,220 @@
   </section>
 
   <!-- ======================================================================
-       4. CERTIFICATIONS SECTION
+       4. CERTIFICATIONS SECTION (3D SPINNING SHOWCASE + CREDENTIAL CARDS)
        ====================================================================== -->
-  <section id="certifications" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
+  <section id="certifications" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="max-w-2xl mb-8 sm:mb-10 reveal-item reveal-delay-1">
+      <div class="max-w-2xl mb-6 sm:mb-8 reveal-item reveal-delay-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">03 / Credentials</span>
         <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
           Certifications &amp; Learning
         </h2>
       </div>
 
-      <!-- Certifications Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 3D SPINNING CERTIFICATIONS STAGE (Open Background, Continuous Smooth Spin) -->
+      <div class="relative mb-8 sm:mb-10 reveal-item reveal-delay-2">
         
-        <!-- Cert 1 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-2">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-certificate"></i>
+        <!-- Subtle Flowing Wave Lines SVG in Background -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 1440 280" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-100 155 C 320 165, 580 75, 980 85 C 1220 90, 1360 155, 1540 175" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+          <path d="M-100 161 C 340 170, 600 87, 1000 97 C 1230 103, 1370 167, 1540 187" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+          <path d="M-100 167 C 360 175, 620 101, 1020 111 C 1240 117, 1380 179, 1540 199" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <path d="M-100 173 C 380 181, 640 115, 1040 125 C 1250 131, 1390 191, 1540 211" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+          <path d="M-100 179 C 400 187, 660 129, 1060 139 C 1260 145, 1400 203, 1540 223" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        </svg>
+
+        <!-- 3D Perspective Stage -->
+        <div id="cert-spin-stage" class="cert-spin-stage">
+          <!-- 3D Cylindrical Ring (6 Panels = 3 Certifications × 2 around 360° Ring) -->
+          <div id="cert-spin-ring" class="cert-spin-ring">
+            
+            <!-- Panel 0 (0°): IT Specialist - Python -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')">
+              <img src="assets/images/certifications/it-specialist-python.png" alt="IT Specialist in Python Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Certiport · Feb 13, 2025</span>
+                <span class="font-display text-xs font-bold text-white">IT Specialist — Python</span>
+              </div>
+            </div>
+
+            <!-- Panel 1 (60°): PMI Project Management Ready -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')">
+              <img src="assets/images/certifications/pmi-project-management-ready.png" alt="PMI Project Management Ready Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">PMI · Mar 17, 2026</span>
+                <span class="font-display text-xs font-bold text-white">PMI Project Management Ready®</span>
+              </div>
+            </div>
+
+            <!-- Panel 2 (120°): Cisco CCST Networking -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')">
+              <img src="assets/images/certifications/cisco-ccst-networking.png" alt="Cisco CCST Networking Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Cisco · Feb 10, 2025</span>
+                <span class="font-display text-xs font-bold text-white">Cisco CCST — Networking</span>
+              </div>
+            </div>
+
+            <!-- Panel 3 (180°): IT Specialist - Python -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')">
+              <img src="assets/images/certifications/it-specialist-python.png" alt="IT Specialist in Python Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Certiport · Feb 13, 2025</span>
+                <span class="font-display text-xs font-bold text-white">IT Specialist — Python</span>
+              </div>
+            </div>
+
+            <!-- Panel 4 (240°): PMI Project Management Ready -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')">
+              <img src="assets/images/certifications/pmi-project-management-ready.png" alt="PMI Project Management Ready Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">PMI · Mar 17, 2026</span>
+                <span class="font-display text-xs font-bold text-white">PMI Project Management Ready®</span>
+              </div>
+            </div>
+
+            <!-- Panel 5 (300°): Cisco CCST Networking -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')">
+              <img src="assets/images/certifications/cisco-ccst-networking.png" alt="Cisco CCST Networking Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Cisco · Feb 10, 2025</span>
+                <span class="font-display text-xs font-bold text-white">Cisco CCST — Networking</span>
+              </div>
+            </div>
+
           </div>
+        </div>
+      </div>
+
+      <!-- Certifications Details & Verification Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Cert 1: IT Specialist - Python -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-2 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Institution / Course</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">PHP &amp; Full-Stack Development</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Verified Credential</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-brands fa-python text-[#38BDF8] text-xs"></i> Certiport · Pearson
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Feb 13, 2025
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              IT Specialist — Python
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Validates proficiency in Python programming fundamentals, data structures, control flow, error handling, and modular operations.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">wCp8b-48J9</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/it-specialist-python.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Cert 2 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-3">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-award"></i>
-          </div>
+        <!-- Cert 2: PMI Project Management Ready -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-3 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Online Learning Platform</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Relational Database &amp; MySQL</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Certificate of Completion</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-diagram-project text-[#A855F7] text-xs"></i> PMI Institute
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Mar 17, 2026
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              PMI Project Management Ready®
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Global credential evaluating mastery in Project Management Fundamentals, Traditional Plan-Based, Agile Methodologies, and Business Analysis.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">waQWT-H92N</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/pmi-project-management-ready.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Cert 3 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4 reveal-item reveal-delay-4">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
+        <!-- Cert 3: Cisco Certified Support Technician (CCST) Networking -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-4 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Academic Workshop</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Web Standards &amp; UI Fundamentals</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2026 • Certificate of Achievement</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-network-wired text-[#2DD4BF] text-xs"></i> Cisco Systems
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Feb 10, 2025
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              Cisco CCST — Networking
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Official Cisco certification validating hands-on competency in networking standards, TCP/IP addressing, routing &amp; switching, and security.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">8Sx2-u8wz</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/cisco-ccst-networking.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -927,6 +1080,64 @@
       </div>
     </div>
   </footer>
+
+  <!-- ======================================================================
+       CERTIFICATE LIGHTBOX PREVIEW MODAL
+       ====================================================================== -->
+  <div id="cert-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" onclick="closeCertModal()">
+    <div class="w-full max-w-4xl flex items-center justify-between py-2.5 px-2 text-white" onclick="event.stopPropagation()">
+      <span id="cert-modal-caption" class="text-xs sm:text-sm font-semibold text-[#D4D4D4] truncate pr-4">Certificate Preview</span>
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a id="cert-modal-pdf" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B] hover:border-white text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors">
+          <i class="fa-solid fa-file-pdf text-xs"></i>
+          <span>Open PDF</span>
+        </a>
+        <button type="button" onclick="closeCertModal()" class="w-8 h-8 rounded-lg bg-[#2B2B2B] text-white hover:bg-white hover:text-black transition-colors duration-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 w-full max-w-4xl flex items-center justify-center p-2" onclick="event.stopPropagation()">
+      <img id="cert-modal-img" src="" alt="Certificate Preview" class="max-h-[82vh] max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300 scale-95 bg-white">
+    </div>
+  </div>
+
+  <script>
+    function openCertModal(imgSrc, caption, pdfHref) {
+      const modal = document.getElementById('cert-modal');
+      const modalImg = document.getElementById('cert-modal-img');
+      const modalCaption = document.getElementById('cert-modal-caption');
+      const modalPdf = document.getElementById('cert-modal-pdf');
+
+      modalImg.src = imgSrc;
+      modalCaption.textContent = caption || 'Certificate Preview';
+      modalPdf.href = pdfHref || imgSrc;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      setTimeout(() => {
+        modalImg.classList.remove('scale-95');
+        modalImg.classList.add('scale-100');
+      }, 20);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertModal() {
+      const modal = document.getElementById('cert-modal');
+      const modalImg = document.getElementById('cert-modal-img');
+      if (!modal) return;
+      modalImg.classList.remove('scale-100');
+      modalImg.classList.add('scale-95');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 250);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCertModal();
+    });
+  </script>
 
   <!-- Main JavaScript -->
   <script src="assets/js/main.js"></script>
