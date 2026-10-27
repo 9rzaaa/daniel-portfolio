@@ -741,16 +741,54 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 }
 
 .id-badge {
-  background: #ffffff;
-  color: #0a0a0a;
-  border-radius: 20px;
+  /* Smoky Acrylic Glass Body */
+  background: linear-gradient(
+    155deg,
+    rgba(38, 38, 38, 0.78) 0%,
+    rgba(18, 18, 18, 0.88) 48%,
+    rgba(10, 10, 10, 0.94) 100%
+  );
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  color: #ffffff;
+  border-radius: 22px;
+
+  /* Luminous Glassy Rim & Specular Edge Lighting */
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  border-top-color: rgba(255, 255, 255, 0.52);
+  border-left-color: rgba(255, 255, 255, 0.34);
+  border-right-color: rgba(255, 255, 255, 0.14);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+
   box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(255, 255, 255, 0.15);
+    0 30px 60px -15px rgba(0, 0, 0, 0.92),
+    0 0 24px rgba(255, 255, 255, 0.06),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.7),
+    inset 0 0 22px 0 rgba(255, 255, 255, 0.04);
+
   transform-origin: top center;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
   position: relative;
   overflow: hidden;
+}
+
+/* Top Glossy Glass Curvature Sheen */
+.id-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 /* Holographic shine sweep on hover */
@@ -764,7 +802,7 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.22) 50%,
     transparent 100%
   );
   transform: skewX(-25deg);
@@ -776,21 +814,26 @@ body:not(.intro-active):not(.intro-revealed) .anim-chip {
 }
 
 .id-badge:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  border-top-color: rgba(255, 255, 255, 0.68);
+  border-left-color: rgba(255, 255, 255, 0.45);
   box-shadow: 
-    0 40px 80px -15px rgba(0, 0, 0, 0.95), 
-    0 0 35px rgba(255, 255, 255, 0.2);
+    0 40px 80px -15px rgba(0, 0, 0, 0.96), 
+    0 0 38px rgba(255, 255, 255, 0.16),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 28px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* Subtle Barcode Texture */
 .barcode-lines {
   background: repeating-linear-gradient(
     90deg,
-    #000 0,
-    #000 2px,
+    #ffffff 0,
+    #ffffff 2px,
     transparent 2px,
     transparent 4px,
-    #000 4px,
-    #000 7px,
+    #ffffff 4px,
+    #ffffff 7px,
     transparent 7px,
     transparent 9px
   );
