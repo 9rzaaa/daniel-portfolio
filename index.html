@@ -276,30 +276,30 @@
             </div>
 
             <!-- The Photorealistic ID Badge Card -->
-            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-4 sm:p-5 bg-white border border-[#D4D4D4] relative select-none cursor-pointer shadow-2xl">
+            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-4 sm:p-5 relative select-none cursor-pointer">
               
               <!-- Clip Hole -->
-              <div class="w-12 h-2.5 bg-[#0A0A0A] rounded-full mx-auto mb-3.5 border border-[#2B2B2B]"></div>
+              <div class="w-12 h-2.5 bg-[#050505]/90 rounded-full mx-auto mb-3.5 border border-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.2)]"></div>
 
               <!-- Badge Header / Pass Identifier -->
-              <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-2.5 mb-3 px-1">
+              <div class="flex items-center justify-between border-b border-white/15 pb-2.5 mb-3 px-1">
                 <div>
-                  <span class="text-[9px] uppercase font-mono font-extrabold tracking-widest text-[#737373] block">DEV PASS • 2026</span>
-                  <span class="text-xs font-bold text-black tracking-tight font-display">SOFTWARE INTERN</span>
+                  <span class="text-[9px] uppercase font-mono font-extrabold tracking-widest text-[#B3B3B3] block">DEV PASS • 2026</span>
+                  <span class="text-xs font-bold text-white tracking-tight font-display">SOFTWARE INTERN</span>
                 </div>
-                <div class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-[9px] font-mono font-bold">
+                <div class="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-[9px] font-mono font-bold shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                   D
                 </div>
               </div>
 
               <!-- Main Portrait Photo Frame -->
-              <div class="relative w-full h-64 sm:h-72 rounded-xl bg-[#141414] overflow-hidden border border-[#E5E5E5] group mb-3.5 shadow-inner">
-                <!-- User Profile Image (Put your photo in assets/images/hero/profile.jpg or profile.png) -->
+              <div class="relative w-full h-64 sm:h-72 rounded-xl bg-white overflow-hidden border border-white/25 shadow-[0_4px_20px_rgba(0,0,0,0.6),inset_0_0_0_1px_rgba(255,255,255,0.2)] group mb-3.5">
+                <!-- User Profile Image -->
                 <img 
                   id="badge-photo" 
                   src="assets/images/hero/profile.jpg" 
-                  alt="Daniel - Profile" 
-                  class="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500 block"
+                  alt="Daniel Ling - Profile" 
+                  class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500 block"
                   onerror="if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/hero/profile.png'; } else { this.style.display='none'; document.getElementById('badge-photo-fallback').style.display='flex'; }"
                 >
 
@@ -311,27 +311,22 @@
                   <span class="text-xs font-bold text-white tracking-wide">Add Your Photo</span>
                   <span class="text-[10px] font-mono text-[#737373] mt-1">assets/images/hero/profile.jpg</span>
                 </div>
-
-                <!-- Glassy Corner Tech Tag -->
-                <div class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md text-[9px] font-mono font-bold text-white border border-white/15 shadow-sm">
-                  PHP • LARAVEL
-                </div>
               </div>
 
               <!-- Badge Details -->
-              <div class="px-1 flex items-end justify-between border-t border-[#E5E5E5] pt-3">
+              <div class="px-1 flex items-end justify-between border-t border-white/15 pt-3">
                 <div class="space-y-0.5 text-left">
-                  <h3 class="font-display font-black text-xl text-black tracking-tight leading-none">
+                  <h3 class="font-display font-black text-xl text-white tracking-tight leading-none">
                     DANIEL
                   </h3>
-                  <p class="text-[11px] font-semibold text-[#525252]">
+                  <p class="text-[11px] font-semibold text-[#B3B3B3]">
                     Web &amp; Software Developer
                   </p>
                 </div>
                 <!-- Mini Barcode -->
                 <div class="flex flex-col items-end">
                   <div class="h-5 w-24 barcode-lines opacity-85"></div>
-                  <span class="text-[8px] font-mono font-bold text-[#737373] mt-0.5 tracking-wider">#2026-DEV</span>
+                  <span class="text-[8px] font-mono font-bold text-[#B3B3B3] mt-0.5 tracking-wider">#2026-DEV</span>
                 </div>
               </div>
 
@@ -369,13 +364,13 @@
           <div class="about-reveal-circle about-delay-2 relative p-2 rounded-full bg-gradient-to-b from-white/20 via-white/5 to-transparent border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
             
             <!-- Circular Photo Container -->
-            <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden bg-[#161616] border-2 border-white/20 relative shadow-inner">
-              <!-- Profile Image (Place image in assets/images/about/profile.jpg or assets/images/hero/profile.jpg) -->
+            <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden bg-white border-2 border-white/20 relative shadow-inner">
+              <!-- Profile Image -->
               <img 
                 id="about-photo"
                 src="assets/images/about/profile.jpg" 
                 alt="Daniel P. Ling" 
-                class="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
+                class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
                 onerror="if (!this.dataset.triedHero) { this.dataset.triedHero = '1'; this.src = 'assets/images/hero/profile.jpg'; } else if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/about/profile.png'; } else { this.style.display='none'; document.getElementById('about-photo-fallback').style.display='flex'; }"
               >
 
@@ -1031,37 +1026,48 @@
 
         <!-- Contact Form (Web3Forms Integration) -->
         <div class="lg:col-span-7 reveal-item reveal-delay-3">
-          <form id="contact-form" class="p-8 rounded-2xl pepper-card space-y-5">
-            <!-- Replace with free key from https://web3forms.com -->
-            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate class="p-8 rounded-2xl pepper-card space-y-5 relative overflow-hidden">
+            <!-- Web3Forms Access Key (Delivers to lingdaniel999@gmail.com) -->
+            <input type="hidden" name="access_key" id="web3forms-access-key" value="749a253a-9384-428e-913c-589ded62a59a">
+            <input type="hidden" name="from_name" value="Daniel Ling Portfolio">
+            <!-- Honeypot Spam Protection -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label for="name" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Name</label>
-                <input type="text" id="name" name="name" required placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <label for="name" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Name <span class="text-white/50">*</span></label>
+                <input type="text" id="name" name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <p id="name-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
               </div>
               <div>
-                <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Email</label>
-                <input type="email" id="email" name="email" required placeholder="alex@company.com" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Email <span class="text-white/50">*</span></label>
+                <input type="email" id="email" name="email" required maxlength="120" autocomplete="email" placeholder="alex@company.com" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <p id="email-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
               </div>
             </div>
 
             <div>
-              <label for="subject" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Subject</label>
-              <input type="text" id="subject" name="subject" required placeholder="Web Development Internship Opportunity" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+              <label for="subject" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Subject <span class="text-white/50">*</span></label>
+              <input type="text" id="subject" name="subject" required minlength="3" maxlength="120" placeholder="Web Development Internship Opportunity" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+              <p id="subject-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
             </div>
 
             <div>
-              <label for="message" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Message</label>
-              <textarea id="message" name="message" rows="4" required placeholder="Hi Daniel, we are reviewing your profile for our internship program..." class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors resize-none"></textarea>
+              <div class="flex items-center justify-between mb-2">
+                <label for="message" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3]">Message <span class="text-white/50">*</span></label>
+                <span id="message-count" class="text-[10px] font-mono text-[#737373]">0 / 2000</span>
+              </div>
+              <textarea id="message" name="message" rows="4" required minlength="10" maxlength="2000" placeholder="Hi Daniel, we are reviewing your profile for our internship program..." class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors resize-none"></textarea>
+              <p id="message-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
             </div>
 
-            <button type="submit" class="w-full py-3.5 px-6 rounded-lg bg-white text-black hover:bg-[#D4D4D4] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5">
+            <button type="submit" id="contact-submit-btn" class="w-full py-3.5 px-6 rounded-lg bg-white text-black hover:bg-[#D4D4D4] disabled:opacity-60 disabled:cursor-not-allowed font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5">
               <i class="fa-solid fa-paper-plane text-xs"></i>
               <span>Send Message</span>
             </button>
 
-            <div id="form-status" class="hidden"></div>
+            <!-- Rich Animated Status Banner -->
+            <div id="form-status" class="hidden transition-all duration-300" role="status" aria-live="polite"></div>
           </form>
         </div>
 
