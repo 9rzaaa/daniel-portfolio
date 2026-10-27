@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DormEase Case Study - Smart Dormitory & Community Management System engineered with Laravel, React Native, MySQL, PayMongo QR Ph, and Rule-based NLP. Developed by Daniel Ling.">
+  <meta name="author" content="Daniel Ling">
+  <title>DormEase — Smart Dormitory Management System | Daniel Ling</title>
+
+  <!-- Google Fonts: Playfair Display, Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            brand: ['"Playfair Display"', 'Georgia', 'serif'],
+          },
+          colors: {
+            pepper: {
+              bg: '#0A0A0A',
+              card: '#161616',
+              charcoal: '#2B2B2B',
+              gray: '#B3B3B3',
+              light: '#D4D4D4',
+              white: '#FFFFFF',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    /* DormEase Brand Palette */
+    :root {
+      --pink-1: #E8175D;
+      --pink-2: #FF2D78;
+      --gradient-pink: linear-gradient(135deg, #E8175D 0%, #FF2D78 100%);
+      --soft-bg: #fff7fb;
+      --pink: var(--pink-1);
+      --pink-light: #FF7FB0;
+      --pink-pale: #FFE4F0;
+      --pink-deep: #8A123B;
+    }
+
+    /* Brand Header Typography */
+    .brand-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.02em;
+    }
+    .brand-title .brand-ease {
+      color: var(--pink-2);
+      font-style: italic;
+    }
+
+    /* ------------------------------------------------------------------------
+       1. Skeleton Shimmer & Loading State
+       ------------------------------------------------------------------------ */
+    .skeleton-shimmer {
+      position: relative;
+      overflow: hidden;
+      background: #141416 !important;
+    }
+    .skeleton-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.04) 20%,
+        rgba(255, 45, 120, 0.08) 50%,
+        rgba(255, 255, 255, 0.04) 80%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: skeletonWave 1.8s infinite ease-in-out;
+      z-index: 10;
+      pointer-events: none;
+    }
+    @keyframes skeletonWave {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ------------------------------------------------------------------------
+       2. Scroll-Triggered Reveal Transitions (Bi-directional)
+       ------------------------------------------------------------------------ */
+    .case-reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(3px);
+      transition: 
+        opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.32s ease;
+      will-change: opacity, transform, filter;
+    }
+    .case-reveal.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .case-pop {
+      opacity: 0;
+      transform: scale(0.95) translateY(16px);
+      filter: blur(3px);
+      transition: 
+        opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        filter 0.32s ease;
+      will-change: opacity, transform, filter;
+    }
+    .case-pop.is-revealed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+
+    /* Stagger Delays */
+    .case-delay-1 { transition-delay: 0.03s; }
+    .case-delay-2 { transition-delay: 0.07s; }
+    .case-delay-3 { transition-delay: 0.11s; }
+    .case-delay-4 { transition-delay: 0.15s; }
+    .case-delay-5 { transition-delay: 0.19s; }
+    .case-delay-6 { transition-delay: 0.23s; }
+
+    /* ------------------------------------------------------------------------
+       3. Laptop & Phone UI Mockups with Ambient Hover Transitions
+       ------------------------------------------------------------------------ */
+    .laptop-frame {
+      background: #1c1c1e;
+      border: 3px solid #2e2e32;
+      border-radius: 18px 18px 4px 4px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9);
+      position: relative;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .laptop-frame:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 40px 75px -15px rgba(0, 0, 0, 0.95);
+    }
+    .laptop-camera {
+      width: 6px;
+      height: 6px;
+      background: #09090a;
+      border-radius: 50%;
+      border: 1px solid #333336;
+      margin: 6px auto;
+      transition: background-color 0.3s ease;
+    }
+    .laptop-frame:hover .laptop-camera {
+      background: #00FF66;
+      box-shadow: 0 0 6px #00FF66;
+    }
+    .laptop-base {
+      height: 12px;
+      background: linear-gradient(to bottom, #2b2b2f, #18181a);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      margin-top: -1px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: background 0.3s ease;
+    }
+    .laptop-base::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: #111113;
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Phone Frame with Breathing Float & Hover Elevate */
+    .phone-frame {
+      background: #000000;
+      border: 4px solid #2e2e32;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 0 2px #18181a;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .phone-frame:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(255, 45, 120, 0.45);
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 45, 120, 0.2);
+    }
+    .phone-island {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 16px;
+      background: #000000;
+      border-radius: 12px;
+      z-index: 20;
+      transition: width 0.3s ease;
+    }
+    .phone-frame:hover .phone-island {
+      width: 84px;
+    }
+
+    /* Ambient float effect on phone */
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+    .ambient-phone-float {
+      animation: phoneFloat 6s ease-in-out infinite;
+    }
+
+    /* ------------------------------------------------------------------------
+       4. Interactive Card & Button Hover Effects
+       ------------------------------------------------------------------------ */
+    .case-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .case-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 16px 35px -10px rgba(0, 0, 0, 0.85);
+    }
+
+    .case-card-accent:hover {
+      border-color: rgba(255, 45, 120, 0.4);
+      box-shadow: 0 16px 35px -10px rgba(232, 23, 93, 0.25);
+    }
+
+    .brand-logo-squircle {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+    }
+    .brand-logo-squircle:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 12px 30px rgba(255, 45, 120, 0.45);
+    }
+
+    .btn-pink-gradient {
+      background: var(--gradient-pink);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    }
+    .btn-pink-gradient:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(255, 45, 120, 0.35);
+      filter: brightness(1.08);
+    }
+
+    .tech-pill {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .tech-pill:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.3);
+      background-color: #161616;
+    }
+    .tech-pill:hover i {
+      transform: scale(1.18);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .team-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .team-card:hover .team-role {
+      color: #FFFFFF !important;
+    }
+  </style>
+</head>
+<body class="bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- ======================================================================
+       TOP BAR: SIMPLE BACK TO PROJECTS BUTTON
+       ====================================================================== -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 flex items-center justify-between case-reveal case-delay-1">
+    <a href="../index.html#projects" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#161616] border border-[#2B2B2B] text-xs sm:text-sm font-semibold text-white hover:text-black hover:bg-white transition-all duration-300 shadow-sm group">
+      <i class="fa-solid fa-arrow-left text-xs transition-transform duration-300 group-hover:-translate-x-1.5"></i>
+      <span>Back to Projects</span>
+    </a>
+
+    <span class="text-xs font-mono text-[#737373] uppercase tracking-wider hidden sm:inline">
+      Capstone Project 2026
+    </span>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16">
+
+    <!-- PROJECT HEADER (REVEALS ON LOAD & SCROLL) -->
+    <div class="space-y-5 max-w-3xl">
+      
+      <!-- Category Badges -->
+      <div class="flex flex-wrap items-center gap-2 case-reveal case-delay-1">
+        <span class="px-3 py-1 rounded-full bg-[#161616] border border-[#2B2B2B] text-[11px] font-mono font-bold text-white uppercase tracking-wider">
+          Sanctissimo Rosario Ladies Dormitory
+        </span>
+        <span class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-emerald-400 font-semibold flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Web + Mobile System
+        </span>
+      </div>
+
+      <!-- DormEase Brand Title with Pink Squircle Logo Icon -->
+      <div class="flex items-center gap-4 sm:gap-5 pt-1 case-reveal case-delay-2">
+        <!-- Pink Rounded Squircle with White Logo inside (Interactive Pop) -->
+        <div class="brand-logo-squircle w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 flex items-center justify-center shrink-0 shadow-lg cursor-pointer" style="background: var(--gradient-pink);">
+          <img src="../assets/images/projects/dormease/dormease-logo.png" alt="DormEase Logo" class="w-full h-full object-contain filter drop-shadow">
+        </div>
+
+        <!-- Brand Text: Bold Serif "Dorm" + Bold Italic Pink "Ease" -->
+        <h1 class="brand-title text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-none tracking-tight">
+          <span class="text-white">Dorm</span><span class="brand-ease">Ease</span>
+        </h1>
+      </div>
+
+      <!-- Live Site & GitHub Action Links -->
+      <div class="flex flex-wrap items-center gap-3 pt-2 case-reveal case-delay-3">
+        <a href="https://www.srbdormease.com" target="_blank" rel="noopener noreferrer" class="btn-pink-gradient inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white shadow-lg">
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          <span>Visit www.srbdormease.com</span>
+        </a>
+        <a href="https://github.com/9rzaaa/DormEase" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#161616] border border-[#2B2B2B] hover:border-white text-xs sm:text-sm font-semibold text-white transition-all duration-300 hover:bg-white/5">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub Repository</span>
+        </a>
+      </div>
+
+      <!-- Summary Description -->
+      <p class="text-base sm:text-lg text-[#B3B3B3] leading-relaxed pt-1 case-reveal case-delay-4">
+        A digital community management system designed for <strong class="text-white">Sanctissimo Rosario Building</strong>. Seamlessly connects administrators, front desk staff, and tenants to streamline operations, proportional water billing, and emergency reporting.
+      </p>
+
+      <!-- Key Metadata Chips -->
+      <div class="flex flex-wrap gap-4 pt-1 text-xs text-[#B3B3B3] case-reveal case-delay-5">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B]">
+          <i class="fa-solid fa-building-columns text-white"></i>
+          <span>FEU Institute of Technology</span>
+        </div>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B]">
+          <i class="fa-solid fa-globe text-white"></i>
+          <span>UN SDGs: <strong class="text-white">SDG 9, 11, 16</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TOP DUAL-DEVICE UI MOCKUPS (LAPTOP & PHONE WITH SKELETONS & HOVER)
+         ====================================================================== -->
+    <section class="space-y-4 case-pop case-delay-2">
+      <div class="flex items-center justify-between text-xs text-[#737373]">
+        <span class="uppercase tracking-widest font-mono font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-display text-[#B3B3B3]"></i> User Interfaces (Admin Web &amp; Tenant Mobile)
+        </span>
+        <span class="hidden sm:inline font-mono">Click either interface to inspect in full resolution</span>
+      </div>
+
+      <!-- Mockup Stage -->
+      <div class="p-6 sm:p-10 rounded-3xl bg-[#111111] border border-[#2B2B2B] relative overflow-hidden flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-10">
+        
+        <!-- LAPTOP MOCKUP (Web Admin Dashboard) -->
+        <div class="w-full lg:w-[68%] shrink-0 case-reveal case-delay-3">
+          <span class="text-[11px] font-mono text-[#888888] uppercase block mb-2 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-desktop text-white"></i> Web Admin Dashboard (Laptop View)
+          </span>
+
+          <div class="laptop-frame overflow-hidden">
+            <!-- Screen Top Bezel with Camera Dot -->
+            <div class="h-5 bg-[#18181a] flex items-center justify-center">
+              <div class="laptop-camera"></div>
+            </div>
+
+            <!-- Laptop Screen (Skeleton Shimmer on Load) -->
+            <div class="skeleton-shimmer bg-black cursor-zoom-in group relative overflow-hidden" onclick="openModal('../assets/images/projects/dormease/web-db.png', 'DormEase Web Admin Dashboard')">
+              <img src="../assets/images/projects/dormease/web-db.png" 
+                   alt="DormEase Web Admin Dashboard" 
+                   class="w-full h-auto block opacity-0 transition-all duration-500 group-hover:scale-[1.01]"
+                   onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to Enlarge Full View
+              </div>
+            </div>
+          </div>
+          <!-- Laptop Base Stand -->
+          <div class="laptop-base w-[104%] -ml-[2%]"></div>
+        </div>
+
+        <!-- PHONE MOCKUP (Tenant Mobile Dashboard with Ambient Float) -->
+        <div class="w-full sm:w-[280px] lg:w-[28%] shrink-0 flex flex-col items-center ambient-phone-float case-reveal case-delay-4">
+          <span class="text-[11px] font-mono text-[#888888] uppercase block mb-2 font-bold flex items-center gap-1.5 self-start sm:self-center">
+            <i class="fa-solid fa-mobile-screen text-white"></i> Tenant Mobile App (Phone View)
+          </span>
+
+          <div class="phone-frame w-[240px] sm:w-[260px] cursor-zoom-in group relative" onclick="openModal('../assets/images/projects/dormease/mob-db.png', 'DormEase Tenant Mobile Dashboard')">
+            <!-- Dynamic Island Notch -->
+            <div class="phone-island"></div>
+
+            <!-- Phone Screen (Skeleton Shimmer on Load) -->
+            <div class="skeleton-shimmer bg-black relative">
+              <img src="../assets/images/projects/dormease/mob-db.png" 
+                   alt="DormEase Tenant Mobile Dashboard" 
+                   class="w-full h-auto block opacity-0 transition-all duration-500 group-hover:scale-[1.02]"
+                   onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white text-xs font-semibold z-30 backdrop-blur-[2px]">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Enlarge
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CLIENT & PURPOSE (CONCISE WITH HOVER ELEVATION)
+         ====================================================================== -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Client & Problem -->
+      <div class="case-card p-6 sm:p-7 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-3 case-reveal case-delay-1">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">The Client &amp; Context</span>
+        <h3 class="font-display text-xl font-bold text-white">Sanctissimo Rosario Ladies Dormitory</h3>
+        <p class="text-xs sm:text-sm text-[#B3B3B3] leading-relaxed">
+          Sanctissimo Rosario Building operates as a multi-floor student and professional dormitory in Manila. Daily tasks previously relied on manual paper logs, informal messages, and physical water meter reads, creating delays, disputes, and lack of accountability.
+        </p>
+      </div>
+
+      <!-- Purpose & Solution -->
+      <div class="case-card p-6 sm:p-7 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-3 case-reveal case-delay-2">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">The Purpose &amp; Impact</span>
+        <h3 class="font-display text-xl font-bold text-white">Automating Community Operations</h3>
+        <p class="text-xs sm:text-sm text-[#B3B3B3] leading-relaxed">
+          DormEase digitizes the entire living experience: calculating proportional water consumption per floor automatically, enabling seamless QR Ph payments, and providing tenants with speech-to-text maintenance requests and a 1-tap emergency panic button.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CORE FEATURES BY ROLE (EASY TO SKIM WITH HOVER GLOW)
+         ====================================================================== -->
+    <section class="space-y-6">
+      <div class="space-y-1 case-reveal case-delay-1">
+        <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Key Capabilities</span>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Core Modules &amp; Features</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- 1. Administrator -->
+        <div class="case-card p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-2">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-user-shield text-[#B3B3B3]"></i>
+            <h3>Administrator (Web)</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Room &amp; Occupancy:</strong> Manage room allocations, monitor capacities, and track vacancies.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Tenant Database:</strong> Silent live profile refresh, phone validation, and password resets.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Proportional Water Billing:</strong> Enter floor readings; system divides usage per room and logs PayMongo QR Ph / deposit receipts.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>NLP Customization:</strong> Dynamic web GUI to train keywords and set urgency levels (Low to Urgent).</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Announcements &amp; Archival:</strong> Sticky pins, scheduled posts, and configurable data retention intervals.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. Front Desk -->
+        <div class="case-card p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-3">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-id-badge text-[#B3B3B3]"></i>
+            <h3>Front Desk (Web)</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Visitor Registration:</strong> Instant check-in verification for tenant pre-registered guests + walk-in logging.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Digital In/Out Logbook:</strong> Timestamped logging of tenant entries and exits, replacing paper logs.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Emergency Alerts:</strong> Instant visual and audible alarms triggered by tenant panic button presses.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-white text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Staff Duty Tracking:</strong> Guard schedules, duty shift handovers, and notification preferences.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3. Tenant Mobile -->
+        <div class="case-card case-card-accent p-6 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-4 case-reveal case-delay-4">
+          <div class="flex items-center gap-2.5 text-white font-bold text-base">
+            <i class="fa-solid fa-mobile-screen text-[#FF2D78]"></i>
+            <h3>Tenant (Mobile App)</h3>
+          </div>
+          <ul class="space-y-2.5 text-xs text-[#B3B3B3] leading-relaxed">
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#FF2D78] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Live Dashboard:</strong> Fast glance at room info, current bill (₱106.70), and pending requests.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#FF2D78] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Water Bill &amp; QR Ph:</strong> Itemized floor share with 1-click PayMongo QR Ph checkout (GCash/Maya).</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#FF2D78] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Voice &amp; NLP Maintenance:</strong> Speak or type room concerns; NLP classifies urgency with photo submission.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#FF2D78] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>1-Tap Panic Button:</strong> Central red trigger sends immediate distress signals and room location to desk staff.</span>
+            </li>
+            <li class="flex items-start gap-2 group/item">
+              <i class="fa-solid fa-check text-[#FF2D78] text-[10px] mt-1 shrink-0 transition-transform group-hover/item:scale-125"></i>
+              <span><strong>Visitor Pre-Registration:</strong> Submit guest details with past-date validation synced to front desk.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TECH STACK (STAGGERED POP-IN & HOVER ICON EXPANSION)
+         ====================================================================== -->
+    <section class="p-6 sm:p-8 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-5 case-reveal case-delay-2">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h3 class="font-display text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-[#B3B3B3]"></i>
+          <span>Technology Stack Used</span>
+        </h3>
+        <span class="text-xs font-mono text-[#737373]">Full-Stack Architecture</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        
+        <!-- Laravel -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-1 cursor-default">
+          <i class="fa-brands fa-laravel text-xl text-[#FF2D20] inline-block"></i>
+          <span class="text-xs font-bold text-white block">Laravel 10</span>
+          <span class="text-[10px] text-[#737373] block">Backend REST APIs</span>
+        </div>
+
+        <!-- React Native -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-2 cursor-default">
+          <i class="fa-brands fa-react text-xl text-[#61DAFB] inline-block"></i>
+          <span class="text-xs font-bold text-white block">React Native</span>
+          <span class="text-[10px] text-[#737373] block">Expo Mobile App</span>
+        </div>
+
+        <!-- MySQL -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-3 cursor-default">
+          <i class="fa-solid fa-database text-xl text-[#4479A1] inline-block"></i>
+          <span class="text-xs font-bold text-white block">MySQL</span>
+          <span class="text-[10px] text-[#737373] block">Relational Schemas</span>
+        </div>
+
+        <!-- PayMongo -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-4 cursor-default">
+          <i class="fa-solid fa-qrcode text-xl text-emerald-400 inline-block"></i>
+          <span class="text-xs font-bold text-white block">PayMongo</span>
+          <span class="text-[10px] text-[#737373] block">QR Ph (GCash/Maya)</span>
+        </div>
+
+        <!-- NLP -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-5 cursor-default">
+          <i class="fa-solid fa-wand-magic-sparkles text-xl text-purple-400 inline-block"></i>
+          <span class="text-xs font-bold text-white block">Rule-based NLP</span>
+          <span class="text-[10px] text-[#737373] block">Voice &amp; Text Triage</span>
+        </div>
+
+        <!-- AWS -->
+        <div class="tech-pill p-3.5 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] text-center space-y-1 case-pop case-delay-6 cursor-default">
+          <i class="fa-brands fa-aws text-xl text-[#FF9900] inline-block"></i>
+          <span class="text-xs font-bold text-white block">AWS</span>
+          <span class="text-[10px] text-[#737373] block">Cloud Deployment</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         THE TEAM (SIMPLE, SMALL ROLES, NO DESCRIPTIONS)
+         ====================================================================== -->
+    <section class="p-6 sm:p-8 rounded-2xl bg-[#161616] border border-[#2B2B2B] space-y-5 case-reveal case-delay-2">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="space-y-0.5">
+          <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider block">Capstone Engineering Team</span>
+          <h3 class="font-display text-xl font-bold text-white">The Team Behind DormEase</h3>
+        </div>
+        <span class="text-xs font-mono text-[#737373]">FEU Institute of Technology</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
+        
+        <!-- Member 1: Daniel Ling -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-1">
+          <span class="font-display font-bold text-sm text-white block">Daniel Ling</span>
+          <span class="team-role text-[11px] block font-medium transition-colors" style="color: var(--pink-light);">Backend &amp; Lead Mobile Developer</span>
+        </div>
+
+        <!-- Member 2: Kyla Andrade -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-2">
+          <span class="font-display font-bold text-sm text-white block">Kyla Andrade</span>
+          <span class="team-role text-[11px] text-[#B3B3B3] block transition-colors">Project Manager</span>
+        </div>
+
+        <!-- Member 3: Hilary Pagadora -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-3">
+          <span class="font-display font-bold text-sm text-white block">Hilary Pagadora</span>
+          <span class="team-role text-[11px] text-[#B3B3B3] block transition-colors">Frontend &amp; Mobile Developer</span>
+        </div>
+
+        <!-- Member 4: Amilia Tanajura -->
+        <div class="team-card p-4 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] space-y-1 case-pop case-delay-4">
+          <span class="font-display font-bold text-sm text-white block">Amilia Tanajura</span>
+          <span class="team-role text-[11px] text-[#B3B3B3] block transition-colors">Frontend Developer</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         BOTTOM ACTION LINKS (CLEANED UP & HOVER POLISHED)
+         ====================================================================== -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#2B2B2B] case-reveal case-delay-1">
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="https://www.srbdormease.com" target="_blank" rel="noopener noreferrer" class="btn-pink-gradient px-4 py-2 rounded-full font-bold text-xs text-white shadow-md inline-flex items-center gap-1.5">
+          <i class="fa-solid fa-globe text-xs"></i> www.srbdormease.com
+        </a>
+        <a href="https://github.com/9rzaaa/DormEase" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-full bg-[#161616] text-white border border-[#2B2B2B] hover:border-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all duration-300 hover:bg-white/5">
+          <i class="fa-brands fa-github text-xs"></i> GitHub
+        </a>
+      </div>
+
+      <a href="../index.html#contact" class="px-4 py-2 rounded-full bg-[#161616] text-[#B3B3B3] hover:text-white border border-[#2B2B2B] hover:border-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all duration-300 hover:bg-white/5">
+        <i class="fa-solid fa-envelope text-xs"></i> Contact Daniel
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="py-8 text-center text-xs text-[#737373] border-t border-[#2B2B2B] mt-12 case-reveal case-delay-1">
+    &copy; 2026 Daniel Ling. All Rights Reserved.
+  </footer>
+
+  <!-- ======================================================================
+       MINIMAL LIGHTBOX MODAL (WITH SCALE & BLUR TRANSITIONS)
+       ====================================================================== -->
+  <div id="image-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" onclick="closeModal()">
+    <div class="w-full max-w-5xl flex items-center justify-between py-2 px-2 text-white" onclick="event.stopPropagation()">
+      <span id="modal-caption" class="text-xs sm:text-sm font-semibold text-[#D4D4D4]">Dashboard Preview</span>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-[#2B2B2B] text-white hover:bg-white hover:text-black transition-colors duration-200 flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+    <div class="flex-1 w-full max-w-5xl flex items-center justify-center p-2" onclick="event.stopPropagation()">
+      <img id="modal-img" src="" alt="Enlarged UI" class="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300 scale-95">
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       BI-DIRECTIONAL SCROLL OBSERVER & ANIMATION ENGINE (RELOAD, SCROLL DOWN & UP)
+       ====================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ----------------------------------------------------------------------
+      // 1. Bi-Directional Scroll Reveal Observer
+      // ----------------------------------------------------------------------
+      const revealElements = document.querySelectorAll('.case-reveal, .case-pop');
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Trigger animation on scroll down or scroll up into viewport
+            entry.target.classList.add('is-revealed');
+          } else {
+            // Reset when element scrolls out of view so it re-animates on return
+            const rect = entry.boundingClientRect;
+            // Only un-reveal if scrolled past or away
+            entry.target.classList.remove('is-revealed');
+          }
+        });
+      }, {
+        threshold: 0.04,
+        rootMargin: '0px 0px -10px 0px'
+      });
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+
+      // Immediate reveal for elements already inside the initial viewport on load/reload
+      const triggerInitialView = () => {
+        revealElements.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-revealed');
+          }
+        });
+      };
+
+      triggerInitialView();
+      // Second pass after paint to ensure complete reliability
+      setTimeout(triggerInitialView, 120);
+    });
+
+    // ------------------------------------------------------------------------
+    // 2. Lightbox Modal Logic with Scale Transition
+    // ------------------------------------------------------------------------
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+
+    function openModal(src, caption) {
+      modalImg.src = src;
+      modalCaption.textContent = caption || 'Dashboard Preview';
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      setTimeout(() => {
+        modalImg.classList.remove('scale-95');
+        modalImg.classList.add('scale-100');
+      }, 20);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modalImg.classList.remove('scale-100');
+      modalImg.classList.add('scale-95');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 250);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+
+</body>
+</html>

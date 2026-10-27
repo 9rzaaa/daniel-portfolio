@@ -41,20 +41,96 @@
     }
   </script>
 
+  <!-- Detect reload or existing session to skip intro on reload -->
+  <script>
+    (function() {
+      try {
+        var isReload = false;
+        var perf = window.performance;
+        if (perf) {
+          var nav = perf.getEntriesByType && perf.getEntriesByType('navigation');
+          if (nav && nav.length > 0) {
+            isReload = nav[0].type === 'reload';
+          } else if (perf.navigation) {
+            isReload = perf.navigation.type === 1;
+          }
+        }
+        var hasVisited = sessionStorage.getItem('visited_session') === 'true';
+        var hasHash = window.location.hash && window.location.hash !== '#home';
+        if (isReload || hasVisited || hasHash) {
+          document.documentElement.classList.add('skip-intro');
+        }
+        // If reloading, immediately remove section hash so browser starts cleanly at the top of index.html
+        if (isReload && window.location.hash) {
+          if (window.history && history.replaceState) {
+            history.replaceState(null, null, window.location.pathname);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Custom Stylesheet (Salt & Pepper Theme) -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+<body class="intro-active bg-[#0A0A0A] text-[#D4D4D4] font-sans antialiased selection:bg-white selection:text-black min-h-screen relative overflow-x-hidden">
+  <script>
+    if (document.documentElement.classList.contains('skip-intro')) {
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-revealed');
+    }
+  </script>
 
   <!-- ======================================================================
-       FLOATING PILL NAVIGATION BAR
+       INTRO WELCOME SCREEN (Left-to-Right Animated Words & Curtain Lift)
        ====================================================================== -->
-  <header class="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-    <div class="floating-pill-nav rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 sm:gap-8 pointer-events-auto max-w-4xl w-full sm:w-auto">
+  <div id="intro-screen" class="fixed inset-0 flex flex-col items-center justify-center p-6 text-center select-none cursor-pointer">
+    
+    <!-- Top 3 Icon Pills (Appear One by One) -->
+    <div class="flex items-center gap-2.5 mb-8">
+      <div class="intro-icon-pill intro-icon-1">
+        <i class="fa-solid fa-code text-xs"></i>
+      </div>
+      <div class="intro-icon-pill intro-icon-2">
+        <i class="fa-solid fa-user text-xs"></i>
+      </div>
+      <div class="intro-icon-pill intro-icon-3">
+        <i class="fa-solid fa-gear text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Animated Words Expanding Outward from Middle to Sides -->
+    <div class="space-y-1 mb-8 text-center flex flex-col items-center">
+      <div class="overflow-hidden py-1 flex justify-center w-full">
+        <h2 class="intro-expand-line-1 intro-shimmer-text font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+          Welcome to my
+        </h2>
+      </div>
+      <div class="overflow-hidden py-1 flex justify-center w-full">
+        <h1 class="intro-expand-line-2 intro-shimmer-text font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter">
+          Portfolio Website
+        </h1>
+      </div>
+    </div>
+
+    <!-- Minimalist Progress Bar -->
+    <div class="intro-progress-bar"></div>
+
+    <!-- Subtitle / Skip Hint -->
+    <span class="mt-6 text-[10px] uppercase font-mono tracking-widest text-[#737373] hover:text-white transition-colors">
+      Click anywhere to explore
+    </span>
+  </div>
+
+  <!-- ======================================================================
+       FLOATING PILL NAVIGATION BAR (Expanded Width & Frosted Glassmorphism)
+       ====================================================================== -->
+  <header class="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
+    <div class="floating-pill-nav rounded-full px-5 sm:px-8 py-3 sm:py-3.5 flex items-center justify-between gap-4 sm:gap-8 pointer-events-auto max-w-5xl lg:max-w-6xl w-full">
       
       <!-- Logo / Monogram -->
-      <a href="#home" class="flex items-center gap-2 group">
-        <span class="w-8 h-8 rounded-full bg-[#FFFFFF] text-black font-extrabold text-sm flex items-center justify-center transition-transform group-hover:scale-105">
+      <a href="#home" class="flex items-center gap-2.5 group shrink-0">
+        <span class="w-8 h-8 rounded-full bg-white text-black font-extrabold text-sm flex items-center justify-center transition-transform group-hover:scale-105 shadow-md shadow-white/20">
           D
         </span>
         <span class="font-display font-bold text-sm tracking-tight text-white group-hover:text-[#D4D4D4] transition-colors">
@@ -63,27 +139,24 @@
       </a>
 
       <!-- Desktop Links: Pill Nav -->
-      <nav class="hidden md:flex items-center gap-1 desktop-pill-nav">
-        <a href="#home" class="pill-link active px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Home</a>
-        <a href="#about" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">About</a>
-        <a href="#projects" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Projects</a>
-        <a href="#certifications" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Certifications</a>
-        <a href="#contact" class="pill-link px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide">Contact</a>
+      <nav class="hidden md:flex items-center gap-1.5 desktop-pill-nav">
+        <a href="#home" class="pill-link active px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">Home</a>
+        <a href="#about" class="pill-link px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">About</a>
+        <a href="#projects" class="pill-link px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">Projects</a>
+        <a href="#certifications" class="pill-link px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">Certifications</a>
+        <a href="#contact" class="pill-link px-4 py-1.5 rounded-full text-xs font-medium tracking-wide">Contact</a>
       </nav>
 
-      <!-- Right CTAs: Resume & Hire Me -->
-      <div class="hidden sm:flex items-center gap-2">
-        <a href="assets/docs/resume.pdf" download class="px-3.5 py-1.5 rounded-full text-xs font-medium text-[#D4D4D4] border border-[#2B2B2B] hover:border-white hover:text-white transition-all flex items-center gap-1.5">
-          <i class="fa-solid fa-file-arrow-down text-[10px]"></i>
+      <!-- Right CTA: Resume -->
+      <div class="hidden sm:flex items-center shrink-0">
+        <a href="assets/docs/resume.pdf" download="Daniel_Ling_Resume.pdf" class="px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-white/10 hover:bg-white hover:text-black border border-white/20 hover:border-white transition-all duration-300 flex items-center gap-1.5 shadow-sm shadow-black/50 group">
+          <i class="fa-solid fa-file-arrow-down text-[10px] text-[#B3B3B3] group-hover:text-black transition-colors"></i>
           <span>Resume</span>
-        </a>
-        <a href="#contact" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black hover:bg-[#D4D4D4] transition-all">
-          Get in Touch
         </a>
       </div>
 
       <!-- Mobile Menu Trigger -->
-      <button id="mobile-menu-btn" type="button" aria-label="Toggle Navigation" class="md:hidden p-1.5 rounded-full text-[#D4D4D4] hover:text-white hover:bg-[#2B2B2B] transition-colors">
+      <button id="mobile-menu-btn" type="button" aria-label="Toggle Navigation" class="md:hidden p-2 rounded-full text-[#D4D4D4] hover:text-white hover:bg-white/10 transition-colors">
         <i class="fa-solid fa-bars text-sm"></i>
       </button>
 
@@ -97,12 +170,10 @@
     <a href="#projects" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Projects</a>
     <a href="#certifications" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Certifications</a>
     <a href="#contact" class="nav-link-item block py-2 px-3 rounded-lg text-sm font-medium text-[#D4D4D4] hover:bg-[#2B2B2B] hover:text-white">Contact</a>
-    <div class="pt-3 border-t border-[#2B2B2B] flex flex-col gap-2">
-      <a href="assets/docs/resume.pdf" download class="w-full text-center py-2 text-xs font-semibold text-[#D4D4D4] border border-[#2B2B2B] rounded-lg">
-        Download Resume
-      </a>
-      <a href="#contact" class="w-full text-center py-2 text-xs font-bold bg-white text-black rounded-lg">
-        Get in Touch
+    <div class="pt-3 border-t border-white/10 flex flex-col gap-2">
+      <a href="assets/docs/resume.pdf" download="Daniel_Ling_Resume.pdf" class="w-full text-center py-2.5 text-xs font-bold text-white bg-white/10 hover:bg-white hover:text-black border border-white/20 rounded-lg transition-colors flex items-center justify-center gap-2">
+        <i class="fa-solid fa-file-arrow-down text-[11px]"></i>
+        <span>Download Resume</span>
       </a>
     </div>
   </div>
@@ -110,7 +181,7 @@
   <!-- ======================================================================
        1. HOME / HERO SECTION (Inspo: Blueprint Grid + Hanging Lanyard ID)
        ====================================================================== -->
-  <section id="home" class="min-h-screen pt-36 pb-20 tech-grid relative flex items-center overflow-hidden border-b border-[#2B2B2B]">
+  <section id="home" class="min-h-screen pt-36 pb-12 sm:pb-16 tech-grid relative flex items-center overflow-hidden border-b border-[#2B2B2B]">
     
     <!-- Vignette Mask to blend grid softly -->
     <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/80 pointer-events-none"></div>
@@ -119,55 +190,67 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         
         <!-- Left Hero Content -->
-        <div class="lg:col-span-7 space-y-7">
+        <div class="lg:col-span-7 space-y-5 lg:space-y-6">
           
           <!-- Availability Pill -->
-          <div class="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-[#161616] border border-[#2B2B2B] text-xs font-medium tracking-wide">
-            <span class="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_8px_#ffffff]"></span>
-            <span class="text-[#B3B3B3] uppercase tracking-wider text-[11px] font-semibold">Available for Internship 2026</span>
+          <div class="anim-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium tracking-wide backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_10px_#ffffff]"></span>
+            <span class="text-[#D4D4D4] uppercase tracking-wider text-[11px] font-semibold">Available for Internship 2026</span>
           </div>
 
-          <!-- Big Title & Subtitle -->
+          <!-- Big Title & Subtitle with Word Transitions -->
           <div class="space-y-3">
-            <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter leading-[1.05]">
-              Web<br>Developer
+            <h1 class="anim-title font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[1.05]">
+              <span class="anim-title-word">Web</span><br>
+              <span class="anim-title-word">Developer</span>
             </h1>
-            <p class="font-display text-xl sm:text-2xl text-[#B3B3B3] font-medium tracking-tight">
-              Junior Programmer • Backend & Full-Stack
+            <div class="anim-subtitle">
+              <p class="font-display text-xl sm:text-2xl text-[#B3B3B3] font-medium tracking-tight flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <span class="anim-sub-item anim-sub-1 subtitle-shimmer font-semibold text-white">Junior Programmer</span>
+                <span class="anim-sub-item anim-sub-2 text-white/40 anim-pulse-dot select-none">•</span>
+                <span class="anim-sub-item anim-sub-3 text-[#D4D4D4] hover:text-white transition-colors cursor-default">Backend</span>
+                <span class="anim-sub-item anim-sub-4 text-white/40 select-none">&amp;</span>
+                <span class="anim-sub-item anim-sub-5 font-semibold text-white tracking-tight cursor-default relative group">
+                  <span class="relative z-10">Full-Stack</span>
+                  <span class="absolute -bottom-0.5 left-0 w-full h-[2px] bg-gradient-to-r from-white to-transparent opacity-70 group-hover:opacity-100 transition-opacity"></span>
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bio Pitch with Editorial Left Line -->
+          <div class="anim-desc editorial-bio">
+            <p class="text-base text-[#B3B3B3] max-w-xl leading-relaxed">
+              Specializing in building robust web applications with <span class="text-white font-semibold hover:underline transition-colors">PHP</span>, <span class="text-white font-semibold hover:underline transition-colors">Laravel</span>, and <span class="text-white font-semibold hover:underline transition-colors">CodeIgniter</span>. Focused on clean architecture, database integrity, and practical software solutions.
             </p>
           </div>
 
-          <!-- Bio Pitch -->
-          <p class="text-base text-[#B3B3B3] max-w-xl leading-relaxed">
-            Specializing in building robust web applications with <span class="text-white font-semibold">PHP</span>, <span class="text-white font-semibold">Laravel</span>, and <span class="text-white font-semibold">CodeIgniter</span>. Focused on clean architecture, database integrity, and practical software solutions.
-          </p>
-
-          <!-- Tech Stack Micro-Tags -->
-          <div class="flex flex-wrap items-center gap-2 pt-1">
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">PHP</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Laravel</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">CodeIgniter</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">MySQL</span>
-            <span class="px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Tailwind CSS</span>
+          <!-- Tech Stack Micro-Tags with Staggered Entrance -->
+          <div class="anim-chips flex flex-wrap items-center gap-2 pt-1">
+            <span class="tech-chip anim-chip anim-chip-1 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">PHP</span>
+            <span class="tech-chip anim-chip anim-chip-2 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Laravel</span>
+            <span class="tech-chip anim-chip anim-chip-3 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">CodeIgniter</span>
+            <span class="tech-chip anim-chip anim-chip-4 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">MySQL</span>
+            <span class="tech-chip anim-chip anim-chip-5 px-3 py-1 rounded-md bg-[#161616] border border-[#2B2B2B] text-xs font-medium text-[#D4D4D4]">Tailwind CSS</span>
           </div>
 
           <!-- Action Buttons & Socials -->
-          <div class="flex flex-wrap items-center gap-4 pt-3">
-            <a href="#projects" class="px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-[#D4D4D4] transition-all flex items-center gap-2 shadow-lg shadow-white/10">
-              <span>Explore Projects</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          <div class="anim-actions flex flex-wrap items-center gap-4 pt-1">
+            <a href="#projects" class="hero-primary-btn px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-[#D4D4D4] transition-all flex items-center gap-2 shadow-lg shadow-white/10 hover:shadow-white/20 relative overflow-hidden group">
+              <span class="relative z-10">Explore Projects</span>
+              <i class="fa-solid fa-arrow-right text-[10px] relative z-10 group-hover:translate-x-0.5 transition-transform"></i>
             </a>
-            <a href="#contact" class="px-6 py-3 rounded-lg bg-[#161616] border border-[#2B2B2B] text-[#D4D4D4] hover:text-white hover:border-[#B3B3B3] font-bold text-xs uppercase tracking-wider transition-all">
+            <a href="#contact" class="px-6 py-3 rounded-lg bg-[#161616] border border-[#2B2B2B] text-[#D4D4D4] hover:text-white hover:border-white font-bold text-xs uppercase tracking-wider transition-all">
               Contact Me
             </a>
             <div class="flex items-center gap-4 pl-2 text-[#B3B3B3]">
               <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="GitHub">
                 <i class="fa-brands fa-github"></i>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/daniel-ling-529136443" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors text-lg" aria-label="LinkedIn">
                 <i class="fa-brands fa-linkedin"></i>
               </a>
-              <a href="mailto:your.email@example.com" class="hover:text-white transition-colors text-lg" aria-label="Email">
+              <a href="mailto:lingdaniel999@gmail.com" class="hover:text-white transition-colors text-lg" aria-label="Email">
                 <i class="fa-solid fa-envelope"></i>
               </a>
             </div>
@@ -175,15 +258,15 @@
 
         </div>
 
-        <!-- Right Side: Hanging Lanyard ID Badge (Tactile 3D Tilt Component) -->
+        <!-- Right Side: Hanging Lanyard ID Badge (Tactile 3D Tilt & Sway Component) -->
         <div class="lg:col-span-5 flex justify-center relative lanyard-container">
           
-          <div class="flex flex-col items-center">
+          <div id="lanyard-assembly" class="lanyard-hanging-assembly flex flex-col items-center">
             
             <!-- Hanging Lanyard Strap (Extends to Top Edge) -->
             <div class="lanyard-strap flex items-center justify-center relative -mt-36 sm:-mt-44 mb-0">
-              <span class="text-[9px] uppercase font-bold tracking-widest text-[#B3B3B3] rotate-90 select-none opacity-40">
-                INTERN
+              <span class="text-[9px] uppercase font-bold tracking-widest text-[#B3B3B3] rotate-90 select-none opacity-50">
+                DANIEL • INTERN 2026
               </span>
             </div>
 
@@ -193,55 +276,58 @@
             </div>
 
             <!-- The Photorealistic ID Badge Card -->
-            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-5 bg-white border border-[#D4D4D4] relative select-none cursor-pointer">
+            <div id="hero-id-badge" class="id-badge w-72 sm:w-80 p-4 sm:p-5 relative select-none cursor-pointer">
               
               <!-- Clip Hole -->
-              <div class="w-12 h-2.5 bg-[#0A0A0A] rounded-full mx-auto mb-4 border border-[#2B2B2B]"></div>
+              <div class="w-12 h-2.5 bg-[#050505]/90 rounded-full mx-auto mb-3.5 border border-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.2)]"></div>
 
-              <!-- Badge Header -->
-              <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-3 mb-4">
+              <!-- Badge Header / Pass Identifier -->
+              <div class="flex items-center justify-between border-b border-white/15 pb-2.5 mb-3 px-1">
                 <div>
-                  <span class="text-[10px] uppercase font-extrabold tracking-widest text-[#737373] block">ENGINEERING PASS</span>
-                  <span class="text-xs font-bold text-black tracking-tight">DEV-INTERN #2026</span>
+                  <span class="text-[9px] uppercase font-mono font-extrabold tracking-widest text-[#B3B3B3] block">DEV PASS • 2026</span>
+                  <span class="text-xs font-bold text-white tracking-tight font-display">SOFTWARE INTERN</span>
                 </div>
-                <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-black">
-                  <i class="fa-solid fa-terminal text-[8px]"></i>
+                <div class="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-[9px] font-mono font-bold shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                  D
                 </div>
               </div>
 
-              <!-- Portrait Frame -->
-              <div class="relative w-full h-56 rounded-xl bg-[#161616] overflow-hidden border border-[#E5E5E5] flex items-center justify-center group mb-4">
-                <!-- Fallback Monochrome Silhouette / Portrait -->
-                <div class="w-full h-full bg-gradient-to-b from-[#2B2B2B] to-[#0A0A0A] flex flex-col items-center justify-center p-4 text-center">
-                  <div class="w-24 h-24 rounded-full border-2 border-[#D4D4D4] flex items-center justify-center mb-2 bg-[#1A1A1A]">
-                    <i class="fa-solid fa-user text-4xl text-[#B3B3B3]"></i>
+              <!-- Main Portrait Photo Frame -->
+              <div class="relative w-full h-64 sm:h-72 rounded-xl bg-white overflow-hidden border border-white/25 shadow-[0_4px_20px_rgba(0,0,0,0.6),inset_0_0_0_1px_rgba(255,255,255,0.2)] group mb-3.5">
+                <!-- User Profile Image -->
+                <img 
+                  id="badge-photo" 
+                  src="assets/images/hero/profile.jpg" 
+                  alt="Daniel Ling - Profile" 
+                  class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500 block"
+                  onerror="if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/hero/profile.png'; } else { this.style.display='none'; document.getElementById('badge-photo-fallback').style.display='flex'; }"
+                >
+
+                <!-- Fallback Placeholder (shows automatically until profile.jpg / profile.png is added) -->
+                <div id="badge-photo-fallback" class="w-full h-full bg-gradient-to-b from-[#222222] to-[#0A0A0A] flex flex-col items-center justify-center p-4 text-center" style="display: none;">
+                  <div class="w-20 h-20 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center mb-3 bg-white/5">
+                    <i class="fa-solid fa-camera text-2xl text-[#B3B3B3]"></i>
                   </div>
-                  <span class="text-[11px] font-bold text-white tracking-wider uppercase">Daniel</span>
-                  <span class="text-[9px] text-[#B3B3B3] tracking-wide">Web Developer Candidate</span>
-                </div>
-                <!-- Holographic chip badge in corner -->
-                <div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[9px] font-mono font-bold text-white border border-[#333333]">
-                  PHP / LARAVEL
+                  <span class="text-xs font-bold text-white tracking-wide">Add Your Photo</span>
+                  <span class="text-[10px] font-mono text-[#737373] mt-1">assets/images/hero/profile.jpg</span>
                 </div>
               </div>
 
               <!-- Badge Details -->
-              <div class="space-y-1 mb-4 text-left">
-                <h3 class="font-display font-bold text-xl text-black tracking-tight leading-none">
-                  DANIEL
-                </h3>
-                <p class="text-xs font-semibold text-[#525252]">
-                  Web & Software Developer Intern
-                </p>
-                <p class="text-[10px] font-mono text-[#737373]">
-                  DEPT: SOFTWARE DEV • STATUS: READY
-                </p>
-              </div>
-
-              <!-- Footer with Barcode -->
-              <div class="pt-3 border-t border-[#E5E5E5] flex items-center justify-between">
-                <div class="h-6 w-32 barcode-lines opacity-80"></div>
-                <span class="text-[9px] font-mono font-bold text-[#737373]">VERIFIED 2026</span>
+              <div class="px-1 flex items-end justify-between border-t border-white/15 pt-3">
+                <div class="space-y-0.5 text-left">
+                  <h3 class="font-display font-black text-xl text-white tracking-tight leading-none">
+                    DANIEL
+                  </h3>
+                  <p class="text-[11px] font-semibold text-[#B3B3B3]">
+                    Web &amp; Software Developer
+                  </p>
+                </div>
+                <!-- Mini Barcode -->
+                <div class="flex flex-col items-end">
+                  <div class="h-5 w-24 barcode-lines opacity-85"></div>
+                  <span class="text-[8px] font-mono font-bold text-[#B3B3B3] mt-0.5 tracking-wider">#2026-DEV</span>
+                </div>
               </div>
 
             </div>
@@ -255,97 +341,198 @@
   </section>
 
   <!-- ======================================================================
-       2. ABOUT SECTION
+       2. ABOUT SECTION (Circle Photo on Left, CV Details on Right)
        ====================================================================== -->
-  <section id="about" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="about" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="max-w-2xl">
+      <div class="max-w-2xl mb-8 sm:mb-10 about-reveal-item about-delay-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">01 / Profile</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          About & Technical Foundations
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          About &amp; Background
         </h2>
       </div>
 
-      <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <!-- Main Layout: Circle Photo Holder on Left, Rich CV Content on Right -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
         
-        <!-- Story Bio -->
-        <div class="lg:col-span-7 space-y-5 text-[#B3B3B3] text-base leading-relaxed">
-          <p>
-            I am a web developer preparing for my official internship this year. My technical focus is centered around backend development with <span class="text-white font-semibold">PHP, Laravel, and CodeIgniter</span>, paired with clean and responsive frontend design using <span class="text-white font-semibold">HTML5, CSS3, and Tailwind CSS</span>.
-          </p>
-          <p>
-            I value code clarity, relational database normalization with MySQL, and building user experiences that feel intuitive and responsive. During my internship, I am eager to contribute to production codebases, learn team collaboration workflows like Git feature branching, and build reliable software.
-          </p>
+        <!-- Left Side: Circular Photo Holder & Quick Badges -->
+        <div class="lg:col-span-4 flex flex-col items-center text-center">
+          
+          <!-- Outer Halo Ring -->
+          <div class="about-reveal-circle about-delay-2 relative p-2 rounded-full bg-gradient-to-b from-white/20 via-white/5 to-transparent border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
+            
+            <!-- Circular Photo Container -->
+            <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden bg-white border-2 border-white/20 relative shadow-inner">
+              <!-- Profile Image -->
+              <img 
+                id="about-photo"
+                src="assets/images/about/profile.jpg" 
+                alt="Daniel P. Ling" 
+                class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+                onerror="if (!this.dataset.triedHero) { this.dataset.triedHero = '1'; this.src = 'assets/images/hero/profile.jpg'; } else if (!this.dataset.triedPng) { this.dataset.triedPng = '1'; this.src = 'assets/images/about/profile.png'; } else { this.style.display='none'; document.getElementById('about-photo-fallback').style.display='flex'; }"
+              >
 
-          <div class="pt-4 grid grid-cols-2 gap-4">
-            <div class="p-5 rounded-xl pepper-card">
-              <span class="font-display block text-3xl font-extrabold text-white">2026</span>
-              <span class="text-xs text-[#B3B3B3] mt-1 block">Internship Candidate</span>
+              <!-- Fallback Placeholder (shows until photo is dropped) -->
+              <div id="about-photo-fallback" class="w-full h-full bg-gradient-to-b from-[#2B2B2B] to-[#0A0A0A] flex flex-col items-center justify-center p-4" style="display: none;">
+                <div class="w-20 h-20 rounded-full border border-dashed border-white/30 flex items-center justify-center mb-2 bg-white/5">
+                  <i class="fa-solid fa-user text-3xl text-[#B3B3B3]"></i>
+                </div>
+                <span class="text-xs font-bold text-white tracking-wide">Daniel P. Ling</span>
+                <span class="text-[9px] font-mono text-[#737373] mt-0.5">assets/images/about/profile.jpg</span>
+              </div>
+
+              <!-- Subtle Glass Reflection Sheen -->
+              <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
             </div>
-            <div class="p-5 rounded-xl pepper-card">
-              <span class="font-display block text-3xl font-extrabold text-white">PHP</span>
-              <span class="text-xs text-[#B3B3B3] mt-1 block">Laravel & CodeIgniter</span>
+
+            <!-- Active Status Floating Badge -->
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-[#121212]/95 border border-white/20 backdrop-blur-md shadow-lg flex items-center gap-2 whitespace-nowrap">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
+              <span class="text-[10px] font-mono font-bold tracking-wider text-white uppercase">4th Year • FEU Tech</span>
             </div>
           </div>
+
+          <!-- Academic & Org Micro-Pills -->
+          <div class="about-reveal-item about-delay-3 mt-8 space-y-2.5 w-full max-w-xs">
+            <div class="p-3 rounded-xl pepper-card text-left flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white text-xs shrink-0">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-mono text-[#B3B3B3] uppercase block">Honors</span>
+                <span class="text-xs font-bold text-white">Top Performing Student</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl pepper-card text-left flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white text-xs shrink-0">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-mono text-[#B3B3B3] uppercase block">Organization</span>
+                <span class="text-xs font-bold text-white">Junior Philippine Computer Society</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Tech Stack Categorized -->
-        <div class="lg:col-span-5 space-y-6">
-          <div class="p-6 rounded-2xl pepper-card space-y-6">
-            <h3 class="font-display text-lg font-bold text-white tracking-tight">Technologies & Tools</h3>
-
-            <!-- Backend -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Backend & Databases</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-php text-sm"></i> PHP</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-laravel text-sm"></i> Laravel</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-fire text-sm"></i> CodeIgniter</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-database text-sm"></i> MySQL</span>
-              </div>
-            </div>
-
-            <!-- Frontend -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Frontend Architecture</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-html5 text-sm"></i> HTML5</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-css3-alt text-sm"></i> CSS3</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-wind text-sm"></i> Tailwind CSS</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-js text-sm"></i> JavaScript</span>
-              </div>
-            </div>
-
-            <!-- Workflow -->
-            <div>
-              <span class="text-[11px] uppercase font-bold tracking-wider text-[#B3B3B3] block mb-2.5">Dev Workflow</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-brands fa-git-alt text-sm"></i> Git & GitHub</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-terminal text-sm"></i> VS Code</span>
-                <span class="px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-xs font-semibold text-white flex items-center gap-1.5"><i class="fa-solid fa-paper-plane text-sm"></i> Postman</span>
-              </div>
-            </div>
-
+        <!-- Right Side: Comprehensive CV Story, Experience & Skills Matrix -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Narrative Story & Bio -->
+          <div class="about-reveal-item about-delay-2 space-y-4 text-[#B3B3B3] text-base leading-relaxed">
+            <h3 class="font-display text-2xl font-bold text-white tracking-tight">
+              Building Full-Stack Solutions with Academic &amp; Practical Rigor
+            </h3>
+            <p>
+              I am a detail-oriented <span class="text-white font-semibold">4th-year Information Technology student</span> at <span class="text-white font-semibold">FEU Institute of Technology</span> specializing in <span class="text-white font-semibold">Web and Mobile Application Development</span>. Recognized as a <span class="text-white font-semibold">Top Performing Student (2023–2024)</span>, I combine disciplined software engineering with hands-on full-stack development.
+            </p>
+            <p>
+              My experience centers on architecting scalable <span class="text-white font-semibold">Laravel PHP REST APIs</span>, developing cross-platform mobile apps with <span class="text-white font-semibold">React Native &amp; Expo</span>, and building rule-based NLP systems. Currently, I serve as the <span class="text-white font-semibold">Backend &amp; Lead Mobile Developer</span> for <span class="text-white font-semibold">DormEase</span>—a comprehensive dormitory management system with NLP-based reporting deployed on AWS.
+            </p>
           </div>
+
+          <!-- Academic & Capstone Highlight Stats Cards -->
+          <div class="about-reveal-item about-delay-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Degree Program</span>
+              <span class="font-display text-xl font-bold text-white block">BSIT</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Web &amp; Mobile Spec.</span>
+            </div>
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Capstone Role</span>
+              <span class="font-display text-xl font-bold text-white block">Lead Dev</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Backend &amp; Mobile (AWS)</span>
+            </div>
+            <div class="p-4 sm:p-5 rounded-xl pepper-card">
+              <span class="text-[10px] uppercase font-mono font-bold text-[#737373] block mb-1">Certifications</span>
+              <span class="font-display text-xl font-bold text-white block">3 Credentials</span>
+              <span class="text-xs text-[#B3B3B3] mt-0.5 block">Cisco, Python, PMI</span>
+            </div>
+          </div>
+
+          <!-- Technical Capabilities & Tooling Matrix -->
+          <div class="about-reveal-item about-delay-4 p-6 rounded-2xl pepper-card space-y-5">
+            <div class="flex items-center justify-between border-b border-[#2B2B2B] pb-3">
+              <h4 class="font-display text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-[#B3B3B3] text-sm"></i>
+                <span>Technical Stack &amp; Core Competencies</span>
+              </h4>
+              <span class="text-[10px] font-mono text-[#737373] uppercase">Curated from CV</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
+              
+              <!-- Backend & Cloud -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Backend, API &amp; Cloud</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">PHP</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Laravel REST APIs</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">MySQL</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Python</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">AWS Deployment</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Rule-based NLP</span>
+                </div>
+              </div>
+
+              <!-- Mobile & Frontend -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Mobile &amp; Frontend</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">React Native</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Expo</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Tailwind CSS</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">HTML5 &amp; CSS3</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">JavaScript</span>
+                </div>
+              </div>
+
+              <!-- Networking & Management -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Networking &amp; Project Management</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Cisco Networking (CCST)</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">PMI Project Management</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Computer Troubleshooting</span>
+                </div>
+              </div>
+
+              <!-- Professional & Soft Skills -->
+              <div class="space-y-2">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#737373] block">Workflow &amp; Soft Skills</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Git &amp; GitHub</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Problem-Solving</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">Teamwork &amp; Communication</span>
+                  <span class="px-2.5 py-1 rounded-md bg-[#0A0A0A] border border-[#2B2B2B] text-xs text-[#D4D4D4] font-medium">English &amp; Filipino Proficiency</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
+
     </div>
   </section>
 
   <!-- ======================================================================
        3. PROJECTS SECTION
        ====================================================================== -->
-  <section id="projects" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="projects" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-[43px]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10 reveal-item reveal-delay-1">
         <div>
           <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">02 / Portfolio</span>
-          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
             Featured Projects
           </h2>
         </div>
@@ -355,108 +542,216 @@
       </div>
 
       <!-- Project Cards Grid -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Project 1: Laravel System -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
-          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
-            <i class="fa-brands fa-laravel text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
-              Laravel
+        <!-- Project 1: DormEase (Laravel & React Native Capstone) -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-2 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
+          <!-- Thumbnail / Visual Preview -->
+          <a href="projects/dormease.html" class="block h-52 bg-[#111111] border-b border-[#2B2B2B] relative overflow-hidden group/thumb">
+            <img src="assets/images/projects/dormease/web-db.png" alt="DormEase Web Admin Dashboard" class="w-full h-full object-cover object-top opacity-85 group-hover/thumb:opacity-100 group-hover/thumb:scale-105 transition-all duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/30"></div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A]/90 backdrop-blur-md text-[10px] font-bold text-white border border-[#2B2B2B] flex items-center gap-1">
+                <i class="fa-brands fa-laravel text-[#FF2D20] text-xs"></i> Laravel &amp; React Native
+              </span>
+            </div>
+
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-[10px] font-bold text-emerald-400 border border-emerald-500/30">
+              Capstone 2026
             </span>
-          </div>
+
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-[#D4D4D4] font-medium">
+              <span class="truncate max-w-[200px] text-xs text-white font-semibold">
+                <i class="fa-solid fa-building text-[#B3B3B3] mr-1"></i> Sanctissimo Rosario Bldg.
+              </span>
+              <span class="text-[10px] font-mono text-[#B3B3B3] group-hover/thumb:text-white transition-colors flex items-center gap-1">
+                Case Study <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </span>
+            </div>
+          </a>
+
+          <!-- Content Body -->
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider">Sanctissimo Rosario Ladies Dorm</span>
+                <span class="text-[10px] font-mono text-[#B3B3B3]">Web + Mobile</span>
+              </div>
               <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
-                Laravel Web Application #1
+                <a href="projects/dormease.html" class="hover:underline">
+                  DormEase: Smart Dormitory System
+                </a>
               </h3>
               <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
-                Full-featured management platform engineered with Laravel and MySQL. Features role-based authentication, relational schema design, and clean CRUD flows.
+                Digital community management platform connecting administrators, front desk staff, and residents. Features floor-proportional water billing with PayMongo QR Ph, speech-to-text NLP maintenance triage, and panic reporting.
               </p>
             </div>
+
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Laravel</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Laravel 10</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">React Native</span>
                 <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PayMongo QR Ph</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Rule-based NLP</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">AWS</span>
               </div>
-              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
-                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
+              <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="projects/dormease.html" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                  <span>Case Study &amp; UI</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
-                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-brands fa-github text-xs"></i> GitHub
-                </a>
+                <div class="flex items-center gap-3">
+                  <a href="https://www.srbdormease.com" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live
+                  </a>
+                  <a href="https://github.com/9rzaaa/DormEase" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Project 2: CodeIgniter Portal -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
-          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
-            <i class="fa-solid fa-fire text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
-              CodeIgniter
+        <!-- Project 2: COCOIR (CodeIgniter 4 E-Commerce & Admin CMS) -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-3 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
+          <!-- Thumbnail / Visual Preview -->
+          <a href="projects/cocoir.html" class="block h-52 bg-[#111111] border-b border-[#2B2B2B] relative overflow-hidden group/thumb">
+            <img src="assets/images/projects/cocoir/storefront.png" alt="COCOIR Customer Storefront" class="w-full h-full object-cover object-top opacity-85 group-hover/thumb:opacity-100 group-hover/thumb:scale-105 transition-all duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/30"></div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A]/90 backdrop-blur-md text-[10px] font-bold text-white border border-[#2B2B2B] flex items-center gap-1">
+                <i class="fa-solid fa-fire-flame-curved text-[#EE4323] text-xs"></i> CodeIgniter 4 &amp; MySQL
+              </span>
+            </div>
+
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-amber-950/80 backdrop-blur-md text-[10px] font-bold text-[#F4A940] border border-[#E87722]/40">
+              E-Commerce
             </span>
-          </div>
+
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-[#D4D4D4] font-medium">
+              <span class="truncate max-w-[200px] text-xs text-white font-semibold">
+                <i class="fa-solid fa-leaf text-[#6BAF78] mr-1"></i> Coconut Coir Co.
+              </span>
+              <span class="text-[10px] font-mono text-[#B3B3B3] group-hover/thumb:text-white transition-colors flex items-center gap-1">
+                Case Study <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </span>
+            </div>
+          </a>
+
+          <!-- Content Body -->
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider">Sustainable E-Commerce Platform</span>
+                <span class="text-[10px] font-mono text-[#B3B3B3]">Storefront + CMS</span>
+              </div>
               <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
-                CodeIgniter Web Portal #2
+                <a href="projects/cocoir.html" class="hover:underline">
+                  COCOIR: Eco-Friendly Coir E-Commerce
+                </a>
               </h3>
               <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
-                Lightweight database portal built with CodeIgniter and PHP, emphasizing fast MVC query execution, session security, and clean forms.
+                Full-stack Philippine coconut coir marketplace built with CodeIgniter 4. Features a 5-category eco-catalog, persistent cart, COD &amp; InstaPay receipt verification, refund workflows, and an executive Admin CMS &amp; analytics portal.
               </p>
             </div>
+
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">CodeIgniter</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PHP</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">CodeIgniter 4</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PHP 8.3</span>
                 <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind CSS</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Docker</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Railway</span>
               </div>
-              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
-                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
+              <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="projects/cocoir.html" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                  <span>Case Study &amp; UI</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
-                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-brands fa-github text-xs"></i> GitHub
-                </a>
+                <div class="flex items-center gap-3">
+                  <a href="https://cocoir-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live
+                  </a>
+                  <a href="https://github.com/9rzaaa/COCOIR" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Project 3: Responsive Frontend / Case Study -->
-        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group">
-          <div class="h-48 bg-[#111111] border-b border-[#2B2B2B] flex items-center justify-center relative overflow-hidden">
-            <i class="fa-solid fa-layer-group text-6xl text-[#2B2B2B] group-hover:text-white transition-colors duration-300"></i>
-            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-[10px] font-bold text-white border border-[#2B2B2B]">
-              Frontend
+        <!-- Project 3: EASY&CO (2nd-Year Course Project - Condo Booking Platform) -->
+        <div class="pepper-card rounded-2xl overflow-hidden flex flex-col justify-between group reveal-item reveal-delay-4 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
+          <!-- Thumbnail / Visual Preview -->
+          <a href="projects/easyco.html" class="block h-52 bg-[#111111] border-b border-[#2B2B2B] relative overflow-hidden group/thumb">
+            <img src="assets/images/projects/easyco/storefront.png" alt="EASY&CO Guest Booking Storefront" class="w-full h-full object-cover object-top opacity-85 group-hover/thumb:opacity-100 group-hover/thumb:scale-105 transition-all duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/30"></div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A]/90 backdrop-blur-md text-[10px] font-bold text-white border border-[#2B2B2B] flex items-center gap-1">
+                <i class="fa-solid fa-fire-flame-curved text-[#EE4323] text-xs"></i> CodeIgniter 4 &amp; MySQL
+              </span>
+            </div>
+
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-[10px] font-bold text-[#73AF6F] border border-[#73AF6F]/40">
+              2nd-Year Coursework
             </span>
-          </div>
+
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-[#D4D4D4] font-medium">
+              <span class="truncate max-w-[200px] text-xs text-white font-semibold">
+                <i class="fa-solid fa-building text-[#73AF6F] mr-1"></i> Luxury Condo Booking
+              </span>
+              <span class="text-[10px] font-mono text-[#B3B3B3] group-hover/thumb:text-white transition-colors flex items-center gap-1">
+                Case Study <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </span>
+            </div>
+          </a>
+
+          <!-- Content Body -->
           <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="text-[10px] font-mono uppercase font-bold text-[#737373] tracking-wider">AD Course Project · FEU Tech</span>
+                <span class="text-[10px] font-mono text-[#B3B3B3]">Booking + Admin</span>
+              </div>
               <h3 class="font-display text-xl font-bold text-white group-hover:text-[#D4D4D4] transition-colors">
-                Interactive Web Interface #3
+                <a href="projects/easyco.html" class="hover:underline">
+                  EASY&amp;CO: Condo Booking Platform
+                </a>
               </h3>
               <p class="text-sm text-[#B3B3B3] mt-2 line-clamp-3">
-                Modern responsive web interface built with HTML5, modern CSS, and JavaScript. Optimized for fast rendering, touch accessibility, and mobile fluid layouts.
+                2nd-year Application Development course project built to professor-specified MVC and UI fragmentation guidelines. Features a Flatpickr condo booking calendar, GCash/Maya/QR Ph payment simulation, and an Admin CRUD console.
               </p>
             </div>
+
             <div>
               <div class="flex flex-wrap gap-1.5 mb-4">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">HTML5</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">JavaScript</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">CodeIgniter 4</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">PHP 8.3</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">MySQL</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Tailwind CSS</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Docker</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-[#0A0A0A] border border-[#2B2B2B] text-[#D4D4D4]">Railway</span>
               </div>
-              <div class="flex items-center gap-4 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
-                <a href="#" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live Demo
+              <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+                <a href="projects/easyco.html" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                  <span>Case Study &amp; UI</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
-                <a href="https://github.com/9rzaaa" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-brands fa-github text-xs"></i> GitHub
-                </a>
+                <div class="flex items-center gap-3">
+                  <a href="https://ci4-beautifly-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Live
+                  </a>
+                  <a href="https://github.com/9rzaaa/CI4-BEAUTIFLY" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -467,67 +762,220 @@
   </section>
 
   <!-- ======================================================================
-       4. CERTIFICATIONS SECTION
+       4. CERTIFICATIONS SECTION (3D SPINNING SHOWCASE + CREDENTIAL CARDS)
        ====================================================================== -->
-  <section id="certifications" class="py-28 tech-grid relative border-b border-[#2B2B2B]">
+  <section id="certifications" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative border-b border-[#2B2B2B] scroll-mt-20 sm:scroll-mt-24 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header -->
-      <div class="max-w-2xl">
+      <div class="max-w-2xl mb-6 sm:mb-8 reveal-item reveal-delay-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">03 / Credentials</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Certifications & Learning
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Certifications &amp; Learning
         </h2>
       </div>
 
-      <!-- Certifications Grid -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 3D SPINNING CERTIFICATIONS STAGE (Open Background, Continuous Smooth Spin) -->
+      <div class="relative mb-8 sm:mb-10 reveal-item reveal-delay-2">
         
-        <!-- Cert 1 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-certificate"></i>
+        <!-- Subtle Flowing Wave Lines SVG in Background -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 1440 280" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-100 155 C 320 165, 580 75, 980 85 C 1220 90, 1360 155, 1540 175" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+          <path d="M-100 161 C 340 170, 600 87, 1000 97 C 1230 103, 1370 167, 1540 187" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+          <path d="M-100 167 C 360 175, 620 101, 1020 111 C 1240 117, 1380 179, 1540 199" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <path d="M-100 173 C 380 181, 640 115, 1040 125 C 1250 131, 1390 191, 1540 211" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+          <path d="M-100 179 C 400 187, 660 129, 1060 139 C 1260 145, 1400 203, 1540 223" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        </svg>
+
+        <!-- 3D Perspective Stage -->
+        <div id="cert-spin-stage" class="cert-spin-stage">
+          <!-- 3D Cylindrical Ring (6 Panels = 3 Certifications × 2 around 360° Ring) -->
+          <div id="cert-spin-ring" class="cert-spin-ring">
+            
+            <!-- Panel 0 (0°): IT Specialist - Python -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')">
+              <img src="assets/images/certifications/it-specialist-python.png" alt="IT Specialist in Python Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Certiport · Feb 13, 2025</span>
+                <span class="font-display text-xs font-bold text-white">IT Specialist — Python</span>
+              </div>
+            </div>
+
+            <!-- Panel 1 (60°): PMI Project Management Ready -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')">
+              <img src="assets/images/certifications/pmi-project-management-ready.png" alt="PMI Project Management Ready Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">PMI · Mar 17, 2026</span>
+                <span class="font-display text-xs font-bold text-white">PMI Project Management Ready®</span>
+              </div>
+            </div>
+
+            <!-- Panel 2 (120°): Cisco CCST Networking -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')">
+              <img src="assets/images/certifications/cisco-ccst-networking.png" alt="Cisco CCST Networking Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Cisco · Feb 10, 2025</span>
+                <span class="font-display text-xs font-bold text-white">Cisco CCST — Networking</span>
+              </div>
+            </div>
+
+            <!-- Panel 3 (180°): IT Specialist - Python -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')">
+              <img src="assets/images/certifications/it-specialist-python.png" alt="IT Specialist in Python Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Certiport · Feb 13, 2025</span>
+                <span class="font-display text-xs font-bold text-white">IT Specialist — Python</span>
+              </div>
+            </div>
+
+            <!-- Panel 4 (240°): PMI Project Management Ready -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')">
+              <img src="assets/images/certifications/pmi-project-management-ready.png" alt="PMI Project Management Ready Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">PMI · Mar 17, 2026</span>
+                <span class="font-display text-xs font-bold text-white">PMI Project Management Ready®</span>
+              </div>
+            </div>
+
+            <!-- Panel 5 (300°): Cisco CCST Networking -->
+            <div class="cert-spin-panel" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')">
+              <img src="assets/images/certifications/cisco-ccst-networking.png" alt="Cisco CCST Networking Certificate">
+              <div class="cert-spin-panel-overlay">
+                <span class="text-[9px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Cisco · Feb 10, 2025</span>
+                <span class="font-display text-xs font-bold text-white">Cisco CCST — Networking</span>
+              </div>
+            </div>
+
           </div>
+        </div>
+      </div>
+
+      <!-- Certifications Details & Verification Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Cert 1: IT Specialist - Python -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-2 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Institution / Course</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">PHP & Full-Stack Development</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Verified Credential</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-brands fa-python text-[#38BDF8] text-xs"></i> Certiport · Pearson
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Feb 13, 2025
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              IT Specialist — Python
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Validates proficiency in Python programming fundamentals, data structures, control flow, error handling, and modular operations.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">wCp8b-48J9</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/it-specialist-python.png', 'Information Technology Specialist — Python (ID: wCp8b-48J9)', 'assets/docs/certifications/it-specialist-python.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/it-specialist-python.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Cert 2 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-award"></i>
-          </div>
+        <!-- Cert 2: PMI Project Management Ready -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-3 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Online Learning Platform</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Relational Database & MySQL</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2025 • Certificate of Completion</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-diagram-project text-[#A855F7] text-xs"></i> PMI Institute
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Mar 17, 2026
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              PMI Project Management Ready®
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Global credential evaluating mastery in Project Management Fundamentals, Traditional Plan-Based, Agile Methodologies, and Business Analysis.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">waQWT-H92N</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/pmi-project-management-ready.png', 'PMI Project Management Ready® (ID: waQWT-H92N)', 'assets/docs/certifications/pmi-project-management-ready.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/pmi-project-management-ready.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Cert 3 -->
-        <div class="p-6 rounded-2xl pepper-card flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-[#0A0A0A] border border-[#2B2B2B] flex items-center justify-center text-white text-xl shrink-0">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
+        <!-- Cert 3: Cisco Certified Support Technician (CCST) Networking -->
+        <div class="p-6 rounded-2xl pepper-card flex flex-col justify-between space-y-4 reveal-item reveal-delay-4 border border-[#2B2B2B] hover:border-white/40 transition-all duration-300">
           <div>
-            <span class="text-[10px] font-bold text-[#B3B3B3] uppercase tracking-wider">Academic Workshop</span>
-            <h3 class="font-display text-base font-bold text-white mt-1">Web Standards & UI Fundamentals</h3>
-            <p class="text-xs text-[#B3B3B3] mt-1">Issued: 2026 • Certificate of Achievement</p>
-            <a href="#" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-[#B3B3B3] transition-colors">
-              <span>View Credential</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-            </a>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#0A0A0A] border border-[#2B2B2B] text-[10px] font-bold text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-network-wired text-[#2DD4BF] text-xs"></i> Cisco Systems
+              </span>
+              <span class="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Feb 10, 2025
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">
+              Cisco CCST — Networking
+            </h3>
+            <p class="text-xs text-[#B3B3B3] mt-1.5 leading-relaxed">
+              Official Cisco certification validating hands-on competency in networking standards, TCP/IP addressing, routing &amp; switching, and security.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-[11px]">
+              <span class="text-[#737373] font-mono">Verify ID:</span>
+              <code class="text-white font-mono font-bold tracking-wide">8Sx2-u8wz</code>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 text-xs font-bold pt-3 border-t border-[#2B2B2B]">
+              <button type="button" onclick="openCertModal('assets/images/certifications/cisco-ccst-networking.png', 'Cisco Certified Support Technician (CCST) Networking (ID: 8Sx2-u8wz)', 'assets/docs/certifications/cisco-ccst-networking.pdf')" class="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-[#D4D4D4] inline-flex items-center gap-1.5 transition-all shadow-sm font-semibold">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>View Certificate</span>
+              </button>
+              <div class="flex items-center gap-3">
+                <a href="assets/docs/certifications/cisco-ccst-networking.pdf" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#B3B3B3] inline-flex items-center gap-1 transition-colors" title="Open Official PDF">
+                  <i class="fa-solid fa-file-pdf text-xs"></i> PDF
+                </a>
+                <a href="https://verify.certiport.com" target="_blank" rel="noopener noreferrer" class="text-[#B3B3B3] hover:text-white inline-flex items-center gap-1 transition-colors" title="Verify on Certiport">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Verify
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -538,13 +986,13 @@
   <!-- ======================================================================
        5. CONTACT SECTION
        ====================================================================== -->
-  <section id="contact" class="py-28 tech-grid relative">
+  <section id="contact" class="pt-8 sm:pt-10 pb-16 sm:pb-20 tech-grid relative scroll-mt-20 sm:scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
         <!-- Contact Information -->
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-5 space-y-6 reveal-item reveal-delay-1">
           <span class="text-[11px] font-bold uppercase tracking-widest text-[#B3B3B3] block mb-1">04 / Connect</span>
           <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
             Let's Talk Internship.
@@ -553,14 +1001,14 @@
             I am currently interviewing for 2026 internship roles. If you have an opening or would like to discuss my technical projects, drop me a message.
           </p>
 
-          <div class="space-y-4 pt-4">
+          <div class="space-y-4 pt-4 reveal-item reveal-delay-2">
             <div class="flex items-center gap-4 text-[#D4D4D4]">
               <div class="w-10 h-10 rounded-lg bg-[#161616] border border-[#2B2B2B] flex items-center justify-center text-white shrink-0">
                 <i class="fa-solid fa-envelope"></i>
               </div>
               <div>
                 <span class="text-[10px] text-[#B3B3B3] uppercase font-bold block">Email</span>
-                <a href="mailto:your.email@example.com" class="text-sm font-semibold hover:text-white transition-colors">your.email@example.com</a>
+                <a href="mailto:lingdaniel999@gmail.com" class="text-sm font-semibold hover:text-white transition-colors">lingdaniel999@gmail.com</a>
               </div>
             </div>
 
@@ -577,38 +1025,49 @@
         </div>
 
         <!-- Contact Form (Web3Forms Integration) -->
-        <div class="lg:col-span-7">
-          <form id="contact-form" class="p-8 rounded-2xl pepper-card space-y-5">
-            <!-- Replace with free key from https://web3forms.com -->
-            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        <div class="lg:col-span-7 reveal-item reveal-delay-3">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate class="p-8 rounded-2xl pepper-card space-y-5 relative overflow-hidden">
+            <!-- Web3Forms Access Key (Delivers to lingdaniel999@gmail.com) -->
+            <input type="hidden" name="access_key" id="web3forms-access-key" value="749a253a-9384-428e-913c-589ded62a59a">
+            <input type="hidden" name="from_name" value="Daniel Ling Portfolio">
+            <!-- Honeypot Spam Protection -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label for="name" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Name</label>
-                <input type="text" id="name" name="name" required placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <label for="name" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Name <span class="text-white/50">*</span></label>
+                <input type="text" id="name" name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <p id="name-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
               </div>
               <div>
-                <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Email</label>
-                <input type="email" id="email" name="email" required placeholder="alex@company.com" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Your Email <span class="text-white/50">*</span></label>
+                <input type="email" id="email" name="email" required maxlength="120" autocomplete="email" placeholder="alex@company.com" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+                <p id="email-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
               </div>
             </div>
 
             <div>
-              <label for="subject" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Subject</label>
-              <input type="text" id="subject" name="subject" required placeholder="Web Development Internship Opportunity" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+              <label for="subject" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Subject <span class="text-white/50">*</span></label>
+              <input type="text" id="subject" name="subject" required minlength="3" maxlength="120" placeholder="Web Development Internship Opportunity" class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors">
+              <p id="subject-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
             </div>
 
             <div>
-              <label for="message" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3] mb-2">Message</label>
-              <textarea id="message" name="message" rows="4" required placeholder="Hi Daniel, we are reviewing your profile for our internship program..." class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors resize-none"></textarea>
+              <div class="flex items-center justify-between mb-2">
+                <label for="message" class="block text-[11px] font-bold uppercase tracking-wider text-[#B3B3B3]">Message <span class="text-white/50">*</span></label>
+                <span id="message-count" class="text-[10px] font-mono text-[#737373]">0 / 2000</span>
+              </div>
+              <textarea id="message" name="message" rows="4" required minlength="10" maxlength="2000" placeholder="Hi Daniel, we are reviewing your profile for our internship program..." class="w-full px-4 py-3 rounded-lg bg-[#0A0A0A] border border-[#2B2B2B] text-white placeholder-[#737373] text-sm focus:outline-none focus:border-white transition-colors resize-none"></textarea>
+              <p id="message-error" class="hidden text-[11px] text-red-400 mt-1.5 font-medium"></p>
             </div>
 
-            <button type="submit" class="w-full py-3.5 px-6 rounded-lg bg-white text-black hover:bg-[#D4D4D4] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5">
+            <button type="submit" id="contact-submit-btn" class="w-full py-3.5 px-6 rounded-lg bg-white text-black hover:bg-[#D4D4D4] disabled:opacity-60 disabled:cursor-not-allowed font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5">
               <i class="fa-solid fa-paper-plane text-xs"></i>
               <span>Send Message</span>
             </button>
 
-            <div id="form-status" class="hidden"></div>
+            <!-- Rich Animated Status Banner -->
+            <div id="form-status" class="hidden transition-all duration-300" role="status" aria-live="polite"></div>
           </form>
         </div>
 
@@ -621,12 +1080,70 @@
        ====================================================================== -->
   <footer class="py-10 border-t border-[#2B2B2B] bg-[#0A0A0A] text-[#B3B3B3] text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© <span id="current-year"></span> Daniel. Engineered with HTML5 & Tailwind CSS.</p>
+      <p>&copy; <span id="current-year">2026</span> Daniel Ling. All Rights Reserved.</p>
       <div class="flex items-center gap-6">
         <a href="#home" class="hover:text-white transition-colors">Back to top ↑</a>
       </div>
     </div>
   </footer>
+
+  <!-- ======================================================================
+       CERTIFICATE LIGHTBOX PREVIEW MODAL
+       ====================================================================== -->
+  <div id="cert-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" onclick="closeCertModal()">
+    <div class="w-full max-w-4xl flex items-center justify-between py-2.5 px-2 text-white" onclick="event.stopPropagation()">
+      <span id="cert-modal-caption" class="text-xs sm:text-sm font-semibold text-[#D4D4D4] truncate pr-4">Certificate Preview</span>
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a id="cert-modal-pdf" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-[#161616] border border-[#2B2B2B] hover:border-white text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors">
+          <i class="fa-solid fa-file-pdf text-xs"></i>
+          <span>Open PDF</span>
+        </a>
+        <button type="button" onclick="closeCertModal()" class="w-8 h-8 rounded-lg bg-[#2B2B2B] text-white hover:bg-white hover:text-black transition-colors duration-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 w-full max-w-4xl flex items-center justify-center p-2" onclick="event.stopPropagation()">
+      <img id="cert-modal-img" src="" alt="Certificate Preview" class="max-h-[82vh] max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300 scale-95 bg-white">
+    </div>
+  </div>
+
+  <script>
+    function openCertModal(imgSrc, caption, pdfHref) {
+      const modal = document.getElementById('cert-modal');
+      const modalImg = document.getElementById('cert-modal-img');
+      const modalCaption = document.getElementById('cert-modal-caption');
+      const modalPdf = document.getElementById('cert-modal-pdf');
+
+      modalImg.src = imgSrc;
+      modalCaption.textContent = caption || 'Certificate Preview';
+      modalPdf.href = pdfHref || imgSrc;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      setTimeout(() => {
+        modalImg.classList.remove('scale-95');
+        modalImg.classList.add('scale-100');
+      }, 20);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertModal() {
+      const modal = document.getElementById('cert-modal');
+      const modalImg = document.getElementById('cert-modal-img');
+      if (!modal) return;
+      modalImg.classList.remove('scale-100');
+      modalImg.classList.add('scale-95');
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 250);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCertModal();
+    });
+  </script>
 
   <!-- Main JavaScript -->
   <script src="assets/js/main.js"></script>
