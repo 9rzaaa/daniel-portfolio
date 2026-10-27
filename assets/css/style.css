@@ -878,3 +878,105 @@ section.is-visible .about-reveal-circle {
 
 
 
+
+/* --------------------------------------------------------------------------
+   3D Spinning Certifications Showcase (Cylindrical Perspective Ring)
+   -------------------------------------------------------------------------- */
+.cert-spin-stage {
+  --cert-radius: 282px;
+  position: relative;
+  width: 100%;
+  height: 270px;
+  perspective: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+@keyframes certCylinderSpin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(-360deg);
+  }
+}
+
+.cert-spin-ring {
+  position: relative;
+  width: 264px;
+  height: 196px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  z-index: 10;
+  animation: certCylinderSpin 24s linear infinite;
+}
+
+.cert-spin-panel {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  background: #ffffff;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    0 22px 48px -12px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(255, 255, 255, 0.07);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.cert-spin-panel:nth-child(1) { transform: rotateY(0deg) translateZ(var(--cert-radius)); }
+.cert-spin-panel:nth-child(2) { transform: rotateY(60deg) translateZ(var(--cert-radius)); }
+.cert-spin-panel:nth-child(3) { transform: rotateY(120deg) translateZ(var(--cert-radius)); }
+.cert-spin-panel:nth-child(4) { transform: rotateY(180deg) translateZ(var(--cert-radius)); }
+.cert-spin-panel:nth-child(5) { transform: rotateY(240deg) translateZ(var(--cert-radius)); }
+.cert-spin-panel:nth-child(6) { transform: rotateY(300deg) translateZ(var(--cert-radius)); }
+
+.cert-spin-panel:hover {
+  border-color: #ffffff;
+  box-shadow:
+    0 26px 56px -10px rgba(0, 0, 0, 0.95),
+    0 0 28px rgba(255, 255, 255, 0.25);
+}
+
+.cert-spin-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+.cert-spin-panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.15) 45%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px 14px;
+}
+
+.cert-spin-panel:hover .cert-spin-panel-overlay {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .cert-spin-stage {
+    --cert-radius: 208px;
+    height: 215px;
+    perspective: 850px;
+  }
+  .cert-spin-ring {
+    width: 196px;
+    height: 146px;
+  }
+}
